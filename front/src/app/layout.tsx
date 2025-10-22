@@ -13,7 +13,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NurSync",
+  icons: {
+    icon: '/vercel.svg', // Path relative to the public directory or app directory
+    // You can also specify multiple icons for different media queries:
+    // icon: [
+    //   { url: '/light-icon.png', media: '(prefers-color-scheme: light)' },
+    //   { url: '/dark-icon.png', media: '(prefers-color-scheme: dark)' },
+    // ],
+  },
+  title: "NURSYNC",
   description: "Application for nursing.",
 };
 

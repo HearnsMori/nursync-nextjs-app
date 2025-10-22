@@ -18,9 +18,24 @@ export default function TypingAnimation({ words }: TypingAnimationProps) {
   const [displayedText, setDisplayedText] = useState(''); // The text currently visible
   const [isDeleting, setIsDeleting] = useState(false); // Whether the animation is typing or deleting
 
+  // NEW: only run animation after client mount so server and initial client markup match
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Client-only blinking cursor state (keeps server and initial client markup identical)
+  const [showCursor, setShowCursor] = useState(true);
+  useEffect(() => {
+    if (!mounted) return;
+    const id = setInterval(() => setShowCursor((s) => !s), 500);
+    return () => clearInterval(id);
+  }, [mounted]);
+  
   // 2. Effect Hook to control the animation cycle
   useEffect(() => {
-    // Determine the current full word
+    if (!mounted) return; // don't start timers until we've mounted on client
+
     const currentWord = words[wordIndex % words.length];
 
     // --- Typing Logic ---
@@ -60,22 +75,21 @@ export default function TypingAnimation({ words }: TypingAnimationProps) {
     }
     
     // Dependencies: Rerun effect when state changes
-  }, [displayedText, isDeleting, wordIndex, words]); 
+  }, [displayedText, isDeleting, wordIndex, words, mounted]); 
 
   // 3. Render the component
+  // The server and initial client render will show the same minimal markup (mounted === false)
   return (
     <div style={{ fontSize: '2.6rem', fontWeight: '600', minHeight: '3rem' }}>
       {displayedText}
-      {/* Blinking cursor effect (optional) */}
-      <span className="cursor" style={{ borderRight: '0.1em solid black', animation: 'blink 1s step-end infinite' }}>&nbsp;</span>
+      {/* Blinking cursor implemented via client-only state to avoid hydration mismatch */}
+      <span
+        className="cursor"
+        style={{ borderRight: '0.1em solid', borderRightColor: showCursor ? 'black' : 'transparent' }}
+      >
+        {'\u00A0'}
+      </span>
       
-      {/* You must define the CSS keyframe 'blink' in your global styles for the cursor to blink */}
-      <style jsx global>{`
-        @keyframes blink {
-          from, to { border-right-color: transparent }
-          50% { border-right-color: black; }
-        }
-      `}</style>
     </div>
   );
 }

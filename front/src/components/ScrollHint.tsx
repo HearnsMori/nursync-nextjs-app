@@ -16,6 +16,13 @@ export default function ScrollHint({
 }: ScrollHintProps) {
   const [isVisible, setIsVisible] = useState(true);
 
+  // Client-only bounce toggle to animate arrow without styled-jsx (keeps SSR output stable)
+  const [bounce, setBounce] = useState(false);
+  useEffect(() => {
+    const id = setInterval(() => setBounce((b) => !b), 900);
+    return () => clearInterval(id);
+  }, []);
+
   // Effect to handle scroll detection
   useEffect(() => {
     const handleScroll = () => {
@@ -46,28 +53,17 @@ export default function ScrollHint({
   return (
     <div style={styles.container}>
       <p style={styles.text}>{text}</p>
-      {/* Downward arrow element */}
-      <div style={styles.arrow} className="scroll-hint-arrow">
+      {/* Downward arrow element - animate via inline style to avoid styled-jsx hydration mismatches */}
+      <div
+        style={{
+          ...styles.arrow,
+          transform: bounce ? 'translateY(-6px)' : 'translateY(0)',
+          transition: 'transform 700ms ease-in-out',
+        }}
+        aria-hidden
+      >
         &#8595; {/* Unicode character for a downward arrow */}
       </div>
-
-      {/* Internal CSS for the animation (using <style jsx> or global CSS is usually cleaner) */}
-      <style jsx global>{`
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {
-            transform: translateY(0);
-          }
-          40% {
-            transform: translateY(-5px);
-          }
-          60% {
-            transform: translateY(-3px);
-          }
-        }
-        .scroll-hint-arrow {
-          animation: bounce 2s infinite;
-        }
-      `}</style>
     </div>
   );
 }
