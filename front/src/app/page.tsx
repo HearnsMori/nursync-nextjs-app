@@ -1,66 +1,117 @@
+"use client";
+import React from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
+import "./globals.css";
+
+//components
+import Header from "../components/AppHeader";
+import TypingAnimation from "../components/TypingAnimation";
+import ScrollHint from "../components/ScrollHint";
 
 export default function Home() {
+  const toggleChat = () => {
+    const chatBox = document.getElementById('chatBox');
+    if (chatBox) {
+      chatBox.style.display = chatBox.style.display === 'none' || chatBox.style.display === '' ? 'flex' : 'none';
+    }
+  };
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
+    <div
+      className="screen">
+      <Header isLoggedIn={false} />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'nowrap',
+          width: '100vw',
+          marginTop: '-10vw',
+        }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '11vw',
+            left: '43vw',
+            zIndex: 3,
+            fontSize: '2.3vw',
+            fontWeight: '600',
+            opacity: 0.9,
+          }}
+        >
+          WELCOME TO
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            top: '26vw',
+            left: '33vw',
+            zIndex: 3,
+            fontSize: '3.1vw',
+            fontWeight: '700',
+          }}
+        >
+          <TypingAnimation words={['Seek Your Nursing Capability']} />
+          <ScrollHint
+            text="Discover more content below"
+            hideThreshold={300} // Hide hint after scrolling 300px
+          />
+        </div>
         <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+          src="/welcometo.png"
+          alt="Welcome Image"
+          width={600}
+          height={400}
+          style={{
+            width: '100vw',
+            height: 'auto',
+          }}
         />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+      </div>
+      <div
+        style={{
+          marginTop: '-26vw',
+          paddingTop: '28vw',
+          backgroundImage: 'linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%)',
+          fontSize: '2vw',
+          fontWeight: '500',
+          textAlign: 'center',
+          height: 'auto',
+          width: '100vw',
+          zIndex: 2,
+        }}>
+        <div
+          className="flexC"
+          style={{
+            background: 'blue',
+            width: '100vw',
+          }}>
+          <div className="flexR"
+            style={{
+              background: 'red',
+              width: '100vw',
+              height: '38vw',
+            }}>
+            <div>
+
+            </div>
+            <div>
+
+            </div>
+          </div>
+          <div
+            style={{
+              background: 'green',
+              width: '100vw',
+              height: '8vw',
+            }}>
+
+          </div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
+
+
     </div>
   );
 }

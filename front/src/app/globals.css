@@ -30,6 +30,46 @@ body {
   margin: 0;
 }
 
+.screen {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  background-color: #ffffff;
+}
+.flexR {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.flexC {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bggreen {
+  background-color: #026e2c;
+}
+.txtgreen {
+  color: #026e2c;
+}
+
+.bgblack {
+  background-color: #111111;
+}
+.txtblack {
+  color: #111111;
+}
+
+.bgwhite {
+  background-color: #ffffff;
+}
+.txtwhite {
+  color: #ffffff;
+}
+
 a {
   color: inherit;
   text-decoration: none;
