@@ -33,3 +33,10 @@
   padding-top: 1rem;
   margin: 1vw;
 }
+
+.button:hover {
+  transform: translate(0, -2px);
+}
+.button:active {
+  transform: translate(0, -4px);
+}

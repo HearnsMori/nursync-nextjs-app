@@ -57,7 +57,7 @@ export default function Home() {
           <TypingAnimation words={['Seek Your Nursing Capability']} />
           <ScrollHint
             text="Discover more content below"
-            hideThreshold={300} // Hide hint after scrolling 300px
+            hideThreshold={237} // Hide hint after scrolling 300px
           />
         </div>
         <Image
@@ -139,17 +139,17 @@ export default function Home() {
               <ul
                 className={styles.featuresUl}>
                 <li
-                className={styles.featuresListText}>
+                  className={styles.featuresListText}>
                   <b>Empowerment: </b>
                   Develop self-efficacy and clinical decision-making skills through structured learning.
                 </li>
                 <li
-                className={styles.featuresListText}>
+                  className={styles.featuresListText}>
                   <b>Flexibility: </b>
                   Learn at your own pace with 24/7 access to resources.
                 </li>
                 <li
-                className={styles.featuresListText}>
+                  className={styles.featuresListText}>
                   <b>Community Support: </b>
                   Join a network of nursing students and professionals for collaboration and guidance.
                 </li>
@@ -197,6 +197,7 @@ export default function Home() {
               >
                 <span style={{ whiteSpace: 'nowrap' }}>Don't have an account yet?</span>
                 <Link
+                  className={styles.button}
                   href="/signup"
                   style={{
                     background: '#026e2c',
@@ -233,6 +234,7 @@ export default function Home() {
               >
                 <span style={{ whiteSpace: 'nowrap' }}>Already have an account?</span>
                 <Link
+                  className={styles.button}
                   href="/login"
                   style={{
                     border: '2px solid #026e2c',
@@ -250,7 +252,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <Footer isLoggedIn={false}/>
+        <Footer isLoggedIn={false} />
         {/*Add here*/}
       </div>
 

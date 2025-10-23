@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import '../app/globals.css';
+import styles from '../app/page.module.css';
+import Link from 'next/link';
 
 export default function Header({
     isLoggedIn,
@@ -57,14 +59,19 @@ export default function Header({
                 {isLoggedIn ? (
                     <></>
                 ):(
-                    <button
-                    className='bgwhite txtblack'
+                    <Link
+                    className={`bgwhite txtblack ${styles.button}`}
+                    href="/signup"
                     style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                         borderRadius: '1vw',
                         height: '2.3vw',
                         width: '7vw',
                         border: 'none',
-                    }}>Sign-up</button>
+                        marginTop: '0.75vw',
+                    }}>Sign-up</Link>
                 )}
             </div>
             <div

@@ -205,39 +205,41 @@ const Signup = () => {
           className={`${styles.flexR} ${styles.signupCard}`}
         >
           <div className={styles.divOnCenter}>
-            <img style={{ opacity: 1, height: '15vw', width: '25vw' }} src="/greenlettering.png" alt="NurSYNC Logo" />
+            <img style={{ opacity: 1, height: '11w', width: '25vw' }} src="/greenlettering.png" alt="NurSYNC Logo" />
           </div>
 
           <div className={styles.formContainer}>
-            {/* Title with Animation */}
-            <motion.div 
-              custom={1} variants={textVariants}
-              className={`${styles.txtsemilarge} ${styles.bold}`} style={{ marginTop: '3vw' }}
-            >
-              Create an Account
-            </motion.div>
-            <motion.div 
-              custom={2} variants={textVariants}
-              className={`${styles.txtsemimedium} ${styles.semibold}`} style={{ marginTop: '1vw' }}
-            >
-              Already have an Account? <a href="/login" style={{ color: '#008040' }}>Log-in</a>
-            </motion.div>
+              {/* Title with Animation */}
+              <motion.div 
+                custom={1} variants={textVariants}
+                className={`${styles.txtsemilarge} ${styles.bold}`}
+                style={{ marginTop: '2vw', textAlign: 'center', fontSize: '2.2vw' }}
+              >
+                Create an Account
+              </motion.div>
+              <motion.div 
+                custom={2} variants={textVariants}
+                className={`${styles.txtsemimedium} ${styles.semibold}`}
+                style={{ marginTop: '0.8vw', textAlign: 'center', fontSize: '1.4vw', color: '#444' }}
+              >
+                Already have an Account? <a href="/login" style={{ color: '#008040' }}>Log-in</a>
+              </motion.div>
 
-            {/* Form Fields (Grouped for simplicity, individual fields can also be animated) */}
-            <motion.div custom={3} variants={textVariants}>
+              {/* Form Fields (Grouped for simplicity, individual fields can also be animated) */}
+            <motion.div custom={3} variants={textVariants} style={{ textAlign: 'center', width: '37vw' }}>
               {/* Form Row 1: Name Fields */}
               <div className={styles.formRow}>
                 <div className={styles.formInputWrapper}>
-                  <input id="firstname" className={styles.formInput} type="text" placeholder="First Name" value={formData.firstname} onChange={handleInputChange} />
+                  <input id="firstname" className={styles.formInput} type="text" placeholder="First Name" value={formData.firstname} onChange={handleInputChange} style={{ fontSize: '1.2vw' }} />
                   <small className={styles.errorText} style={{ display: errors.firstname ? 'block' : 'none' }}>{errors.firstname}</small>
                 </div>
                 {/* ... other name fields ... */}
                 <div className={styles.formInputWrapper}>
-                  <input id="lastname" className={styles.formInput} type="text" placeholder="Last Name" value={formData.lastname} onChange={handleInputChange} />
+                  <input id="lastname" className={styles.formInput} type="text" placeholder="Last Name" value={formData.lastname} onChange={handleInputChange} style={{ fontSize: '1.2vw' }} />
                   <small className={styles.errorText} style={{ display: errors.lastname ? 'block' : 'none' }}>{errors.lastname}</small>
                 </div>
                 <div className={styles.formInputWrapper}>
-                  <input id="middlename" className={styles.formInput} type="text" placeholder="Middle Name" value={formData.middlename} onChange={handleInputChange} />
+                  <input id="middlename" className={styles.formInput} type="text" placeholder="Middle Name" value={formData.middlename} onChange={handleInputChange} style={{ fontSize: '1.2vw' }} />
                   <small className={styles.errorText} style={{ display: errors.middlename ? 'block' : 'none' }}>{errors.middlename}</small>
                 </div>
               </div>
@@ -245,37 +247,37 @@ const Signup = () => {
               {/* Form Row 2: University/ID Fields */}
               <div className={styles.formRow} style={{ marginTop: '1vw' }}>
                 <div className={styles.formInputWrapper}>
-                  <input id="university" className={styles.formInput} type="text" placeholder="University" value={formData.university} onChange={handleInputChange} />
+                  <input id="university" className={styles.formInput} type="text" placeholder="University" value={formData.university} onChange={handleInputChange} style={{ fontSize: '1.1vw' }} />
                   <small className={styles.errorText} style={{ display: errors.university ? 'block' : 'none' }}>{errors.university}</small>
                 </div>
                 <div className={styles.formInputWrapper}>
-                  <input id="studentid" className={styles.formInput} type="number" placeholder="Student ID" value={formData.studentid} onChange={handleInputChange} />
+                  <input id="studentid" className={styles.formInput} type="number" placeholder="Student ID" value={formData.studentid} onChange={handleInputChange} style={{ fontSize: '1.1vw' }} />
                   <small className={styles.errorText} style={{ display: errors.studentid ? 'block' : 'none' }}>{errors.studentid}</small>
                 </div>
               </div>
 
               {/* Full Width Fields */}
               <div className={styles.fullWidthInputWrapper}>
-                <input id="emailaddress" className={styles.formInput} type="text" placeholder="Email Address" value={formData.emailaddress} onChange={handleInputChange} />
+                <input id="emailaddress" className={styles.formInput} type="text" placeholder="Email Address" value={formData.emailaddress} onChange={handleInputChange} style={{ fontSize: '1.1vw' }} />
                 <small className={styles.errorText} style={{ display: errors.emailaddress ? 'block' : 'none' }}>{errors.emailaddress}</small>
               </div>
               <div className={styles.fullWidthInputWrapper}>
-                <input id="username" className={styles.formInput} type="text" placeholder="Username" value={formData.username} onChange={handleInputChange} />
+                <input id="username" className={styles.formInput} type="text" placeholder="Username" value={formData.username} onChange={handleInputChange} style={{ fontSize: '1.1vw' }} />
                 <small className={styles.errorText} style={{ display: errors.username ? 'block' : 'none' }}>{errors.username}</small>
               </div>
               <div className={styles.fullWidthInputWrapper}>
-                <input id="password" className={styles.formInput} type="password" placeholder="Password" value={formData.password} onChange={handleInputChange} />
+                <input id="password" className={styles.formInput} type="password" placeholder="Password" value={formData.password} onChange={handleInputChange} style={{ fontSize: '1.1vw' }} />
                 <small className={styles.errorText} style={{ display: errors.password ? 'block' : 'none' }}>{errors.password}</small>
               </div>
               <div className={styles.fullWidthInputWrapper}>
-                <input id="confirmpassword" className={styles.formInput} type="password" placeholder="Confirm Password" value={formData.confirmpassword} onChange={handleInputChange} />
+                <input id="confirmpassword" className={styles.formInput} type="password" placeholder="Confirm Password" value={formData.confirmpassword} onChange={handleInputChange} style={{ fontSize: '1.1vw' }} />
                 <small className={styles.errorText} style={{ display: errors.confirmpassword ? 'block' : 'none' }}>{errors.confirmpassword}</small>
               </div>
 
               {/* Agreement Checkbox */}
-              <div className={styles.agreeTextContainer}>
+              <div className={styles.agreeTextContainer} style={{ justifyContent: 'center', gap: '0.6rem' }}>
                 <input id="agree" type="checkbox" className={styles.agreementCheckbox} checked={formData.agree} onChange={handleInputChange} />
-                <div className={styles.txtmedium}>Agree to terms, policy, and privacy</div>
+                <div className={styles.txtmedium} style={{ fontSize: '1.1vw' }}>Agree to terms, policy, and privacy</div>
               </div>
               <small className={styles.errorText} style={{ padding: '0 1vw', display: errors.agree ? 'block' : 'none' }}>{errors.agree}</small>
             </motion.div>
