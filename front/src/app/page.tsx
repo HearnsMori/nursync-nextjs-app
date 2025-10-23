@@ -6,10 +6,10 @@ import styles from "./page.module.css";
 import "./globals.css";
 
 //components
-import Header from "../components/AppHeader";
+import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
-import TypingAnimation from "../components/TypingAnimation";
-import ScrollHint from "../components/ScrollHint";
+import TypingAnimation from "@/components/TypingAnimation";
+import ScrollHint from "@/components/ScrollHint";
 
 export default function Home() {
   const toggleChat = () => {
@@ -166,6 +166,8 @@ export default function Home() {
             }}>
             <div
               className="flexR"
+              role="region"
+              aria-label="Account actions"
               style={{
                 width: '98%',
                 margin: '-2vw 1vw 1vw 1vw',
@@ -173,28 +175,82 @@ export default function Home() {
                 border: '5px solid #026e2c',
                 borderRadius: '1vw',
                 display: 'flex',
-                justifyContent: 'center',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 color: '#026e2c',
-                fontWeight: '600',
-              }}>
-                <div
+                fontWeight: 600,
+                padding: '0 5rem',
+                gap: '1rem',
+                boxSizing: 'border-box',
+                flexWrap: 'wrap',
+                minHeight: '7rem',
+              }}
+            >
+              <div
                 style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.8rem',
                   flex: 1,
-                }}>
-                  Don't have an account yet? <Link href="/signup">Sign-up</Link>
-                </div>
-                <div>|</div>
-                <div
+                  minWidth: 0,
+                }}
+              >
+                <span style={{ whiteSpace: 'nowrap' }}>Don't have an account yet?</span>
+                <Link
+                  href="/signup"
+                  style={{
+                    background: '#026e2c',
+                    color: '#fff',
+                    textDecoration: 'none',
+                    padding: '0.6rem 1rem',
+                    borderRadius: '0.6rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  Sign up
+                </Link>
+              </div>
+
+              <div
+                aria-hidden="true"
                 style={{
+                  width: '1px',
+                  height: '2.6rem',
+                  background: '#026e2c',
+                  opacity: 0.25,
+                }}
+              />
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.8rem',
                   flex: 1,
-                }}>
-                  Already have an account? <Link href="/login">Log-in</Link>
-                </div>  
+                  justifyContent: 'flex-end',
+                  minWidth: 0,
+                }}
+              >
+                <span style={{ whiteSpace: 'nowrap' }}>Already have an account?</span>
+                <Link
+                  href="/login"
+                  style={{
+                    border: '2px solid #026e2c',
+                    color: '#026e2c',
+                    textDecoration: 'none',
+                    padding: '0.5rem 0.9rem',
+                    borderRadius: '0.6rem',
+                    fontWeight: 700,
+                    background: 'transparent',
+                  }}
+                >
+                  Log in
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-        <Footer/>
+        <Footer isLoggedIn={false}/>
         {/*Add here*/}
       </div>
 

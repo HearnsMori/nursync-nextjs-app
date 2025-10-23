@@ -1,21 +1,26 @@
 import "../app/globals.css";
 
-export default function Footer() {
+export default function Footer({
+  isLoggedIn,
+}: { isLoggedIn: boolean }) {
   return (
     // Footer
     <footer
-      className="flexC green"
-      style={{ width: '100vw', height: 'auto', padding: '5vw 0', margin: 0, background: '#008040' }}
+      className="flexC bggreen"
+      style={{ justifyContent: 'left', alignItems: 'left', width: '100vw', height: 'auto', padding: '1vw 0', margin: 0, }}
     >
       {/* Logo or Title */}
       <div
         className="flex"
         style={{
           color: 'white',
+          display: 'flex',
           justifyContent: 'left',
           paddingLeft: '6vw',
-          fontSize: '4.5vw',
+          fontSize: '2.6vw',
           fontWeight: 'bold',
+          width: '100vw',
+          height: '2.6vw',
         }}
       >
         NurSYNC
@@ -23,15 +28,29 @@ export default function Footer() {
 
       {/* Optional Links */}
       <div
-        className="flex"
-        style={{ justifyContent: 'left', paddingLeft: '6vw', marginTop: '3vw' }}
+        className="flexR"
+        style={{ width: '100vw', fontSize: '1vw', justifyContent: 'left', alignItems: 'left', paddingLeft: '6vw', marginTop: '2vw' }}
       >
-        <a href="./signup" style={{ color: '#ffffff', textDecoration: 'underline', marginRight: '5vw' }}>
-          Signup
-        </a>
-        <a href="./login" style={{ color: '#ffffff', textDecoration: 'underline', marginRight: '5vw' }}>
-          Login
-        </a>
+        {
+          isLoggedIn ? (
+            <>
+              <a href="./signup" style={{ color: '#ffffff', textDecoration: 'underline', marginRight: '5vw' }}>
+                
+              </a>
+            </>
+          ) : (
+            <>
+              <a href="./signup" style={{ color: '#ffffff', textDecoration: 'underline', marginRight: '5vw' }}>
+                Signup
+              </a>
+
+              <a href="./login" style={{ color: '#ffffff', textDecoration: 'underline', marginRight: '5vw' }}>
+                Login
+              </a>
+            </>
+          )
+        }
+
 
         <a
           style={{ color: '#ffffff', textDecoration: 'underline' }}
@@ -44,7 +63,7 @@ export default function Footer() {
       </div>
 
       {/* Line */}
-      <hr style={{ border: '0.2px solid #CCCCCC', width: '90%', marginTop: '5vw' }} />
+      <hr style={{ border: '0.2px solid #CCCCCC', width: '90%', marginTop: '3vw' }} />
 
       {/* Extra Info: Company Address or Slogan */}
       <div
@@ -53,8 +72,8 @@ export default function Footer() {
           color: '#dddddd',
           justifyContent: 'left',
           paddingLeft: '6vw',
-          fontSize: '2.6vw',
-          marginTop: '2vw',
+          fontSize: '1.5vw',
+          marginTop: '1vw',
         }}
       >
         Philippines
@@ -67,8 +86,8 @@ export default function Footer() {
           color: '#dddddd',
           justifyContent: 'left',
           paddingLeft: '6vw',
-          fontSize: '2.6vw',
-          marginTop: '2vw',
+          fontSize: '1.5vw',
+          marginTop: '1vw',
         }}
       >
         &copy; 2025 NurSYNC
