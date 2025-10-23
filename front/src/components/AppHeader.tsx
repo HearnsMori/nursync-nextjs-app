@@ -20,6 +20,7 @@ export default function Header({
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 99,
+            padding: '0 3vw',
         }}>
             <div
             style={{
@@ -37,7 +38,6 @@ export default function Header({
                     style={{
                         height: '3vw',
                         width: 'auto',
-                        marginLeft: '2vw',
                     }}
                 />
             </div>
@@ -60,7 +60,7 @@ export default function Header({
                     <></>
                 ):(
                     <Link
-                    className={`bgwhite txtblack ${styles.button}`}
+                    className="bgwhite txtblack button"
                     href="/signup"
                     style={{
                         display: 'flex',
@@ -70,7 +70,7 @@ export default function Header({
                         height: '2.3vw',
                         width: '7vw',
                         border: 'none',
-                        marginTop: '0.75vw',
+                        margin: '1vw',
                     }}>Sign-up</Link>
                 )}
             </div>
@@ -81,7 +81,6 @@ export default function Header({
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginRight: '1vw',
             }}>
                 <svg width="21px" height="21px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
             </div>

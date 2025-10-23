@@ -197,7 +197,7 @@ export default function Home() {
               >
                 <span style={{ whiteSpace: 'nowrap' }}>Don't have an account yet?</span>
                 <Link
-                  className={styles.button}
+                  className="button"
                   href="/signup"
                   style={{
                     background: '#026e2c',
@@ -234,7 +234,7 @@ export default function Home() {
               >
                 <span style={{ whiteSpace: 'nowrap' }}>Already have an account?</span>
                 <Link
-                  className={styles.button}
+                  className="button"
                   href="/login"
                   style={{
                     border: '2px solid #026e2c',

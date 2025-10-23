@@ -75,6 +75,13 @@ a {
   text-decoration: none;
 }
 
+.button:hover {
+  transform: translate(0, -2px);
+}
+.button:active {
+  transform: translate(0, -4px);
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
