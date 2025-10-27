@@ -25,7 +25,7 @@
     width: 100vw;
     padding-bottom: 7vw;
     z-index: 3;
-    background-image: url('/signup.png');
+    background-image: url('/signupbackground.png');
     background-size: cover;
     background-position: center;
 }
@@ -168,7 +168,7 @@
 .showFooterButton {
     position: fixed;
     bottom: 10px;
-    right: 10px;
+    left: 10px;
     background: #008040;
     color: white;
     padding: 10px;

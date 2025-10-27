@@ -71,6 +71,9 @@ export default function Header({
                         width: '7vw',
                         border: 'none',
                         margin: '1vw',
+                        fontWeight: 600,
+                        fontSize: '1vw',
+                        color: '#222222',
                     }}>Sign-up</Link>
                 )}
             </div>

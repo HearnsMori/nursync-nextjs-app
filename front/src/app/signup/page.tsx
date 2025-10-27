@@ -1,4 +1,3 @@
-// app/page.tsx
 'use client'; 
 
 import React, { useState, useRef, useEffect, useCallback, ChangeEvent } from 'react';
@@ -9,6 +8,10 @@ import CustomAlert from '@/components/CustomAlert';
 import styles from './page.module.css';
 import Header from '@/components/AppHeader';
 import Footer from '@/components/AppFooter';
+import Image from 'next/image';
+import ChatAI from '@/components/ChatAI';
+//Backend Connection
+import { fetchData, HttpMethod } from "@/utils/fetchdata";
 
 // Define the type for a chat message
 interface ChatMessage {
@@ -192,7 +195,7 @@ const Signup = () => {
       <Head>
         <title>NurSYNC</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/png" href="/logo.png" />
+        <link rel="icon" type="image/png" href="/signupforeground.png" />
       </Head>
 
       <CustomAlert message={alertMessage} isOpen={isAlertOpen} onClose={closeAlert} />
@@ -222,7 +225,7 @@ const Signup = () => {
                 className={`${styles.txtsemimedium} ${styles.semibold}`}
                 style={{ marginTop: '0.8vw', textAlign: 'center', fontSize: '1.4vw', color: '#444' }}
               >
-                Already have an Account? <a href="/login" style={{ color: '#008040' }}>Log-in</a>
+                Already have an Account? <a href="/login" style={{ color: '#008040', textDecoration: 'underline',}}>Log-in</a>
               </motion.div>
 
               {/* Form Fields (Grouped for simplicity, individual fields can also be animated) */}
@@ -308,29 +311,7 @@ const Signup = () => {
       <motion.div id="showFooterButton" onClick={toggleFooter} className={styles.showFooterButton} whileHover={buttonHover} whileTap={{ scale: 0.95 }}>
         {isFooterHidden ? 'Show Footer' : 'Hide Footer'}
       </motion.div>
-
-      {/* Chat Button with Framer Motion Hover */}
-      <motion.div onClick={toggleChat} className={`${styles.txtsmall} ${styles.chatButton}`} whileHover={buttonHover} whileTap={{ scale: 0.95 }}>
-        Chat NurSYNC AI{' '}
-        <img className={styles.chatBotImage} src="/bot.png" alt="Chat Bot Icon" />
-      </motion.div>
-
-      {/* Chat Window */}
-      <div id="chatBox" className={styles.chatBox} style={{ display: isChatOpen ? 'flex' : 'none' }}>
-        <div id="chatBoxHeader txtsmall" className={styles.chatBoxHeader}>NurSYNC AI</div>
-        <div id="chatArea" ref={chatAreaRef} className={styles.chatArea}>
-          {chatMessages.map((msg, index) => (
-            <div key={index} className={msg.sender === 'user' ? styles.userMessage : styles.botMessage}>
-              {msg.text}
-            </div>
-          ))}
-        </div>
-        <input
-          type="text" id="userInput" placeholder="Type a message..." className={styles.userInput}
-          value={userInput} onChange={(e) => setUserInput(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') { sendMessage(); } }}
-        />
-      </div>
+      <ChatAI />
     </>
   );
 };

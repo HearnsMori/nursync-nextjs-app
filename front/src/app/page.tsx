@@ -5,11 +5,15 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import "./globals.css";
 
+//Backend Connection
+import { fetchData, HttpMethod } from "@/utils/fetchdata";
+
 //components
 import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
 import TypingAnimation from "@/components/TypingAnimation";
 import ScrollHint from "@/components/ScrollHint";
+import ChatAI from "@/components/ChatAI";
 
 export default function Home() {
   const toggleChat = () => {
@@ -254,6 +258,7 @@ export default function Home() {
         </div>
         <Footer isLoggedIn={false} />
         {/*Add here*/}
+        <ChatAI />
       </div>
 
 
