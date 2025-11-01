@@ -6,7 +6,7 @@ export interface FetchParams {
   /** The data payload for POST, PUT, etc. (Can be null for GET/DELETE) */
   jsonData: object | null;
   /** The base URL of the backend (e.g., 'https://api.example.com') */
-  backendURL: string;
+  backendURL: string | null;
   /** The specific API path (e.g., '/users/123') */
   apiEndPoint: string;
   /** The HTTP method to use */
@@ -26,7 +26,7 @@ export async function fetchData<T = any>({
   apiEndPoint, 
   method 
 }: FetchParams): Promise<T> {
-  const url = `${backendURL}${apiEndPoint}`;
+  const url = `${(backendURL!==null)?backendURL:"https://nursync-backend.onrender.com/"}${apiEndPoint}`;
   const normalizedMethod = method.toUpperCase() as HttpMethod;
   const isBodyMethod = ['POST', 'PUT', 'PATCH'].includes(normalizedMethod);
 

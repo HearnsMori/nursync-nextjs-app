@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -72,7 +73,7 @@ const LoadingDots: React.FC = () => {
         <motion.span
           key={i}
           // The animation uses keyframes directly in the 'animate' prop
-          animate={{ y: ["0%", "-50%", "0%"] }} 
+          animate={{ y: ["0%", "-50%", "0%"] }}
           transition={{
             duration: 0.8,
             repeat: Infinity,
@@ -103,6 +104,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, isTyping }) => {
     borderRadius: '1.25rem',
     marginBottom: '0.6rem',
     wordBreak: 'break-word',
+    overflowWrap: 'break-word',
+    whiteSpace: 'pre-wrap',
+    textAlign: 'left',
     fontSize: '0.9rem',
     lineHeight: '1.4',
     alignSelf: isBot ? 'flex-start' : 'flex-end',
@@ -140,7 +144,7 @@ const App: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false); // Changed default to false (closed)
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleToggle = () => setIsOpen(prev => !prev); 
+  const handleToggle = () => setIsOpen(prev => !prev);
 
   // Scroll to the bottom of the chat window on new message
   useEffect(() => {
@@ -151,7 +155,7 @@ const App: React.FC = () => {
   }, [messages, isTyping, isOpen]);
 
 
-  const handleSend = async (e: React.FormEvent) => {
+  const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isTyping) return;
 
@@ -159,7 +163,7 @@ const App: React.FC = () => {
     // 1. Add user message
     setMessages(prev => [...prev, { sender: 'User', text: userMessage, id: Date.now() }]);
     setInput('');
-    
+
     // 2. Start typing indicator
     setIsTyping(true);
 
@@ -167,23 +171,29 @@ const App: React.FC = () => {
     const typingMessageId: number = Date.now() + 1;
     setMessages(prev => [...prev, { sender: 'AI', text: '', isTyping: true, id: typingMessageId }]);
 
-    // 4. Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
+    // Async IIFE to avoid an `async` component-level function
+    (async () => {
+      try {
+        // 4. Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
 
-    // 5. Generate and add AI response
-    const aiResponseText = getMockResponse();
+        // 5. Generate and add AI response
+        const aiResponseText = getMockResponse();
 
-    // 6. Update the temporary typing bubble with the final response
-    setMessages(prev => {
-        // Find and replace the temporary typing message
-        const newMessages = prev.map(msg => 
+        // 6. Update the temporary typing bubble with the final response
+        setMessages(prev => {
+          const newMessages = prev.map(msg =>
             msg.id === typingMessageId ? { ...msg, text: aiResponseText, isTyping: false } : msg
-        );
-        return newMessages;
-    });
-
-    // 7. Stop typing indicator
-    setIsTyping(false);
+          );
+          return newMessages;
+        });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        // 7. Stop typing indicator
+        setIsTyping(false);
+      }
+    })();
   };
 
   // NEW: Style for the outer fixed wrapper/widget
@@ -196,15 +206,15 @@ const App: React.FC = () => {
     flexDirection: 'column',
     alignItems: 'flex-end', // Aligns the chatbox and button to the right
   };
-  
+
   // UPDATED: Style for the toggle button to support the "Chat AI" label
   const toggleButtonStyle: React.CSSProperties = {
     // Dynamic sizing based on isOpen
-    width: isOpen ? '60px' : 'auto', 
+    width: isOpen ? '60px' : 'auto',
     minWidth: '60px',
-    padding: isOpen ? '0' : '0 20px', 
+    padding: isOpen ? '0' : '0 20px',
     height: '60px',
-    borderRadius: '30px', 
+    borderRadius: '30px',
     backgroundColor: '#026e2c',
     color: '#ffffff',
     border: 'none',
@@ -213,7 +223,7 @@ const App: React.FC = () => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '8px', 
+    gap: '8px',
     transition: 'background-color 0.2s, width 0.3s, padding 0.3s, margin-bottom 0.3s',
     marginBottom: isOpen ? '15px' : '0', // Spacer when chat is open
     flexShrink: 0,
@@ -243,12 +253,12 @@ const App: React.FC = () => {
     alignItems: 'center',
     gap: '0.75rem',
   };
-  
+
   const iconStyle: React.CSSProperties = {
-      width: '24px',
-      height: '24px',
-      fill: 'white',
-      marginRight: isOpen ? '0' : '0.5rem' // Adjust icon margin based on open/closed state
+    width: '24px',
+    height: '24px',
+    fill: 'white',
+    marginRight: isOpen ? '0' : '0.5rem' // Adjust icon margin based on open/closed state
   }
 
   const messagesBoxStyle: React.CSSProperties = {
@@ -293,8 +303,8 @@ const App: React.FC = () => {
 
   return (
     <>
-        <style>
-            {`
+      <style>
+        {`
                 /* Basic reset */
                 body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 
@@ -315,6 +325,7 @@ const App: React.FC = () => {
                     /* When the chat box is open, the parent wrapper needs to take over the screen */
                     .aic-widget-wrapper.is-open {
                         top: 0 !important;
+                        z-index: 5;
                         left: 0 !important;
                         right: 0 !important;
                         bottom: 0 !important;
@@ -366,97 +377,97 @@ const App: React.FC = () => {
                     transform: scale(0.98);
                 }
             `}
-        </style>
+      </style>
 
-        {/* Outer fixed wrapper */}
-        <div 
-          className={`aic-widget-wrapper ${isOpen ? 'is-open' : ''}`}
-          style={widgetWrapperStyle}
+      {/* Outer fixed wrapper */}
+      <div
+        className={`aic-widget-wrapper ${isOpen ? 'is-open' : ''}`}
+        style={widgetWrapperStyle}
+      >
+        {/* Toggle Button */}
+        <motion.button
+          onClick={handleToggle}
+          className="aic-toggle-button"
+          style={toggleButtonStyle}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          {/* Toggle Button */}
-          <motion.button
-            onClick={handleToggle}
-            className="aic-toggle-button"
-            style={toggleButtonStyle}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          {/* Display label only when closed */}
+          {!isOpen && <span style={{ fontSize: '1rem', fontWeight: 600 }}>Chat AI</span>}
+
+          {/* SVG Icon for Close (X) or Open (Comment) */}
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            fill="none"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ flexShrink: 0 }} // Prevent icon from shrinking
           >
-            {/* Display label only when closed */}
-            {!isOpen && <span style={{fontSize: '1rem', fontWeight: 600}}>Chat AI</span>} 
-            
-            {/* SVG Icon for Close (X) or Open (Comment) */}
-            <svg 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor" 
-              fill="none" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-              style={{ flexShrink: 0 }} // Prevent icon from shrinking
-            >
-              {isOpen ? (
-                // Close Icon (X)
-                <path d="M18 6L6 18M6 6l12 12" />
-              ) : (
-                // Open Icon (Message Circle)
-                <path d="M21 11.5a8.38 8.38 0 0 1-5.17 7.23H12l-2.42 2.72c-.17.18-.42.27-.68.27-.26 0-.51-.09-.68-.27L6.17 19.73H3.5a1.5 1.5 0 0 1-1.5-1.5v-11.5a1.5 1.5 0 0 1 1.5-1.5h17a1.5 1.5 0 0 1 1.5 1.5v8z" />
-              )}
-            </svg>
-          </motion.button>
-
-          {/* Chat Container (conditionally rendered) */}
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 30 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: 30 }}
-                transition={{ duration: 0.2 }}
-                className="aic-chat-container" 
-                style={chatContainerStyle}
-              >
-                
-                <header style={headerStyle}>
-                  {/* AI Icon SVG */}
-                  <svg style={iconStyle} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2.73-7h5.46a1 1 1 0 0 0 0-2H9.27a1 1 0 0 0 0 2zM12 7.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM12 14.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" fillRule="evenodd"/>
-                  </svg>
-                  Project Assistant
-                </header>
-
-                <div className="aic-messages-box" style={messagesBoxStyle}>
-                  {messages.map((msg, index) => (
-                    <MessageBubble key={index} message={msg} isTyping={msg.isTyping || false} />
-                  ))}
-                  
-                  <div ref={messagesEndRef} />
-                </div>
-
-                <form onSubmit={handleSend} className="aic-form" style={formStyle}>
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
-                    placeholder="Ask me about Anything..."
-                    disabled={isTyping}
-                    className="aic-input"
-                    style={inputStyle}
-                  />
-                  <button
-                    type="submit"
-                    disabled={isTyping || !input.trim()}
-                    className="aic-button"
-                    style={buttonStyle}
-                  >
-                    Send
-                  </button>
-                </form>
-              </motion.div>
+            {isOpen ? (
+              // Close Icon (X)
+              <path d="M18 6L6 18M6 6l12 12" />
+            ) : (
+              // Open Icon (Message Circle)
+              <path d="M21 11.5a8.38 8.38 0 0 1-5.17 7.23H12l-2.42 2.72c-.17.18-.42.27-.68.27-.26 0-.51-.09-.68-.27L6.17 19.73H3.5a1.5 1.5 0 0 1-1.5-1.5v-11.5a1.5 1.5 0 0 1 1.5-1.5h17a1.5 1.5 0 0 1 1.5 1.5v8z" />
             )}
-          </AnimatePresence>
-        </div>
+          </svg>
+        </motion.button>
+
+        {/* Chat Container (conditionally rendered) */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 30 }}
+              transition={{ duration: 0.2 }}
+              className="aic-chat-container"
+              style={chatContainerStyle}
+            >
+
+              <header style={headerStyle}>
+                {/* AI Icon SVG */}
+                <svg style={iconStyle} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2.73-7h5.46a1 1 1 0 0 0 0-2H9.27a1 1 0 0 0 0 2zM12 7.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM12 14.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" fillRule="evenodd" />
+                </svg>
+                Project Assistant
+              </header>
+
+              <div className="aic-messages-box" style={messagesBoxStyle}>
+                {messages.map((msg, index) => (
+                  <MessageBubble key={index} message={msg} isTyping={msg.isTyping || false} />
+                ))}
+
+                <div ref={messagesEndRef} />
+              </div>
+
+              <form onSubmit={handleSend} className="aic-form" style={formStyle}>
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
+                  placeholder="Ask me about Anything..."
+                  disabled={isTyping}
+                  className="aic-input"
+                  style={inputStyle}
+                />
+                <button
+                  type="submit"
+                  disabled={isTyping || !input.trim()}
+                  className="aic-button"
+                  style={buttonStyle}
+                >
+                  Send
+                </button>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </>
   );
 };

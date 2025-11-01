@@ -4,6 +4,7 @@ import Image from 'next/image';
 //components
 import Footer from '@/components/AppFooter';
 import ChatAI from '@/components/ChatAI';
+import CustomAlert from '@/components/CustomAlert';
 
 
 // Placeholder URLs for images (using Noto font for text)
@@ -17,15 +18,14 @@ const App: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [usernameError, setUsernameError] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string>('');
-  const [alertMessage, setAlertMessage] = useState<string | null>(null);
+  
+  const [alertMessage, setAlertMessage] = useState<string>('');
+  const [alertIsOpen, setAlertIsOpen] = useState<boolean>(false);
+  
   const [isFooterHidden, setIsFooterHidden] = useState<boolean>(false);
   const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
 
-  // Custom alert setter
-  const customAlert = useCallback((message: string) => {
-    setAlertMessage(message);
-  }, []);
-
+  useEffect(()=>{}, [alertIsOpen]);
   // Login Handler (Simulated)
   const handleLogin = useCallback(() => {
     let isValid: boolean = true;
@@ -58,19 +58,7 @@ const App: React.FC = () => {
       setPasswordError('');
     }
 
-    if (isValid) {
-      // --- SIMULATED LOGIN SUCCESS ---
-      customAlert('Login Successful (Simulated). Redirecting to learning hub...');
-      // Simulate navigation
-      setTimeout(() => {
-        customAlert('Welcome!');
-      }, 1000);
-    } else if (usernameError || passwordError) {
-        customAlert('Validation failed. Please check the errors below.');
-    } else {
-        customAlert('Login attempt failed. Please try again.');
-    }
-  }, [username, password, customAlert, usernameError, passwordError]);
+  }, [username, password, usernameError, passwordError]);
 
   // Accessibility: handle login on Enter key press in form
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -101,7 +89,7 @@ const App: React.FC = () => {
   };
 
   const cardStyle: React.CSSProperties = {
-    width: '100%',
+    width: '100',
     marginLeft: '48vw',
     maxWidth: '30rem', // max-w-6xl
     borderRadius: '1.5rem', // rounded-3xl
@@ -224,7 +212,9 @@ const App: React.FC = () => {
               </div>
 
               <div
-                onClick={() => customAlert("Redirecting to password recovery (Simulated).")}
+                onClick={() => {
+                  window.location.href = '../recover';
+                }}
                 style={{ fontSize: '0.875rem', textAlign: 'center', color: '#2563eb', cursor: 'pointer', fontWeight: '500', transition: 'color 150ms' }}
                 onMouseOver={(e) => e.currentTarget.style.color = '#1e40af'}
                 onMouseOut={(e) => e.currentTarget.style.color = '#2563eb'}
@@ -267,7 +257,9 @@ const App: React.FC = () => {
               {/* Google */}
               <div
                 style={{ width: '2.5rem', height: '2.5rem', padding: '0.25rem', borderRadius: '9999px', cursor: 'pointer', transition: 'transform 200ms' }}
-                onClick={() => customAlert("Google Login (Simulated)")}
+                onClick={() => {
+                  setAlertIsOpen(true); setAlertMessage("Microsoft Login (Simulated)")
+                }}
                 onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                 onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
               >
@@ -278,7 +270,9 @@ const App: React.FC = () => {
               {/* Apple */}
               <div
                 style={{ width: '2.5rem', height: '2.5rem', padding: '0.25rem', borderRadius: '9999px', cursor: 'pointer', transition: 'transform 200ms' }}
-                onClick={() => customAlert("Apple Login (Simulated)")}
+                onClick={() => {
+                  setAlertIsOpen(true); setAlertMessage("Microsoft Login (Simulated)")
+                }}
                 onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                 onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
               >
@@ -289,7 +283,9 @@ const App: React.FC = () => {
               {/* Microsoft */}
               <div
                 style={{ width: '2.5rem', height: '2.5rem', padding: '0.25rem', borderRadius: '9999px', cursor: 'pointer', transition: 'transform 200ms' }}
-                onClick={() => customAlert("Microsoft Login (Simulated)")}
+                onClick={() => {
+                  setAlertIsOpen(true); setAlertMessage("Microsoft Login (Simulated)")
+                }}
                 onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                 onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
               >
@@ -304,6 +300,8 @@ const App: React.FC = () => {
       {/* Footer */}
         <Footer isLoggedIn={false} />
         <ChatAI />
+        <CustomAlert message={alertMessage} isOpen={alertIsOpen} onClose={() => setAlertIsOpen(false)}/>
+        
     </div>
   );
 };

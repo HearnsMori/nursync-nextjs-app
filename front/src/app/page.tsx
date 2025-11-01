@@ -53,7 +53,7 @@ export default function Home() {
             position: 'absolute',
             top: '26vw',
             left: '33vw',
-            zIndex: 3,
+            zIndex: 1,
             fontSize: '3.1vw',
             fontWeight: '700',
           }}

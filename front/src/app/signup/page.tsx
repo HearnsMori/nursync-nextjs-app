@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import React, { useState, useRef, useEffect, useCallback, ChangeEvent } from 'react';
 import Head from 'next/head';
@@ -10,8 +10,12 @@ import Header from '@/components/AppHeader';
 import Footer from '@/components/AppFooter';
 import Image from 'next/image';
 import ChatAI from '@/components/ChatAI';
-//Backend Connection
+
+//In-built
 import { fetchData, HttpMethod } from "@/utils/fetchdata";
+interface msgResponse {msg: string | null; error: string | null};
+//interface data
+
 
 // Define the type for a chat message
 interface ChatMessage {
@@ -56,7 +60,7 @@ const buttonHover = {
 
 const Signup = () => {
   const router = useRouter();
-  
+
   // [ ... State Declarations (formData, errors, toggles, chat) remain the same ... ]
   const [formData, setFormData] = useState<FormData>({
     firstname: '', lastname: '', middlename: '', university: '', studentid: '',
@@ -78,53 +82,9 @@ const Signup = () => {
   // [ ... Utility Functions (closeAlert, customAlert, toggleChat, toggleFooter, appendMessage, sendMessage) remain the same ... ]
   const closeAlert = useCallback(() => { setIsAlertOpen(false); setAlertMessage(''); }, []);
   const customAlert = useCallback((message: string) => { setAlertMessage(message); setIsAlertOpen(true); }, []);
-  const toggleChat = useCallback(() => { setIsChatOpen((prev) => !prev); }, []);
   const toggleFooter = useCallback(() => { setIsFooterHidden((prev) => !prev); }, []);
   useEffect(() => { if (chatAreaRef.current) { chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight; } }, [chatMessages, isChatOpen]);
   useEffect(() => { if (typeof window !== 'undefined' && localStorage.getItem('token')) { router.replace('/'); } }, [router]);
-
-  const appendMessage = useCallback((message: string, sender: 'user' | 'bot') => {
-    if (sender === 'user') {
-      setChatMessages((prev) => [...prev, { text: message, sender }]);
-    } else {
-      let fullMessage = '';
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i < message.length) {
-          fullMessage += message.charAt(i);
-          i++;
-          setChatMessages((prev) => {
-            const lastMsg = prev[prev.length - 1];
-            if (lastMsg && lastMsg.sender === 'bot') {
-              return prev.slice(0, -1).concat([{ text: fullMessage, sender: 'bot' }]);
-            }
-            return prev.concat([{ text: fullMessage, sender: 'bot' }]);
-          });
-        } else {
-          clearInterval(interval);
-        }
-      }, 37);
-    }
-  }, []);
-
-  const sendMessage = useCallback(async () => {
-    const messageText = userInput.trim();
-    if (!messageText) return;
-
-    appendMessage(messageText, 'user');
-    setUserInput('');
-
-    try {
-      const response = await fetch('https://nursync.onrender.com/api/bot', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: messageText }),
-      });
-      const data = await response.json();
-      appendMessage(data.msg, 'bot');
-    } catch (error) {
-      appendMessage('Error: Unable to get response from AI', 'bot');
-    }
-  }, [userInput, appendMessage]);
-
 
   // [ ... Form Handlers and Validation (handleInputChange, validateForm, signup) remain the same ... ]
 
@@ -133,17 +93,17 @@ const Signup = () => {
     setFormData((prev) => ({ ...prev, [id]: type === 'checkbox' ? checked : value }));
     setErrors((prev) => ({ ...prev, [id as keyof FormData]: null }));
   };
-  
+
   const validateForm = () => {
     const newErrors: Record<keyof FormData, string | null> = { ...errors };
     let isValid = true;
 
     const validateField = (key: keyof FormData, name: string, minLength: number = 2, allowSpaces: boolean = false) => {
-        const value = formData[key] as string;
-        if (!value.trim()) { newErrors[key] = `${name} must not be empty.`; isValid = false; } 
-        else if (!allowSpaces && value.includes(' ')) { newErrors[key] = `${name} must not have white space.`; isValid = false; } 
-        else if (value.length < minLength) { newErrors[key] = `${name} must be at least ${minLength + 1} characters long.`; isValid = false; } 
-        else { newErrors[key] = null; }
+      const value = formData[key] as string;
+      if (!value.trim()) { newErrors[key] = `${name} must not be empty.`; isValid = false; }
+      else if (!allowSpaces && value.includes(' ')) { newErrors[key] = `${name} must not have white space.`; isValid = false; }
+      else if (value.length < minLength) { newErrors[key] = `${name} must be at least ${minLength + 1} characters long.`; isValid = false; }
+      else { newErrors[key] = null; }
     };
 
     validateField('firstname', 'First Name');
@@ -154,35 +114,36 @@ const Signup = () => {
     validateField('username', 'Username');
     validateField('password', 'Password');
     newErrors['middlename'] = null;
-    
-    if (!formData.confirmpassword) { newErrors.confirmpassword = 'Confirm Password must not be empty.'; isValid = false; } 
-    else if (formData.password !== formData.confirmpassword) { newErrors.confirmpassword = 'Confirm Password does not match the password.'; isValid = false; } 
+
+    if (!formData.confirmpassword) { newErrors.confirmpassword = 'Confirm Password must not be empty.'; isValid = false; }
+    else if (formData.password !== formData.confirmpassword) { newErrors.confirmpassword = 'Confirm Password does not match the password.'; isValid = false; }
     else { newErrors.confirmpassword = null; }
 
-    if (!formData.agree) { newErrors.agree = 'To start user must agree to the terms, policy, and privacy of the application.'; isValid = false; } 
+    if (!formData.agree) { newErrors.agree = 'To start user must agree to the terms, policy, and privacy of the application.'; isValid = false; }
     else { newErrors.agree = null; }
 
     setErrors(newErrors);
     return isValid;
   };
-  
+
   const signup = async () => {
     if (!validateForm()) { return; }
 
     const { firstname, lastname, middlename, university, studentid, emailaddress, username, password } = formData;
-    
-    try {
-      const response = await fetch('https://nursync.onrender.com/api/auth/signup', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstname, lastname, middlename, university, studentid, emailaddress, username, password }),
-      });
-      const data = await response.json();
 
+    try {
+      const response = await fetchData<msgResponse>({
+        jsonData: { firstname, lastname, middlename, university, studentid, emailaddress, username, password },
+        apiEndPoint: 'auth/signup',
+        backendURL: null,
+        method: 'POST',
+      });
+      const data = response;
       if (data.error) {
         customAlert(data.error);
       } else {
         customAlert('Successfully created an Account. You may now Log-in.');
-        setTimeout(() => router.push('/login'), 1500); 
+        setTimeout(() => router.push('/login'), 1500);
       }
     } catch (error) {
       customAlert(`Fetch Error: Try Again. ${error instanceof Error ? error.message : String(error)}`);
@@ -202,7 +163,7 @@ const Signup = () => {
 
       <div id="ratio16_9" className={styles.pageContainer}>
         {/* SIGNUP CARD with Framer Motion Entrance */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           className={`${styles.flexR} ${styles.signupCard}`}
@@ -212,23 +173,23 @@ const Signup = () => {
           </div>
 
           <div className={styles.formContainer}>
-              {/* Title with Animation */}
-              <motion.div 
-                custom={1} variants={textVariants}
-                className={`${styles.txtsemilarge} ${styles.bold}`}
-                style={{ marginTop: '2vw', textAlign: 'center', fontSize: '2.2vw' }}
-              >
-                Create an Account
-              </motion.div>
-              <motion.div 
-                custom={2} variants={textVariants}
-                className={`${styles.txtsemimedium} ${styles.semibold}`}
-                style={{ marginTop: '0.8vw', textAlign: 'center', fontSize: '1.4vw', color: '#444' }}
-              >
-                Already have an Account? <a href="/login" style={{ color: '#008040', textDecoration: 'underline',}}>Log-in</a>
-              </motion.div>
+            {/* Title with Animation */}
+            <motion.div
+              custom={1} variants={textVariants}
+              className={`${styles.txtsemilarge} ${styles.bold}`}
+              style={{ marginTop: '2vw', textAlign: 'center', fontSize: '2.2vw' }}
+            >
+              Create an Account
+            </motion.div>
+            <motion.div
+              custom={2} variants={textVariants}
+              className={`${styles.txtsemimedium} ${styles.semibold}`}
+              style={{ marginTop: '0.8vw', textAlign: 'center', fontSize: '1.4vw', color: '#444' }}
+            >
+              Already have an Account? <a href="/login" style={{ color: '#008040', textDecoration: 'underline', }}>Log-in</a>
+            </motion.div>
 
-              {/* Form Fields (Grouped for simplicity, individual fields can also be animated) */}
+            {/* Form Fields (Grouped for simplicity, individual fields can also be animated) */}
             <motion.div custom={3} variants={textVariants} style={{ textAlign: 'center', width: '37vw' }}>
               {/* Form Row 1: Name Fields */}
               <div className={styles.formRow}>
@@ -303,7 +264,7 @@ const Signup = () => {
 
         {/* FOOTER - Remains standard for better accessibility */}
         <div id="footerContainer" className={isFooterHidden ? styles.footerHidden : styles.footerVisible}>
-            <Footer isLoggedIn={false}/>
+          <Footer isLoggedIn={false} />
         </div>
       </div>
 

@@ -18,7 +18,7 @@ const alertStyles = {
     background: 'white',
     borderRadius: '10px',
     boxShadow: '0 4px 6px rgba(0,0,0,0.2)',
-    zIndex: 1000,
+    zIndex: 9999,
   } as React.CSSProperties,
   contentBox: {
     borderLeft: '8px solid #16a34a',

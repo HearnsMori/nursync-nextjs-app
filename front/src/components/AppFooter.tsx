@@ -40,6 +40,10 @@ export default function Footer({
             </>
           ) : (
             <>
+              <a href="./" style={{ color: '#ffffff', textDecoration: 'underline', marginRight: '5vw' }}>
+                Home
+              </a>
+              
               <a href="./signup" style={{ color: '#ffffff', textDecoration: 'underline', marginRight: '5vw' }}>
                 Signup
               </a>
@@ -58,7 +62,7 @@ export default function Footer({
           target="_blank"
           rel="noopener noreferrer"
         >
-          Send me a message
+          Send NurSYNC an email
         </a>
       </div>
 
