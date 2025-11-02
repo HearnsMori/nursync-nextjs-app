@@ -6,11 +6,21 @@ import "../globals.css";
 //components
 import Footer from "@/components/AppFooter";
 
-import React, { useState, useCallback, useMemo, useEffect, KeyboardEvent, ChangeEvent } from 'react';
-
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Recover() {
+    const router = useRouter();
     const [email, setEmail] = useState<string>("");
+    useEffect(() => {
+        // run on client only; check token in localStorage
+        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+        if (token && token.trim() !== '') {
+            // redirect if token
+            router.replace('/home');
+        }
+    }, [router]);
+
     return (
         <div
             style={{
@@ -71,8 +81,8 @@ export default function Recover() {
                             borderRadius: '1vw',
                             paddingTop: '1vw',
                         }}>
-                        <span style={{marginBottom: '1.2vw', color: 'black', fontWeight: '600', fontSize: '2.3rem'}}>Forgot your Password</span>
-                        <span style={{marginBottom: '1.2vw', width: '37vw', textAlign: 'center', color: '#00000073', fontSize: '1.2rem',}}>Enter the email address associated with your account to reset your password.</span>
+                        <span style={{ marginBottom: '1.2vw', color: 'black', fontWeight: '600', fontSize: '2.3rem' }}>Forgot your Password</span>
+                        <span style={{ marginBottom: '1.2vw', width: '37vw', textAlign: 'center', color: '#00000073', fontSize: '1.2rem', }}>Enter the email address associated with your account to reset your password.</span>
                         <input
                             id="password"
                             style={{
@@ -94,14 +104,14 @@ export default function Recover() {
                             onBlur={(e) => { e.currentTarget.style.borderColor = '#d1d5db'; e.currentTarget.style.boxShadow = 'none'; }}
                         />
                         <button
-                        className='bggreen'
-                        style={{
-                            width: '73%',
-                            border: 'none',
-                            borderRadius: '1vw',
-                            padding: '1vw 0',
-                            marginTop: '2vw',
-                        }}>
+                            className='bggreen'
+                            style={{
+                                width: '73%',
+                                border: 'none',
+                                borderRadius: '1vw',
+                                padding: '1vw 0',
+                                marginTop: '2vw',
+                            }}>
                             Request Reset Link
                         </button>
                     </div>

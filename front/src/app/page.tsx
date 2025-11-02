@@ -1,10 +1,10 @@
 "use client";
-import React from "react";
+import React, {useEffect} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 import "./globals.css";
-
+import {useRouter} from "next/navigation";
 //Backend Connection
 import { fetchData, HttpMethod } from "@/utils/fetchdata";
 
@@ -14,14 +14,19 @@ import Footer from "@/components/AppFooter";
 import TypingAnimation from "@/components/TypingAnimation";
 import ScrollHint from "@/components/ScrollHint";
 import ChatAI from "@/components/ChatAI";
+import ShineLetter from "@/components/ShineLetter";
+import NursyncText from "@/components/NursyncText";
 
 export default function Home() {
-  const toggleChat = () => {
-    const chatBox = document.getElementById('chatBox');
-    if (chatBox) {
-      chatBox.style.display = chatBox.style.display === 'none' || chatBox.style.display === '' ? 'flex' : 'none';
+  const router = useRouter();
+  useEffect(() => {
+    // run on client only; check token in localStorage
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (token && token.trim() !== '') {
+      // redirect if token
+      router.replace('/home');
     }
-  };
+  }, [router]);
   return (
     <div
       className="screen">
@@ -38,15 +43,23 @@ export default function Home() {
         <div
           style={{
             position: 'absolute',
-            top: '11vw',
-            left: '43vw',
+            top: '9vw',
+            left: '41vw',
             zIndex: 3,
-            fontSize: '2.3vw',
+            fontSize: '3.7vw',
             fontWeight: '600',
             opacity: 0.9,
           }}
         >
-          WELCOME TO
+          <ShineLetter text="Welcome To" 
+                 shineColor="#ffffff73" 
+                 textColor="#ffffff" 
+                 duration={3.0} 
+                 repeatDelay={1.0} 
+                 fontSize="3.7vw" 
+                 fontWeight="bold"
+                 delay={1.0} // Different delay for staggered appearance
+                 />
         </div>
         <div
           style={{
@@ -67,8 +80,8 @@ export default function Home() {
         <Image
           src="/welcometo.png"
           alt="Welcome Image"
-          width={600}
-          height={400}
+          width={1800}
+          height={1200}
           style={{
             width: '100vw',
             height: 'auto',

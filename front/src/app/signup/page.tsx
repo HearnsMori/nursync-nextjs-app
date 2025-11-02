@@ -13,7 +13,7 @@ import ChatAI from '@/components/ChatAI';
 
 //In-built
 import { fetchData, HttpMethod } from "@/utils/fetchdata";
-interface msgResponse {msg: string | null; error: string | null};
+interface msgResponse { msg: string | null; error: string | null };
 //interface data
 
 
@@ -83,6 +83,14 @@ const Signup = () => {
   const closeAlert = useCallback(() => { setIsAlertOpen(false); setAlertMessage(''); }, []);
   const customAlert = useCallback((message: string) => { setAlertMessage(message); setIsAlertOpen(true); }, []);
   const toggleFooter = useCallback(() => { setIsFooterHidden((prev) => !prev); }, []);
+  useEffect(() => {
+    // run on client only; check token in localStorage
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (token && token.trim() !== '') {
+      // redirect if token
+      router.replace('/home');
+    }
+  }, [router]);
   useEffect(() => { if (chatAreaRef.current) { chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight; } }, [chatMessages, isChatOpen]);
   useEffect(() => { if (typeof window !== 'undefined' && localStorage.getItem('token')) { router.replace('/'); } }, [router]);
 
@@ -134,7 +142,7 @@ const Signup = () => {
     try {
       const response = await fetchData<msgResponse>({
         jsonData: { firstname, lastname, middlename, university, studentid, emailaddress, username, password },
-        apiEndPoint: 'auth/signup',
+        apiEndPoint: 'api/auth/signup',
         backendURL: null,
         method: 'POST',
       });

@@ -80,12 +80,12 @@ export default function TypingAnimation({ words }: TypingAnimationProps) {
   // 3. Render the component
   // The server and initial client render will show the same minimal markup (mounted === false)
   return (
-    <div style={{ fontSize: '2.6rem', fontWeight: '600', minHeight: '3rem' }}>
+    <div style={{ fontSize: '2.6rem', textShadow: '20px green', fontWeight: '600', minHeight: '3rem' }}>
       {displayedText}
       {/* Blinking cursor implemented via client-only state to avoid hydration mismatch */}
       <span
         className="cursor"
-        style={{ borderRight: '0.1em solid', borderRightColor: showCursor ? 'black' : 'transparent' }}
+        style={{ textShadow: '20px green', borderRight: '0.1em solid', borderRightColor: showCursor ? 'black' : 'transparent' }}
       >
         {'\u00A0'}
       </span>

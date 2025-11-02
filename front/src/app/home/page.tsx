@@ -1,34 +1,63 @@
 "use client";
-
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import styles from "./page.module.css";
 //components
 import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
+import LoadingPage from "@/components/LoadingPage";
+import ShineLetter from "@/components/ShineLetter";
 
 import "../globals.css";
 
+//In-built
+import { fetchData, HttpMethod } from "@/utils/fetchdata";
+interface apiResponse {
+  msg?: string | null;
+  error?: string | null;
+};
+interface FormData {
+  username: string;
+  password: string;
+}
+
 export default function Home() {
+  const router = useRouter();
+  const [authorized, setAuthorized] = useState<boolean | null>(null);
 
+  useEffect(() => {
+    // run on client only; check token in localStorage
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (token && token.trim() !== '') {
+      setAuthorized(true);
+    } else {
+      // redirect to /login if no token
+      setTimeout(()=>{
+        router.replace('/login');
+        setAuthorized(false);
+      }, 370);
+    }
+  }, [router]);
 
-
+  // while we determine auth, render nothing (or show a loader)
+  if (authorized === null) {
     return (
-        <>
-            <Header isLoggedIn={true} />
-            <div
-            style={{
+        <LoadingPage/>
+    );
+  }
 
-            }}>
-                <div>
-
-                </div>
-                <div>
-                    
-                </div>
-            </div>
-            <Footer isLoggedIn={true} />
-        </>
-    )
+  // authorized === true -> show page
+  return (
+    <>
+      <Header isLoggedIn={true} />
+      <div style={{}}>
+        
+        <div></div>
+        <div></div>
+      </div>
+      <Footer isLoggedIn={true} />
+    </>
+  );
 }
