@@ -38,7 +38,7 @@ export default function Home() {
           alignItems: 'center',
           flexWrap: 'nowrap',
           width: '100vw',
-          marginTop: '-10vw',
+          marginTop: '-6vw',
         }}>
         <div
           style={{

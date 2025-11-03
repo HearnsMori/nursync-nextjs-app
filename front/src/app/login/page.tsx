@@ -85,7 +85,6 @@ const App: React.FC = () => {
     }
 
     if (isValid) {
-      alert(formData.username);
 
       try {
         const response = await fetchData<apiResponse>({
@@ -95,7 +94,6 @@ const App: React.FC = () => {
           method: 'POST',
         });
         const data = response;
-        alert(response.token);
         if (response.token) {
           localStorage.setItem('token', response.token);
         }

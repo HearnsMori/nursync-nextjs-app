@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
 import LoadingPage from "@/components/LoadingPage";
-import ShineLetter from "@/components/ShineLetter";
+import Learn from "@/components/Learn";
 
 import "../globals.css";
 
@@ -52,11 +52,12 @@ export default function Home() {
   return (
     <>
       <Header isLoggedIn={true} />
-      <div style={{}}>
-        
-        <div></div>
-        <div></div>
+      <div style={{
+        marginTop: '4vw',
+      }}>
+        <Learn/>
       </div>
+      
       <Footer isLoggedIn={true} />
     </>
   );
