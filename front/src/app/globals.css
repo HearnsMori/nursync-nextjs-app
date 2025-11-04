@@ -50,6 +50,8 @@ body {
   flex-direction: column;
   width: 100vw;
   background-color: #ffffff;
+  position: relative;
+  padding-bottom: 17vw;
 }
 .screenWithFlyout {
   position: relative;

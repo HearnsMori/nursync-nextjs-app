@@ -124,6 +124,8 @@ const App: React.FC = () => {
     backgroundColor: '#f9fafb', // bg-gray-50
     display: 'flex',
     flexDirection: 'column',
+    position: 'relative',
+    paddingBottom: '16vw',
   };
 
   const contentAreaStyle: React.CSSProperties = {
