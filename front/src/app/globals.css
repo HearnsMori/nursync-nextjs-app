@@ -51,6 +51,11 @@ body {
   width: 100vw;
   background-color: #ffffff;
 }
+.screenWithFlyout {
+  position: relative;
+  padding-bottom: 17vw;
+  background: white;
+}
 .flexR {
   display: flex;
   flex-direction: row;

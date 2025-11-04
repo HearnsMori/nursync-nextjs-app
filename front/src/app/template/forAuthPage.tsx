@@ -67,7 +67,7 @@ export default function Home() {
             <Flyout />
           </div>
           <div style={{ flex: 1, }}>
-            <Learn />
+            
           </div>
         </div>
       </div>

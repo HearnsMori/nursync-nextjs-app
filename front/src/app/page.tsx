@@ -1,10 +1,10 @@
 "use client";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 import "./globals.css";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 //Backend Connection
 import { fetchData, HttpMethod } from "@/utils/fetchdata";
 
@@ -51,15 +51,15 @@ export default function Home() {
             opacity: 0.9,
           }}
         >
-          <ShineLetter text="Welcome To" 
-                 shineColor="#ffffff73" 
-                 textColor="#ffffff" 
-                 duration={3.0} 
-                 repeatDelay={1.0} 
-                 fontSize="3.7vw" 
-                 fontWeight="bold"
-                 delay={1.0} // Different delay for staggered appearance
-                 />
+          <ShineLetter text="Welcome To"
+            shineColor="#ffffff73"
+            textColor="#ffffff"
+            duration={3.0}
+            repeatDelay={1.0}
+            fontSize="3.7vw"
+            fontWeight="bold"
+            delay={1.0} // Different delay for staggered appearance
+          />
         </div>
         <div
           style={{
@@ -109,7 +109,7 @@ export default function Home() {
             style={{
               justifyContent: 'space-evenly',
               width: '95vw',
-              height: '33vw',
+              marginBottom: '3vw',
             }}>
             <div
               className={styles.featuresBox}

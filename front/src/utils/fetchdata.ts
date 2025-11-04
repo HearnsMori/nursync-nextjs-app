@@ -26,7 +26,7 @@ export async function fetchData<T = any>({
   apiEndPoint, 
   method 
 }: FetchParams): Promise<T> {
-  const url = `${(backendURL!==null)?backendURL:"http://localhost:10000/"}${apiEndPoint}`;
+  const url = `${(backendURL!==null)?backendURL:"https://nursync-backend.onrender.com/"}${apiEndPoint}`;
   const normalizedMethod = method.toUpperCase() as HttpMethod;
   const isBodyMethod = ['POST', 'PUT', 'PATCH'].includes(normalizedMethod);
 

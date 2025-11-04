@@ -74,7 +74,7 @@ export default function Header({
                             width: '7vw',
                             border: 'none',
                             margin: '1vw',
-                            fontWeight: 600,
+                            fontWeight: 300,
                             fontSize: '1vw',
                             color: '#222222',
                         }}>Sign-up</Link>
@@ -108,7 +108,7 @@ export default function Header({
                         width: '7vw',
                         border: 'none',
                         margin: '1vw',
-                        fontWeight: 600,
+                        fontWeight: 500,
                         fontSize: '1vw',
                         color: '#222222',
                     }}>Log-out</button>
