@@ -2,17 +2,22 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Home, User, Bell, Settings, Menu as MenuIcon } from "lucide-react";
+import { Home, Brain, Bolt, Menu as MenuIcon } from "lucide-react";
+import Image from "next/image"
 
 export default function FlyoutNavigation() {
   const [isOpen, setIsOpen] = useState(false);
-  const [active, setActive] = useState("home");
-
+  const [active, setActive] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      return path.split('/').pop() || 'none';
+    }
+    return 'none';
+  });
   const navItems = [
     { icon: Home, label: "Learn", key: "home" },
-    { icon: User, label: "Profile", key: "profile" },
-    { icon: Bell, label: "Task", key: "notifications" },
-    { icon: Settings, label: "Tools", key: "settings" },
+    { icon: Brain, label: "AI Mode", key: "aimode" },
+    { icon: Bolt, label: "Tools", key: "tools" },
   ];
 
   const sidebarStyle: React.CSSProperties = {
@@ -105,12 +110,31 @@ export default function FlyoutNavigation() {
               scale: 1.03,
             }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => setActive(key)}
+            onClick={() => { setActive(key); window.location.href = `../${key}` }}
           >
             <Icon size={26} />
             {isOpen && <span style={labelStyle}>{label}</span>}
           </motion.div>
         ))}
+          <motion.div
+            key={"profile"}
+            style={navItemStyle(active === "me")}
+            whileHover={{
+              backgroundColor: "rgba(127, 231, 167, 0.15)",
+              scale: 1.03,
+            }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => { setActive("me"); window.location.href = `../me` }}
+          >
+            <Image alt="profile picture" height={300} width={300} src="/default.jpeg"
+            style={{
+              height: '3vw',
+              width: '3vw',
+              borderRadius: '50%',
+              border: '1px green'
+            }}/>
+            {isOpen && <span style={labelStyle}>Profile</span>}
+          </motion.div>
       </nav>
     </motion.aside>
   );

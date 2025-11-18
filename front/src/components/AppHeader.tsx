@@ -96,7 +96,7 @@ export default function Header({
                 <button
                     className="bgwhite txtblack button"
                     onClick={()=>{
-                        localStorage.clear();
+                        localStorage.removeItem("token");
                         window.location.href = '/';
                     }}
                     style={{

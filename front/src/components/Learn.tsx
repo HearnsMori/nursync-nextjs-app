@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
+//utils
+import { dbStorage } from "@/utils/dbstorage";
+
 interface Course {
   level: number;
   url: string;
@@ -12,160 +15,169 @@ interface Course {
 }
 
 export default function NurSyncCourses() {
+  const token = localStorage.getItem('token');
   const [selectedLevel, setSelectedLevel] = useState<number | "All">(1);
   const [isCourseOpen, setIsCourseOpen] = useState<boolean>(false);
   const [courseUrl, setCourseUrl] = useState<string>("");
   const [courses, setCourses] = useState<Course[]>([]);
+  const baseCourses: Course[] = [
+    //level 1
+    {
+      level: 1,
+      url: "https://nursync.super.site/homepage/learning-hub/anatomy-and-physiology",
+      title: "Anatomy and <br/> Physiology",
+      aaa: "NM 1",
+      sem: "First Semester",
+      progress: 0,
+    },
+    {
+      level: 1,
+      url: "https://nursync.super.site/homepage/learning-hub/biochemistry",
+      title: "Biochemistry",
+      aaa: "NM 2",
+      sem: "First Semester",
+      progress: 0,
+    },
+    {
+      level: 1,
+      url: "https://nursync.super.site/homepage/learning-hub/theoretical-foundations-in-nursing",
+      title: "Theoretical Foundation <br/> in Nursing",
+      aaa: "NP",
+      sem: "First Semester",
+      progress: 0,
+    },
+    {
+      level: 1,
+      url: "https://nursync.super.site/homepage/learning-hub/microbiology-and-parasitology",
+      title: "Microbiology and <br/> Parasitology",
+      aaa: "NM 3",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    {
+      level: 1,
+      url: "https://nursync.super.site/homepage/learning-hub/health-assessment",
+      title: "Health Assesment",
+      aaa: "NP 1",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    {
+      level: 1,
+      url: "https://nursync.super.site/homepage/learning-hub/fundamentals-of-nursing-practice",
+      title: "Fundamentals of <br/> Nursing Practices",
+      aaa: "NP 3",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    //level 2
+    {
+      level: 2,
+      url: "https://nursync.super.site/homepage/learning-hub/community-health-nursing",
+      title: "Community Health <br/> Nursing",
+      aaa: "NP 4",
+      sem: "First Semester",
+      progress: 0,
+    },
+    {
+      level: 2,
+      url: "https://nursync.super.site/homepage/learning-hub/nutrition-and-diet-therapy",
+      title: "Nutrition and <br/> Diet Therapy",
+      aaa: "NP 5",
+      sem: "First Semester",
+      progress: 0,
+    },
+    {
+      level: 2,
+      url: "https://nursync.super.site/homepage/learning-hub/pharmacology",
+      title: "Pharmacology",
+      aaa: "NP 6",
+      sem: "First Semester",
+      progress: 0,
+    },
+    {
+      level: 2,
+      url: "https://nursync.super.site/homepage/learning-hub/care-of-mother-child-adolescents-well-clients",
+      title: "Care of <br/> Mother, Child, <br/> Adolescents (Well Client)",
+      aaa: "NP 7",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    {
+      level: 2,
+      url: "https://nursync.super.site/homepage/learning-hub/health-care-ethics-bioethics",
+      title: "Health Care Ethics",
+      aaa: "NP 8",
+      sem: "First Semester",
+      progress: 0,
+    },
+    {
+      level: 2,
+      url: "https://nursync.super.site/homepage/learning-hub/community-health-nursing-2-population-groups-and-community-as-clients",
+      title: "Community Health <br/> Nursing 2 (Population Groups <br/> and Community as Clients)",
+      aaa: "",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    {
+      level: 2,
+      url: "https://nursync.super.site/homepage/learning-hub/care-of-mother-child-at-risk-or-with-problems",
+      title: "Care of <br/> Mother, Child at <br/> Risk or With Problems",
+      aaa: "",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    {
+      level: 2,
+      url: "https://nursync.super.site/homepage/learning-hub/nursing-informatics",
+      title: "Nursing Informatics",
+      aaa: "",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    //level 3
+    {
+      level: 3,
+      url: "#",
+      title: "Coming Soon",
+      aaa: "...",
+      sem: "...",
+      progress: 0,
+    },
+    //level 4
+    {
+      level: 4,
+      url: "#",
+      title: "Coming Soon",
+      aaa: "...",
+      sem: "...",
+      progress: 0,
+    },
+  ];
 
   // --- Initialization ---
   useEffect(() => {
-    const baseCourses: Course[] = [
-      //level 1
-      {
-        level: 1,
-        url: "https://nursync.super.site/homepage/learning-hub/anatomy-and-physiology",
-        title: "Anatomy and <br/> Physiology",
-        aaa: "NM 1",
-        sem: "First Semester",
-        progress: 0,
-      },
-      {
-        level: 1,
-        url: "https://nursync.super.site/homepage/learning-hub/biochemistry",
-        title: "Biochemistry",
-        aaa: "NM 2",
-        sem: "First Semester",
-        progress: 0,
-      },
-      {
-        level: 1,
-        url: "https://nursync.super.site/homepage/learning-hub/theoretical-foundations-in-nursing",
-        title: "Theoretical Foundation <br/> in Nursing",
-        aaa: "NP",
-        sem: "First Semester",
-        progress: 0,
-      },
-      {
-        level: 1,
-        url: "https://nursync.super.site/homepage/learning-hub/microbiology-and-parasitology",
-        title: "Microbiology and <br/> Parasitology",
-        aaa: "NM 3",
-        sem: "Second Semester",
-        progress: 0,
-      },
-      {
-        level: 1,
-        url: "https://nursync.super.site/homepage/learning-hub/health-assessment",
-        title: "Health Assesment",
-        aaa: "NP 1",
-        sem: "Second Semester",
-        progress: 0,
-      },
-      {
-        level: 1,
-        url: "https://nursync.super.site/homepage/learning-hub/fundamentals-of-nursing-practice",
-        title: "Fundamentals of <br/> Nursing Practices",
-        aaa: "NP 3",
-        sem: "Second Semester",
-        progress: 0,
-      },
-      //level 2
-      {
-        level: 2,
-        url: "https://nursync.super.site/homepage/learning-hub/community-health-nursing",
-        title: "Community Health <br/> Nursing",
-        aaa: "NP 4",
-        sem: "First Semester",
-        progress: 0,
-      },
-      {
-        level: 2,
-        url: "https://nursync.super.site/homepage/learning-hub/nutrition-and-diet-therapy",
-        title: "Nutrition and <br/> Diet Therapy",
-        aaa: "NP 5",
-        sem: "First Semester",
-        progress: 0,
-      },
-      {
-        level: 2,
-        url: "https://nursync.super.site/homepage/learning-hub/pharmacology",
-        title: "Pharmacology",
-        aaa: "NP 6",
-        sem: "First Semester",
-        progress: 0,
-      },
-      {
-        level: 2,
-        url: "https://nursync.super.site/homepage/learning-hub/care-of-mother-child-adolescents-well-clients",
-        title: "Care of <br/> Mother, Child, <br/> Adolescents (Well Client)",
-        aaa: "NP 7",
-        sem: "Second Semester",
-        progress: 0,
-      },
-      {
-        level: 2,
-        url: "https://nursync.super.site/homepage/learning-hub/health-care-ethics-bioethics",
-        title: "Health Care Ethics",
-        aaa: "NP 8",
-        sem: "First Semester",
-        progress: 0,
-      },
-      {
-        level: 2,
-        url: "https://nursync.super.site/homepage/learning-hub/community-health-nursing-2-population-groups-and-community-as-clients",
-        title: "Community Health <br/> Nursing 2 (Population Groups <br/> and Community as Clients)",
-        aaa: "",
-        sem: "Second Semester",
-        progress: 0,
-      },
-      {
-        level: 2,
-        url: "https://nursync.super.site/homepage/learning-hub/care-of-mother-child-at-risk-or-with-problems",
-        title: "Care of <br/> Mother, Child at <br/> Risk or With Problems",
-        aaa: "",
-        sem: "Second Semester",
-        progress: 0,
-      },
-      {
-        level: 2,
-        url: "https://nursync.super.site/homepage/learning-hub/nursing-informatics",
-        title: "Nursing Informatics",
-        aaa: "",
-        sem: "Second Semester",
-        progress: 0,
-      },
-      //level 3
-      {
-        level: 3,
-        url: "#",
-        title: "Coming Soon",
-        aaa: "...",
-        sem: "...",
-        progress: 0,
-      },
-      //level 4
-      {
-        level: 4,
-        url: "#",
-        title: "Coming Soon",
-        aaa: "...",
-        sem: "...",
-        progress: 0,
-      },
-    ];
-
-    // Load stored progress
-    const stored = localStorage.getItem("courseProgress");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      parsed.forEach((p: any) => {
-        const course = baseCourses.find((c) => c.url === p.url);
-        if (course) course.progress = p.progress;
-      });
-    }
-
-    setCourses(baseCourses);
+    loadCourseProgress();
   }, []);
+
+  const loadCourseProgress = async () => {
+    // Load stored progress
+    const stored = await dbStorage.getItem(
+      'nursync',
+      'course' + token,
+      ['url', 'progress'],
+      null
+    );
+    Object.values(stored).forEach((p: any) => {
+      alert(p?.nursync?.['course'+token]?.url);
+      const course = baseCourses.find((c: any) => c.url === p?.nursync?.['course'+token]?.url);
+      if (course) {
+        course.progress = p?.nursync?.['course'+token]?.progress;
+        alert(course.progress);
+      }
+    });
+    setCourses(baseCourses);
+  };
 
   const filtered =
     selectedLevel === "All"
@@ -174,6 +186,10 @@ export default function NurSyncCourses() {
 
   // --- Timer Logic ---
   useEffect(() => {
+    saveEverySec();
+  }, [isCourseOpen, courseUrl]);
+
+  const saveEverySec = async () => {
     let interval: any;
 
     if (isCourseOpen && courseUrl) {
@@ -191,18 +207,24 @@ export default function NurSyncCourses() {
           const progress = Math.min((elapsedMs / 3600000) * 100, 100);
           course.progress = progress;
 
-          localStorage.setItem(
-            "courseProgress",
-            JSON.stringify(updated.map((c) => ({ url: c.url, progress: c.progress })))
-          );
+          saveProgress(course.url, course.progress);
 
           return [...updated];
         });
-      }, 1000);
+      }, 10000);
     }
 
     return () => clearInterval(interval);
-  }, [isCourseOpen, courseUrl]);
+  };
+
+  const saveProgress = async (url: string, progress: number) => {
+    const res = await dbStorage.setItem(
+      'nursync',
+      'course' + token,
+      ['url', 'progress'],
+      [url, progress]
+    );
+  };
 
   const handleCourseClick = (url: string) => {
     setCourseUrl(url);

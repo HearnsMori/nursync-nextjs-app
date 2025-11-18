@@ -151,7 +151,7 @@ const NurSyncChat: React.FC = () => {
       const response = await fetch("https://nursync-backend.onrender.com/api/bot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ prompt: userMessage }),
       });
 
       const data = await response.json();

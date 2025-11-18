@@ -1,5 +1,7 @@
 'use client';
 
+import { dbStorage } from '@/utils/dbstorage';
+
 import React, { useState, useRef, useEffect, useCallback, ChangeEvent } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
@@ -135,11 +137,12 @@ const Signup = () => {
   };
 
   const signup = async () => {
-    if (!validateForm()) { return; }
 
+    if (!validateForm()) { return; }
+    const newErrors: Record<keyof FormData, string | null> = { ...errors };
     const { firstname, lastname, middlename, university, studentid, emailaddress, username, password } = formData;
 
-    try {
+    /*try {
       const response = await fetchData<msgResponse>({
         jsonData: { firstname, lastname, middlename, university, studentid, emailaddress, username, password },
         apiEndPoint: 'api/auth/signup',
@@ -155,6 +158,29 @@ const Signup = () => {
       }
     } catch (error) {
       customAlert(`Fetch Error: Try Again. ${error instanceof Error ? error.message : String(error)}`);
+    }*/
+    const res = await dbStorage.getItem(
+      'nursync',
+      'user',
+      username,
+      null,
+      null
+    );
+    if (res) {
+      const rUsername = res?.nursync?.user?.collectionKey;
+      if (rUsername) { newErrors.username = `${rUsername} already exist` } else {
+        const res2 = await dbStorage.setItem(
+          'nursync',
+          'user',
+          username,
+          ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password"],
+          [firstname, lastname, middlename, university, studentid, emailaddress, password]
+        );
+        if (res2) {
+          customAlert('Successfully created an Account. You may now Log-in.');
+          setTimeout(() => router.push('/login'), 1100);
+        }
+      }
     }
   };
 

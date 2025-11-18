@@ -1,4 +1,6 @@
 "use client";
+
+import { dbStorage } from "@/utils/dbstorage";
 import React, { useState, useCallback, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -33,9 +35,6 @@ const App: React.FC = () => {
   const [alertMessage, setAlertMessage] = useState<string>('');
   const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
 
-  const [isFooterHidden, setIsFooterHidden] = useState<boolean>(false);
-  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
-
   const closeAlert = useCallback(() => { setIsAlertOpen(false); setAlertMessage(''); }, []);
   const customAlert = useCallback((message: string) => { setAlertMessage(message); setIsAlertOpen(true); }, []);
   const [formData, setFormData] = useState<FormData>({
@@ -49,7 +48,7 @@ const App: React.FC = () => {
     if (token && token.trim() !== '') {
       // redirect if token
       router.replace('/home');
-    } 
+    }
   }, [router]);
 
   // Login Handler (Simulated)
@@ -86,25 +85,23 @@ const App: React.FC = () => {
 
     if (isValid) {
 
-      try {
-        const response = await fetchData<apiResponse>({
-          jsonData: formData,
-          apiEndPoint: 'api/auth/login',
-          backendURL: null,
-          method: 'POST',
-        });
-        const data = response;
-        if (response.token) {
-          localStorage.setItem('token', response.token);
-        }
-        if (data.error) {
-          customAlert(data.error);
+      const res = await dbStorage.getItem(
+        'nursync',
+        'user',
+        formData.username,
+        "password",
+        null
+      );
+
+
+      if (res) {
+        const rPassword = res?.nursync?.user?.password;
+        if (formData.password === rPassword) {
+          localStorage.setItem('token', formData.username);
+          setTimeout(() => router.push('/home'), 100);
         } else {
-          customAlert('Logging in.');
-          setTimeout(() => router.push('/home'), 1500);
+          customAlert("Incorrect Username/Password.")
         }
-      } catch (error) {
-        customAlert(`Fetch Error: Try Again. ${error instanceof Error ? error.message : String(error)}`);
       }
 
     }

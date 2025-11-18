@@ -3,15 +3,35 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
 import "../globals.css";
-//components
-import Footer from "@/components/AppFooter";
 
-import React, { useState, useEffect, ChangeEvent } from 'react';
+
+import React, { useCallback, useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 
+//components 
+import CustomAlert from "@/components/CustomAlert";
+import ChatAI from "@/components/ChatAI";
+import Footer from "@/components/AppFooter";
+
+//utils
+import { fetchData, HttpMethod } from "@/utils/fetchdata";
+interface apiResponse {
+  msg?: string | null;
+  error?: string | null;
+  token?: string;
+};
+
 export default function Recover() {
+    const [alertMessage, setAlertMessage] = useState<string>('');
+    const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
+
+    const closeAlert = useCallback(() => { setIsAlertOpen(false); setAlertMessage(''); }, []);
+    const customAlert = useCallback((message: string) => { setAlertMessage(message); setIsAlertOpen(true); }, []);
+
     const router = useRouter();
     const [email, setEmail] = useState<string>("");
+    const [emailError, setEmailError] = useState<string>("");
+
     useEffect(() => {
         // run on client only; check token in localStorage
         const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -20,7 +40,44 @@ export default function Recover() {
             router.replace('/home');
         }
     }, [router]);
+    const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        // Regular expression for a common email format
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+        if (email === null || email.trim() === "") {
+            // Check if the email is null or empty after trimming whitespace
+            setEmailError("Email cannot be empty.");
+            return;
+        } else if (!emailRegex.test(email)) {
+            // Test the email against the regular expression
+            setEmailError("Invalid email format.");
+            return;
+        } else {
+            setEmailError("");
+        }
+
+        try {
+            const response = await fetchData<apiResponse>({
+                jsonData: { email },
+                apiEndPoint: 'api/auth/recover',
+                backendURL: null,
+                method: 'POST',
+            });
+            const data = response;
+            if (response.token) {
+                localStorage.setItem('token', response.token);
+            }
+            if (data.error) {
+                customAlert(data.error);
+            } else {
+                customAlert('Logging in.');
+                setTimeout(() => router.push('/home'), 1500);
+            }
+        } catch (error) {
+            customAlert(`Fetch Error: Try Again. ${error instanceof Error ? error.message : String(error)}`);
+        }
+    }
     return (
         <div
             style={{
@@ -30,6 +87,8 @@ export default function Recover() {
                 alignItems: 'center',
                 width: '100vw',
                 height: '113vh',
+                position: 'relative',
+                paddingBottom: '16vw',
             }}>
             <div
                 style={{
@@ -84,7 +143,7 @@ export default function Recover() {
                         <span style={{ marginBottom: '1.2vw', color: 'black', fontWeight: '600', fontSize: '2.3rem' }}>Forgot your Password</span>
                         <span style={{ marginBottom: '1.2vw', width: '37vw', textAlign: 'center', color: '#00000073', fontSize: '1.2rem', }}>Enter the email address associated with your account to reset your password.</span>
                         <input
-                            id="password"
+                            id="email"
                             style={{
                                 padding: '0.75rem 1rem',
                                 paddingLeft: '2.6rem',
@@ -103,6 +162,7 @@ export default function Recover() {
                             onFocus={(e) => { e.currentTarget.style.borderColor = '#059669'; e.currentTarget.style.boxShadow = '0 0 0 2px #34d399'; }}
                             onBlur={(e) => { e.currentTarget.style.borderColor = '#d1d5db'; e.currentTarget.style.boxShadow = 'none'; }}
                         />
+                        {emailError && <small style={{ display: 'block', color: '#ef4444', marginTop: '0.25rem', paddingLeft: '1rem', fontWeight: '500' }}>{emailError}</small>}
                         <button
                             className='bggreen'
                             style={{
@@ -111,7 +171,8 @@ export default function Recover() {
                                 borderRadius: '1vw',
                                 padding: '1vw 0',
                                 marginTop: '2vw',
-                            }}>
+                            }}
+                            onClick={handleClick}>
                             Request Reset Link
                         </button>
                     </div>
@@ -120,6 +181,9 @@ export default function Recover() {
 
             </div>
             <Footer isLoggedIn={false} />
+            <ChatAI />
+            <CustomAlert message={alertMessage} isOpen={isAlertOpen} onClose={closeAlert} />
+
         </div>
     )
 }

@@ -1,15 +1,29 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import styles from "./page.module.css";
 //components
 import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
 import LoadingPage from "@/components/LoadingPage";
-import Learn from "@/components/Learn";
+import FlashCard from "@/components/FlashCard";
+import Task from "@/components/Task";
 import Flyout from "@/components/Flyout";
-import ChatAI from "@/components/ChatAI";
 
 import "../globals.css";
+
+//In-built
+import { fetchData, HttpMethod } from "@/utils/fetchdata";
+interface apiResponse {
+  msg?: string | null;
+  error?: string | null;
+};
+interface FormData {
+  username: string;
+  password: string;
+}
 
 export default function Home() {
   const router = useRouter();
@@ -32,7 +46,7 @@ export default function Home() {
   // while we determine auth, render nothing (or show a loader)
   if (authorized === null) {
     return (
-      <LoadingPage/>
+      <LoadingPage />
     );
   }
 
@@ -53,14 +67,18 @@ export default function Home() {
           }}>
             <Flyout />
           </div>
-          <div style={{ flex: 1, }}>
-            <Learn />
+          <div style={{ flex: 1, display: "flex", flexFlow: "row nowrap", }}>
+            <div style={{flex: 3}}>
+              <FlashCard />
+            </div>
+            <div style={{flex: 1}}>
+              <Task />
+            </div>
           </div>
         </div>
       </div>
 
       <Footer isLoggedIn={true} />
-      <ChatAI />
     </div>
   );
 }
