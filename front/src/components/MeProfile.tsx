@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import CustomAlert from "@/components/CustomAlert";
 
 //utils
-import { dbStorage } from "@/utils/dbstorage"
+import dbStorage from "@/utils/dbstorage"
 
 export default function NurSyncProfile() {
   const [alertMessage, setAlertMessage] = useState<string>("");
@@ -46,49 +46,58 @@ export default function NurSyncProfile() {
     getUserInfo();
   }, []);
 
-  const token = localStorage.getItem('token');
-  
+
   const getUserInfo = async () => {
-    if (!token) return;
+    const data = await dbStorage.readId();
     const res = await dbStorage.getItem(
       'nursync',
-      token,
+      'user',
+      data.id,
       null, //["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password"],
       null
     );
     if (res) {
       setFormData({
-        firstname: res?.nursync?.[token]?.firstname,
-        lastname: res?.nursync?.[token]?.lastname,
-        middlename: res?.nursync?.[token]?.middlename,
-        university: res?.nursync?.[token]?.university,
-        studentid: res?.nursync?.[token]?.studentid,
-        emailaddress: res?.nursync?.[token]?.emailaddress,
-        username: token,
-        password: res?.nursync?.[token]?.password,
+        firstname: res?.nursync?.user?.firstname,
+        lastname: res?.nursync?.user?.lastname,
+        middlename: res?.nursync?.user?.middlename,
+        university: res?.nursync?.user?.university,
+        studentid: res?.nursync?.user?.studentid,
+        emailaddress: res?.nursync?.user?.emailaddress,
+        username: res?.nursync?.user?.username,
+        password: res?.nursync?.user?.password,
       });
     }
   };
 
   const updateUserInfo = async () => {
-    const resget = await dbStorage.getItem(
-      'nursync',
-      formData.username,
-      null,
-      null
-    );
-    if (resget?.[formData.username]) {
-      customAlert(`Username with ${formData.username} already exist.`);
-    } else {
-      const res = await dbStorage.setItem(
-        'nursync',
-        token,
-        ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password"],
-        [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password]
-      );
-      if (res) {
-        customAlert('Successfully created an Account. You may now Log-in.');
+    try {
+      const readUsername = await dbStorage.readUser();
+      const updateUsername = await dbStorage.updateId(formData.username);
+      const updatePassword = await dbStorage.updatePassword(formData.password);
+      if (updateUsername.id) {
+        customAlert(`Username with ${formData.username} already exist.`);
+      } else {
+        const res = await dbStorage.removeItem(
+          'nursync',
+          'user',
+          readUsername.id,
+          null,
+          null
+        );
+        const res2 = await dbStorage.setItem(
+          'nursync',
+          'user',
+          formData.username,
+          ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password"],
+          [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password]
+        );
+        if (res2) {
+          customAlert('Successfully created an Account. You may now Log-in.');
+        }
       }
+    } catch(error) {
+      customAlert(`Update failed: ${error}`);
     }
   }
 

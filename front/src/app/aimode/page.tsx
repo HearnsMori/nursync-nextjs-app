@@ -13,16 +13,6 @@ import Flyout from "@/components/Flyout";
 
 import "../globals.css";
 
-//In-built
-import { fetchData, HttpMethod } from "@/utils/fetchdata";
-interface apiResponse {
-  msg?: string | null;
-  error?: string | null;
-};
-interface FormData {
-  username: string;
-  password: string;
-}
 
 export default function Home() {
   const router = useRouter();
@@ -30,7 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     // run on client only; check token in localStorage
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
     if (token && token.trim() !== '') {
       setAuthorized(true);
     } else {

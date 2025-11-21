@@ -17,7 +17,7 @@ export default function Home() {
 
   useEffect(() => {
     // run on client only; check token in localStorage
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
     if (token && token.trim() !== '') {
       setAuthorized(true);
     } else {

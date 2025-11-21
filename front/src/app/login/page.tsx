@@ -1,6 +1,6 @@
 "use client";
 
-import { dbStorage } from "@/utils/dbstorage";
+import dbStorage from "@/utils/dbstorage";
 import React, { useState, useCallback, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -9,13 +9,6 @@ import Footer from '@/components/AppFooter';
 import ChatAI from '@/components/ChatAI';
 import CustomAlert from '@/components/CustomAlert';
 
-//In-built
-import { fetchData, HttpMethod } from "@/utils/fetchdata";
-interface apiResponse {
-  msg?: string | null;
-  error?: string | null;
-  token?: string;
-};
 interface FormData {
   username: string;
   password: string;
@@ -44,7 +37,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     // run on client only; check token in localStorage
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
     if (token && token.trim() !== '') {
       // redirect if token
       router.replace('/home');
@@ -85,23 +78,22 @@ const App: React.FC = () => {
 
     if (isValid) {
 
-      const res = await dbStorage.getItem(
-        'nursync',
-        'user',
-        formData.username,
-        "password",
-        null
-      );
-
-
-      if (res) {
-        const rPassword = res?.nursync?.user?.password;
-        if (formData.password === rPassword) {
-          localStorage.setItem('token', formData.username);
-          setTimeout(() => router.push('/home'), 100);
-        } else {
-          customAlert("Incorrect Username/Password.")
+      try {
+        const res = await dbStorage.signin(formData.username, formData.password);
+        if (!res) return;
+        const res2 = await dbStorage.setItem(
+          "nursync",
+          "user",
+          formData.username,
+          ["username", "emailaddress", "password", "firstname", "lastname", "middlename", "university", "studentid", "emailaddress"],
+          [localStorage.getItem("username"), localStorage.getItem("emailaddress"), localStorage.getItem("password"), localStorage.getItem("firstname"), localStorage.getItem("lastname"), localStorage.getItem("middlename"), localStorage.getItem("university"), localStorage.getItem("studentid"), localStorage.getItem("emailaddress")]
+        );
+        if (res2) {
+          customAlert("Login Successfully.");
+          router.push('/home')
         }
+      } catch (error) {
+        customAlert(`Login Error: ${error instanceof Error ? error.message : String(error)}`);
       }
 
     }

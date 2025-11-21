@@ -1,6 +1,6 @@
 'use client';
 
-import { dbStorage } from '@/utils/dbstorage';
+import dbStorage from '@/utils/dbstorage';
 
 import React, { useState, useRef, useEffect, useCallback, ChangeEvent } from 'react';
 import Head from 'next/head';
@@ -12,11 +12,6 @@ import Header from '@/components/AppHeader';
 import Footer from '@/components/AppFooter';
 import Image from 'next/image';
 import ChatAI from '@/components/ChatAI';
-
-//In-built
-import { fetchData, HttpMethod } from "@/utils/fetchdata";
-interface msgResponse { msg: string | null; error: string | null };
-//interface data
 
 
 // Define the type for a chat message
@@ -87,7 +82,7 @@ const Signup = () => {
   const toggleFooter = useCallback(() => { setIsFooterHidden((prev) => !prev); }, []);
   useEffect(() => {
     // run on client only; check token in localStorage
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
     if (token && token.trim() !== '') {
       // redirect if token
       router.replace('/home');
@@ -141,7 +136,14 @@ const Signup = () => {
     if (!validateForm()) { return; }
     const newErrors: Record<keyof FormData, string | null> = { ...errors };
     const { firstname, lastname, middlename, university, studentid, emailaddress, username, password } = formData;
-
+    localStorage.setItem("firstname", firstname);
+    localStorage.setItem("lastname", lastname);
+    localStorage.setItem("middlename", middlename);
+    localStorage.setItem("university", university);
+    localStorage.setItem("studentid", studentid);
+    localStorage.setItem("username", username);
+    localStorage.setItem("password", password);
+    localStorage.setItem("emailaddress", emailaddress);
     /*try {
       const response = await fetchData<msgResponse>({
         jsonData: { firstname, lastname, middlename, university, studentid, emailaddress, username, password },
@@ -159,28 +161,20 @@ const Signup = () => {
     } catch (error) {
       customAlert(`Fetch Error: Try Again. ${error instanceof Error ? error.message : String(error)}`);
     }*/
-    const res = await dbStorage.getItem(
-      'nursync',
-      'user',
-      username,
-      null,
-      null
-    );
-    if (res) {
-      const rUsername = res?.nursync?.user?.collectionKey;
-      if (rUsername) { newErrors.username = `${rUsername} already exist` } else {
-        const res2 = await dbStorage.setItem(
-          'nursync',
-          'user',
-          username,
-          ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password"],
-          [firstname, lastname, middlename, university, studentid, emailaddress, password]
-        );
-        if (res2) {
-          customAlert('Successfully created an Account. You may now Log-in.');
-          setTimeout(() => router.push('/login'), 1100);
-        }
+    try {
+      const res = await dbStorage.signup(username, password,  [{name: "Email", value: emailaddress}], [["nursync", null, null, ["get", "set", "remove"]]]);
+      if (!res) return;
+      if (res.user && typeof res.message === 'string') {
+        customAlert('Signup completed.');
+        router.push("/login");
+      } else if (res.message) {
+        customAlert(typeof res.message === 'string' ? res.message : JSON.stringify(res.message));
+      } else {
+        customAlert('Signup completed.');
+        router.push("/login");
       }
+    } catch (error) {
+      customAlert(`Signup Error: ${error instanceof Error ? error.message : String(error)}`);
     }
   };
 

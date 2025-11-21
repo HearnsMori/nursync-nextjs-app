@@ -13,14 +13,6 @@ import CustomAlert from "@/components/CustomAlert";
 import ChatAI from "@/components/ChatAI";
 import Footer from "@/components/AppFooter";
 
-//utils
-import { fetchData, HttpMethod } from "@/utils/fetchdata";
-interface apiResponse {
-  msg?: string | null;
-  error?: string | null;
-  token?: string;
-};
-
 export default function Recover() {
     const [alertMessage, setAlertMessage] = useState<string>('');
     const [isAlertOpen, setIsAlertOpen] = useState<boolean>(false);
@@ -34,7 +26,7 @@ export default function Recover() {
 
     useEffect(() => {
         // run on client only; check token in localStorage
-        const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+        const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
         if (token && token.trim() !== '') {
             // redirect if token
             router.replace('/home');
@@ -57,26 +49,6 @@ export default function Recover() {
             setEmailError("");
         }
 
-        try {
-            const response = await fetchData<apiResponse>({
-                jsonData: { email },
-                apiEndPoint: 'api/auth/recover',
-                backendURL: null,
-                method: 'POST',
-            });
-            const data = response;
-            if (response.token) {
-                localStorage.setItem('token', response.token);
-            }
-            if (data.error) {
-                customAlert(data.error);
-            } else {
-                customAlert('Logging in.');
-                setTimeout(() => router.push('/home'), 1500);
-            }
-        } catch (error) {
-            customAlert(`Fetch Error: Try Again. ${error instanceof Error ? error.message : String(error)}`);
-        }
     }
     return (
         <div
