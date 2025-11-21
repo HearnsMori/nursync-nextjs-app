@@ -5,8 +5,6 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import "./globals.css";
 import { useRouter } from "next/navigation";
-//Backend Connection
-import { fetchData, HttpMethod } from "@/utils/fetchdata";
 
 //components
 import Header from "@/components/AppHeader";

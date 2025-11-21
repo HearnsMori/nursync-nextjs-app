@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 //utils
-import { dbStorage } from "@/utils/dbstorage";
+import dbStorage from "@/utils/dbstorage";
 
 interface Course {
   level: number;
@@ -154,17 +154,23 @@ export default function NurSyncCourses() {
       progress: 0,
     },
   ];
-
+  var userId : string;
   // --- Initialization ---
   useEffect(() => {
+    
     loadCourseProgress();
   }, []);
 
   const loadCourseProgress = async () => {
     // Load stored progress
+    const user = await dbStorage.readId();
+    if(!user || !user.id) return
+    userId = user.id;
+    if(!userId) return;
     const stored = await dbStorage.getItem(
       'nursync',
-      'course' + token,
+      'course',
+      userId,
       ['url', 'progress'],
       null
     );
@@ -218,9 +224,12 @@ export default function NurSyncCourses() {
   };
 
   const saveProgress = async (url: string, progress: number) => {
+    if(!userId) return;
+
     const res = await dbStorage.setItem(
       'nursync',
-      'course' + token,
+      'course',
+      userId,
       ['url', 'progress'],
       [url, progress]
     );

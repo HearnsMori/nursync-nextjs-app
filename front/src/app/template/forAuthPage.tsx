@@ -13,16 +13,7 @@ import Flyout from "@/components/Flyout";
 
 import "../globals.css";
 
-//In-built
-import { fetchData, HttpMethod } from "@/utils/fetchdata";
-interface apiResponse {
-  msg?: string | null;
-  error?: string | null;
-};
-interface FormData {
-  username: string;
-  password: string;
-}
+import dbStorage from '@/utils/dbstorage';
 
 export default function Home() {
   const router = useRouter();
