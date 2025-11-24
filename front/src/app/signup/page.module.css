@@ -1,0 +1,290 @@
+/* app/page.module.css */
+
+/* Utility Classes */
+.flex { display: flex; }
+.flexR { display: flex; flex-direction: row; }
+.flexC { display: flex; flex-direction: column; }
+.divOnCenter { display: flex; justify-content: center; align-items: center; width: 100%; }
+
+/* Typography - Smaller Sizes and Black Text */
+.txtsmall { font-size: 1.2vw; color: black; } /* Reduced from 1.5vw */
+.txtmedium { font-size: 1.6vw; color: black; } /* Reduced from 2vw */
+.txtsemimedium { font-size: 2vw; color: black; } /* Reduced from 2.5vw */
+.txtsemilarge { font-size: 2.5vw; color: black; } /* Reduced from 3vw */
+.bold { font-weight: 700; }
+.semibold { font-weight: 600; }
+.greenBg { background-color: #008040; }
+.whiteText { color: white; }
+.errorText { padding: 0 1vw; color: red; display: block; font-size: 1.2vw; margin-top: 0.5vw; }
+
+/* === Layout and Component Styles === */
+
+.pageContainer {
+    overflow-y: auto;
+    min-height: 100vh;
+    width: 100vw;
+    padding-bottom: 7vw;
+    z-index: 3;
+    background-image: url('/signupbackground.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.signupCard {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    z-index: 3;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 3vw;
+    margin: 2vw 8vw;
+    width: 84vw;
+    height: auto;
+    /* Ensure all text within the card is black by default */
+    color: black;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    width: 48vw;
+    margin-right: 7vw;
+}
+
+.formInputWrapper {
+    flex: 1;
+    margin-right: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.formRow {
+    display: flex;
+    flex-direction: row;
+    padding: 0 0;
+    width: 100%;
+    margin-top: 2vw;
+    gap: 1vw;
+}
+
+.formInput {
+    /* Base: txtmedium - smaller font applied above */
+    font-size: 1.6vw;
+    padding-left: 2vw;
+    width: 100%;
+    height: 3vw;
+    border-radius: 0.5vw;
+    border: 1px solid #ccc;
+    background: #cccccc;
+    box-sizing: border-box;
+    /* Ensure input text is black */
+    color: black;
+}
+
+.fullWidthInputWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 0.3vw;
+    margin-top: 1vw;
+}
+
+.registerButton {
+    /* Base: green, txtmedium */
+    background-color: #008040;
+    color: white;
+    font-size: 1.6vw;
+    width: 90%;
+    height: 3.7vw;
+    margin: 0 5%;
+    border: none;
+    border-radius: 4vw;
+    cursor: pointer;
+}
+
+.agreeTextContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 0 0.3vw;
+    margin-top: 1vw;
+}
+
+.agreementCheckbox {
+    margin-right: 1vw;
+    width: 1.5vw;
+    height: 1.5vw;
+    background: #cccccc;;
+}
+
+/* === Footer Styles === */
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    background: #008040;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 3;
+    height: auto;
+    padding: 3vw 0;
+    transition: bottom 0.3s ease;
+}
+
+.footerHidden {
+    bottom: -100%;
+    display: none;
+}
+
+.footerVisible {
+    position: fixed;
+    width: 100vw;
+    height: auto;
+    margin: 0;
+    bottom: 0;
+    display: flex;
+    z-index: 4;
+}
+
+.footerLink {
+    color: #ffffff;
+    text-decoration: underline;
+    margin-right: 5vw;
+    font-size: 1.6vw; /* Adjusted for smaller size */
+}
+
+.footerLine {
+    border: 0.2px solid #CCCCCC;
+    width: 90%;
+    margin-top: 5vw;
+}
+
+/* === Footer Toggle Button === */
+
+.showFooterButton {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background: #008040;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 4;
+}
+
+/* === Chat Styles === */
+
+.chatButton {
+    /* Base: txtsmall - smaller font applied above */
+    font-size: 1.2vw;
+    z-index: 373;
+    padding: 0 1vw;
+    background: white;
+    border-radius: 3vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 3vw;
+    left: 3vw;
+    cursor: pointer;
+    color: black; /* Ensure chat button text is black */
+}
+
+.chatBotImage {
+    height: 3vw;
+    width: 3vw;
+    margin-left: 0.5vw;
+    background: white;
+    border: solid white 0.3vw;
+    border-radius: 50%;
+}
+
+.chatBox {
+    display: flex;
+    flex-direction: column;
+    z-index: 373;
+    padding-top: 4vw;
+    position: fixed;
+    bottom: 7vw;
+    left: 2vw;
+    width: 33vw;
+    height: 40vw;
+    background-color: #fff;
+    border: 0.5vw solid #ccc;
+    border-radius: 2vw;
+}
+
+.chatBoxHeader {
+    font-size: 1.2vw;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 4vw;
+    background-color: #007bff;
+    color: white;
+    padding: 1vw 2vw;
+    border-radius: 1.5vw 1.5vw 0 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.chatArea {
+    flex-grow: 1;
+    padding: 1vw;
+    overflow-y: auto;
+    border-bottom: 0.5vw solid #ccc;
+    width: 100%;
+}
+
+.userInput {
+    font-size: 1.6vw; /* Adjusted for smaller size */
+    width: 90%;
+    padding: 1vw;
+    border: none;
+    border-radius: 1vw;
+    margin: 0 auto;
+    box-sizing: border-box;
+    color: black; /* Ensure user input is black */
+}
+
+.userMessage {
+    background: #dcf8c6;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    align-self: flex-end;
+    max-width: 80%;
+    word-wrap: break-word;
+    font-size: 1.4vw; /* Adjusted for smaller size */
+    margin-left: auto;
+    color: black;
+}
+
+.botMessage {
+    background: #f1f1f1;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    align-self: flex-start;
+    max-width: 80%;
+    word-wrap: break-word;
+    font-size: 1.4vw; /* Adjusted for smaller size */
+    margin-right: auto;
+    color: black;
+}
+
+.button:hover {
+  transform: translate(0, -2px);
+}
+.button:active {
+  transform: translate(0, -4px);
+}
