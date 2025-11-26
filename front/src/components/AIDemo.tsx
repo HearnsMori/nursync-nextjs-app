@@ -1,24 +1,37 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function GeminiChatPage() {
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const saved = localStorage.getItem("gemini_output");
+        if (saved) {
+            const output = document.getElementById("output");
+            if (output) output.innerHTML = saved;
+        }
+    }, []);
 
     async function sendMessage() {
         if (!input.trim()) return;
         setLoading(true);
 
         const context =
-            "Your response shall start with <div>, code only. Add 100vw and background color inline css. No text, explnation, or other response, just div element. Make it aesthetic and laptop/desktop responsive design, inline css/js only. ";
+            "You are an html with inline css developer, you create web blog with aesthetic design that help with the nursing student to learn"
+            + "Your response shall start as <div> code block ready to be insert."
+            + "Don't add button just make it long scrollable design all information in one screen."
+            + "Assume that you'll put it inside a div with display flex and 100% width."
+            + "Add <div style='flex: 1;'></div>"
+            + "No text, explanation, or other response, just the element."
+            + "Make it aesthetic and laptop/desktop responsive design, inline css only no js. ";
         const outputInside = document.getElementById("output")?.innerHTML;
-        const fullPrompt = `${context}\n ${input} \n Existing Code (when sending send all new updated code): ${outputInside}`;
 
         try {
-            const res = await fetch("https://nursync-backend.onrender.com/api/bot", {
+            const res = await fetch("https://generative-ai-3ixm.onrender.com/chat/gemini/3", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ prompt: fullPrompt }),
+                body: JSON.stringify({ msg: input, system: context + outputInside }),
             });
 
             if (!res.ok) {
@@ -40,8 +53,9 @@ export default function GeminiChatPage() {
                     aiResponse = aiResponse.replace(/^```html?/, '').replace(/```$/, '');
 
                     console.log(aiResponse);
-                    // ...existing code...
                     output.innerHTML = aiResponse;
+                    localStorage.setItem("gemini_output", aiResponse);
+
                 }
             }
         } catch (err) {
@@ -56,17 +70,15 @@ export default function GeminiChatPage() {
     return (
         <div style={{
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: 'left',
+            alignItems: 'left',
             width: '100%',
             height: '100vw',
-            background: 'white',
+
         }}>
             {/* Empty div for inserted Gemini/AI response */}
             <div id="output" style={{
                 display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'top',
                 width: '100%',
             }}></div>
 

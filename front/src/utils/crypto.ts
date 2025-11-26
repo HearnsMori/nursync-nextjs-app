@@ -1,4 +1,4 @@
-/**
+`/**
  * Defines the structure of the encrypted data payload.
  */
 export interface EncryptedPayload {
@@ -110,4 +110,4 @@ export const e2eDecryptLite = async (encryptedObject: EncryptedPayload, passphra
   );
 
   return textDecoder.decode(decryptedBuffer);
-};
+};`
