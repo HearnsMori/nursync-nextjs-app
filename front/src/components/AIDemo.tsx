@@ -73,8 +73,7 @@ export default function GeminiChatPage() {
             justifyContent: 'left',
             alignItems: 'left',
             width: '100%',
-            height: '100vw',
-
+            background: 'white',
         }}>
             {/* Empty div for inserted Gemini/AI response */}
             <div id="output" style={{
