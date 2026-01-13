@@ -104,6 +104,7 @@ export default function FlyoutNavigation() {
         {navItems.map(({ icon: Icon, label, key }) => (
           <motion.div
             key={key}
+            suppressHydrationWarning={true} // Add this line
             style={navItemStyle(active === key)}
             whileHover={{
               backgroundColor: "rgba(127, 231, 167, 0.15)",
@@ -118,6 +119,7 @@ export default function FlyoutNavigation() {
         ))}
           <motion.div
             key={"profile"}
+            suppressHydrationWarning={true} // Add this line
             style={navItemStyle(active === "me")}
             whileHover={{
               backgroundColor: "rgba(127, 231, 167, 0.15)",

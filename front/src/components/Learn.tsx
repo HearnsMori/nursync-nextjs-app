@@ -163,14 +163,12 @@ export default function NurSyncCourses() {
 
   const loadCourseProgress = async () => {
     // Load stored progress
-    const user = await dbStorage.readId();
-    if(!user || !user.id) return
-    userId = user.id;
-    if(!userId) return;
+    const user = await dbStorage.getSelfId();
+    if(!user) return
     const stored = await dbStorage.getItem(
       'nursync',
       'course',
-      userId,
+      user,
       ['url', 'progress'],
       null
     );
@@ -224,14 +222,17 @@ export default function NurSyncCourses() {
   };
 
   const saveProgress = async (url: string, progress: number) => {
-    if(!userId) return;
-
+    const user = await dbStorage.getSelfId();
+    if(!user) return
     const res = await dbStorage.setItem(
       'nursync',
       'course',
-      userId,
+      user,
       ['url', 'progress'],
-      [url, progress]
+      [url, progress],
+      ["all"],
+      [user],
+      [user]
     );
   };
 

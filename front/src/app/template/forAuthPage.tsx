@@ -8,12 +8,13 @@ import styles from "./page.module.css";
 import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
 import LoadingPage from "@/components/LoadingPage";
-import Learn from "@/components/Learn";
+import FlashCard from "@/components/FlashCard";
+import Task from "@/components/Task";
+import ChatAI from "@/components/ChatAI";
 import Flyout from "@/components/Flyout";
 
 import "../globals.css";
 
-import dbStorage from '@/utils/dbstorage';
 
 export default function Home() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function Home() {
 
   useEffect(() => {
     // run on client only; check token in localStorage
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
     if (token && token.trim() !== '') {
       setAuthorized(true);
     } else {
@@ -36,14 +37,16 @@ export default function Home() {
   // while we determine auth, render nothing (or show a loader)
   if (authorized === null) {
     return (
-      <></>
+      <LoadingPage />
     );
   }
 
   // authorized === true -> show page
   return (
     <div className='screenWithFlyout'>
+
       <Header isLoggedIn={true} />
+
       <div style={{
         marginTop: '4vw',
       }}>
@@ -57,13 +60,15 @@ export default function Home() {
           }}>
             <Flyout />
           </div>
-          <div style={{ flex: 1, }}>
-            
+          <div style={{ flex: 1, display: "flex", flexFlow: "row nowrap", }}>
+            {/*Below Code*/}
+
+            {/*Above Code*/}
           </div>
         </div>
       </div>
-
       <Footer isLoggedIn={true} />
+      <ChatAI />
     </div>
   );
 }

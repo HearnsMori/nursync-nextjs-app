@@ -48,39 +48,41 @@ export default function NurSyncProfile() {
 
 
   const getUserInfo = async () => {
-    const data = await dbStorage.readId();
+    const data = await dbStorage.getSelfId();
+    //alert(data);
     const res = await dbStorage.getItem(
       'nursync',
       'user',
-      data.id,
-      null, //["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password"],
+      data,
+      null,
       null
     );
+    //alert(JSON.stringify(res));
     if (res) {
       setFormData({
-        firstname: res?.nursync?.user?.firstname,
-        lastname: res?.nursync?.user?.lastname,
-        middlename: res?.nursync?.user?.middlename,
-        university: res?.nursync?.user?.university,
-        studentid: res?.nursync?.user?.studentid,
-        emailaddress: res?.nursync?.user?.emailaddress,
-        username: res?.nursync?.user?.username,
-        password: res?.nursync?.user?.password,
+        firstname: res?.nursync?.user?.firstname ?? "",
+        lastname: res?.nursync?.user?.lastname ?? "",
+        middlename: res?.nursync?.user?.middlename ?? "",
+        university: res?.nursync?.user?.university ?? "",
+        studentid: res?.nursync?.user?.studentid ?? "",
+        emailaddress: res?.nursync?.user?.emailaddress ?? "",
+        username: res?.nursync?.user?.username ?? "",
+        password: res?.nursync?.user?.password ?? "",
       });
     }
   };
 
   const updateUserInfo = async () => {
     try {
-      const readId = await dbStorage.readId();
-      if(readId.id !== formData.username) {
-        const updateUsername = await dbStorage.updateId(formData.username);
+      const readId = await dbStorage.getSelfId();
+      if(readId !== formData.username) {
+        const updateUsername = await dbStorage.setSelfId(formData.username);
       }
-      const updatePassword = await dbStorage.updatePassword(formData.password);
+      const updatePassword = await dbStorage.setSelfPassword(formData.password);
       const removeOldModel = await dbStorage.removeItem(
         'nursync',
         'user',
-        readId.id,
+        readId,
         null,
         null
       );
@@ -89,7 +91,10 @@ export default function NurSyncProfile() {
         'user',
         formData.username,
         ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password", "username"],
-        [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password, formData.username]
+        [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password, formData.username],
+        ["all"],
+        [formData.username],
+        [formData.username]
       );
       if (newModel) {
         customAlert('Updated Successfully.');

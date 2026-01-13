@@ -145,10 +145,26 @@ const Signup = () => {
     localStorage.setItem("password", password);
     localStorage.setItem("emailaddress", emailaddress);
     try {
-      const signup = await dbStorage.signup(username, password,  [{name: "email", value: emailaddress}], [["nursync", null, null, ["get", "set", "remove"]]]);
+      const signup = await dbStorage.signup(username, password);
       if (signup) {
-        customAlert(signup.message);
-        router.push("/login");
+        const login = await dbStorage.signin(username, password);
+        if (login) {
+          const createModel = await dbStorage.setItem(
+            "nursync",
+            "user",
+            username,
+            ["username", "emailaddress", "password", "firstname", "lastname", "middlename", "university", "studentid", "emailaddress"],
+            [username, emailaddress, password, firstname, lastname, middlename, university, studentid, emailaddress],
+            ["#all"],
+            [username],
+            [username],
+          );
+          //alert(username);
+          if (createModel) {
+            customAlert(signup.message);
+            router.push("/home");
+          }
+        }
       }
     } catch (error) {
       customAlert(error instanceof Error ? error.message : String(error));

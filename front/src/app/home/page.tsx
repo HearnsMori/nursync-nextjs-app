@@ -23,6 +23,7 @@ export default function Home() {
     } else {
       // redirect to /login if no token
       setTimeout(() => {
+        localStorage.clear();
         router.replace('/login');
         setAuthorized(false);
       }, 370);
@@ -53,7 +54,7 @@ export default function Home() {
           }}>
             <Flyout />
           </div>
-          <div style={{ flex: 1, }}>
+          <div style={{ flex: 1, width: '100%' }}>
             <Learn />
           </div>
         </div>

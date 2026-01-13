@@ -34,12 +34,10 @@ export default function Home() {
                 paddingBottom: '100vh',
                 background: 'white',
             }}>
-
             </div> 
           </div>
         </div>
       </div>
-
       <Footer isLoggedIn={true} />
     </div>
   );

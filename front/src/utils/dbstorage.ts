@@ -6,14 +6,13 @@ export interface LoginResponse {
 }
 
 class DBStorage {
-  private baseURL = "https://dbstorage.onrender.com"; // <-- change to your backend
+  private /*baseURL = "https://dbstorage.onrender.com";*/ baseURL = "http://localhost:10000";
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
 
   private storeTokens(access: string, refresh: string) {
     this.accessToken = access;
     this.refreshToken = refresh;
-
     if (typeof window !== "undefined") {
       localStorage.setItem("accessToken", access);
       localStorage.setItem("refreshToken", refresh);
@@ -25,6 +24,29 @@ class DBStorage {
       this.accessToken = localStorage.getItem("accessToken");
       this.refreshToken = localStorage.getItem("refreshToken");
     }
+  }
+
+  async signup(
+    id: string,
+    password: string,
+    role: string[] | null = null,
+    contact: Array<{ key: string; value: string }> | null = null
+  ) {
+    console.log(role);
+    const res = await fetch(`${this.baseURL}/auth/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, password, role, contact }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.message || "Signup failed");
+
+    // If your server returns tokens after signup:
+    if (data.accessToken && data.refreshToken) {
+      this.storeTokens(data.accessToken, data.refreshToken);
+    }
+    return data;
   }
 
   async signin(id: string, password: string): Promise<LoginResponse> {
@@ -42,9 +64,9 @@ class DBStorage {
   }
 
   private async refreshAuth() {
-    const res = await fetch(`${this.baseURL}/auth/refreshtoken`, {
+    const res = await fetch(`${this.baseURL}/auth/refreshToken`, {
       method: "POST",
-      body: JSON.stringify({ token: localStorage.getItem("refreshToken") }),
+      body: JSON.stringify({ token: this.refreshToken }),
       headers: {
         Authorization: "Bearer " + this.accessToken || "",
         "Content-Type": "application/json",
@@ -57,33 +79,10 @@ class DBStorage {
     this.storeTokens(data.accessToken, data.refreshToken);
   }
 
-  async signup(
-    id: string,
-    password: string,
-    contact: Array<{ name: string; value: string }>,
-    access: any
-  ) {
-    console.log(access);
-    const res = await fetch(`${this.baseURL}/auth/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, password, contact, access }),
-    });
 
-    const data = await res.json();
-    if (!res.ok) throw new Error(data?.message || "Signup failed");
-
-    // If your server returns tokens after signup:
-    if (data.accessToken && data.refreshToken) {
-      this.storeTokens(data.accessToken, data.refreshToken);
-    }
-
-    return data;
-  }
 
   private async authFetch(path: string, options: RequestInit = {}): Promise<any> {
     this.loadTokens();
-
     const res = await fetch(`${this.baseURL}${path}`, {
       ...options,
       headers: {
@@ -92,16 +91,13 @@ class DBStorage {
         "Content-Type": "application/json",
       },
     });
-
     const data = await res.json().catch(() => ({}));
-
     if (res.status === 401) {
       await this.refreshAuth();
       return this.authFetch(path, options);
     } else if (!res.ok && (data as any)?.message) {
       throw new Error((data as any).message || "Request failed");
     }
-
     return data;
   }
 
@@ -114,11 +110,14 @@ class DBStorage {
     collectionName: string | string[],
     collectionKey: string | string[],
     key: string | string[],
-    value: any
+    value: any,
+    getAccess: string[],
+    setAccess: string[],
+    removeAccess: string[]
   ) {
     const data = await this.authFetch("/setItem", {
       method: "POST",
-      body: JSON.stringify({ app, collectionName, collectionKey, key, value }),
+      body: JSON.stringify({ app, collectionName, collectionKey, key, value, getAccess, setAccess, removeAccess }),
     });
 
     return data;
@@ -129,7 +128,7 @@ class DBStorage {
     collectionName: string | string[] | null,
     collectionKey: string | string[] | null,
     key: string | string[] | null,
-    value: any | null
+    value: any | null,
   ) {
     const data = await this.authFetch("/getItem", {
       method: "POST",
@@ -155,94 +154,114 @@ class DBStorage {
   }
 
   // --------------------------------------------------
+  // ============= JSON STORAGE =======================
+  // --------------------------------------------------
+
+  async getJSONItem<T = any>(
+    app: string,
+    collectionName: string,
+    collectionKey: string,
+    key: string
+  ): Promise<T> {
+    const data = await this.authFetch("/getJSONItem", {
+      method: "POST",
+      body: JSON.stringify({ app, collectionName, collectionKey, key }),
+    });
+
+    return data as T;
+  }
+
+  async setJSONItem(
+    app: string,
+    collectionName: string,
+    collectionKey: string,
+    key: string,
+    value: Record<string, any>
+  ) {
+    return await this.authFetch("/setJSONItem", {
+      method: "POST",
+      body: JSON.stringify({ app, collectionName, collectionKey, key, value }),
+    });
+  }
+
+  async pushJSONItem(
+    app: string,
+    collectionName: string,
+    collectionKey: string,
+    key: string,
+    value: Record<string, any>
+  ) {
+    return await this.authFetch("/pushJSONItem", {
+      method: "POST",
+      body: JSON.stringify({ app, collectionName, collectionKey, key, value }),
+    });
+  }
+
+  async popJSONItem(
+    app: string,
+    collectionName: string,
+    collectionKey: string,
+    key: string,
+    popKey: string
+  ) {
+    return await this.authFetch("/popJSONItem", {
+      method: "POST",
+      body: JSON.stringify({
+        app,
+        collectionName,
+        collectionKey,
+        key,
+        value: popKey,
+      }),
+    });
+  }
+
+  async removeJSONItem(
+    app: string,
+    collectionName: string,
+    collectionKey: string,
+    key: string
+  ) {
+    return await this.authFetch("/removeJSONItem", {
+      method: "POST",
+      body: JSON.stringify({ app, collectionName, collectionKey, key }),
+    });
+  }
+
+  // --------------------------------------------------
   // ============= USER MANAGEMENT ====================
   // Based on uploaded backend functions
   // --------------------------------------------------
-
-  // READ FULL USER
-  async readUser() {
-    const data = await this.authFetch("/user/read", { method: "GET" });
-    return data;
+  async getSelfId<T = any>() {
+    const data = await this.authFetch("/user/getSelfId", {
+      method: "GET",
+    });
+    return data as T;
   }
 
-  // READ ONLY ID
-  async readId() {
-    const data = await this.authFetch("/user/read-id", { method: "GET" });
-    return data;
-  }
-
-  // READ CONTACT LIST
-  async readContact() {
-    const data = await this.authFetch("/user/read-contact", { method: "GET" });
-    return data;
-  }
-
-  // READ ACCESS RULES
-  async readAccess() {
-    const data = await this.authFetch("/user/read-access", { method: "GET" });
-    return data;
-  }
-
-  // UPDATE USER ID
-  async updateId(newId: string) {
-    const data = await this.authFetch("/user/update-id", {
+  async setSelfId(id: string) {
+    const data = await this.authFetch("/user/getSelfId", {
       method: "PUT",
-      body: JSON.stringify({ newId }),
+      body: JSON.stringify({id: id}),
     });
-    return data;
   }
 
-  // UPDATE PASSWORD
-  async updatePassword(newPassword: string) {
-    const data = await this.authFetch("/user/update-password", {
+  async setSelfPassword(password: string) {
+    const data = await this.authFetch("/user/getSelfId", {
       method: "PUT",
-      body: JSON.stringify({ newPassword }),
+      body: JSON.stringify({password: password}),
     });
-    return data;
   }
 
-  // ADD CONTACT
-  async addContact(name: string, value: string | number) {
-    const data = await this.authFetch("/user/contact-add", {
+  //------------------------------------------------
+  //=========== Artificial Intelligence ============
+  //------------------------------------------------
+  async aiTXTGenerator<T = any>(msg: String) {
+    const data = await this.authFetch("/process/generator/aiTXTGenerator", {
       method: "POST",
-      body: JSON.stringify({ name, value }),
+      body: JSON.stringify({msg: msg}),
     });
-    return data;
-  }
-
-  // REMOVE CONTACT
-  async removeContact(params: { name?: string; value?: string | number }) {
-    const data = await this.authFetch("/user/contact-remove", {
-      method: "POST",
-      body: JSON.stringify(params),
-    });
-    return data;
-  }
-
-  // ADD ACCESS RULE
-  async addAccess(accessEntry: [string, string | null, string | null, string[]]) {
-    const data = await this.authFetch("/user/access-add", {
-      method: "POST",
-      body: JSON.stringify({ accessEntry }),
-    });
-    return data;
-  }
-
-  // REMOVE ACCESS
-  async removeAccess(accessEntry: [string, string | null, string | null, string[]]) {
-    const data = await this.authFetch("/user/access-remove", {
-      method: "POST",
-      body: JSON.stringify({ accessEntry }),
-    });
-    return data;
-  }
-
-  // DELETE ACCOUNT
-  async deleteAccount() {
-    const data = await this.authFetch("/user/delete-account", {
-      method: "DELETE",
-    });
-    return data;
+    return data as T;
   }
 }
 

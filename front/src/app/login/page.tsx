@@ -81,14 +81,7 @@ const App: React.FC = () => {
 
       try {
         const signin = await dbStorage.signin(formData.username, formData.password);
-        const createModel = await dbStorage.setItem(
-          "nursync",
-          "user",
-          formData.username,
-          ["username", "emailaddress", "password", "firstname", "lastname", "middlename", "university", "studentid", "emailaddress"],
-          [localStorage.getItem("username"), localStorage.getItem("emailaddress"), localStorage.getItem("password"), localStorage.getItem("firstname"), localStorage.getItem("lastname"), localStorage.getItem("middlename"), localStorage.getItem("university"), localStorage.getItem("studentid"), localStorage.getItem("emailaddress")]
-        );
-        if (signin && createModel) {
+        if (signin) {
           customAlert("Login Successfully.");
           router.push('/home')
         }
