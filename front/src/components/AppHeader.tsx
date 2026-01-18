@@ -98,6 +98,7 @@ export default function Header({
                     onClick={()=>{
                         localStorage.removeItem("accessToken");
                         localStorage.removeItem("refreshToken");
+                        localStorage.removeItem("cacheUserId");
                         window.location.href = '/';
                     }}
                     style={{

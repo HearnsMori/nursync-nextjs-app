@@ -57,8 +57,9 @@ export default function NurSyncProfile() {
       null,
       null
     );
-    //alert(JSON.stringify(res));
+    
     if (res) {
+      //alert(JSON.stringify(res));
       setFormData({
         firstname: res?.nursync?.user?.firstname ?? "",
         lastname: res?.nursync?.user?.lastname ?? "",
@@ -75,31 +76,53 @@ export default function NurSyncProfile() {
   const updateUserInfo = async () => {
     try {
       const readId = await dbStorage.getSelfId();
-      if(readId !== formData.username) {
-        const updateUsername = await dbStorage.setSelfId(formData.username);
+      var updateUsername;
+      if (readId !== formData.username) {
+        updateUsername = await dbStorage.setSelfId(formData.username);
       }
       const updatePassword = await dbStorage.setSelfPassword(formData.password);
-      const removeOldModel = await dbStorage.removeItem(
-        'nursync',
-        'user',
-        readId,
-        null,
-        null
-      );
-      const newModel = await dbStorage.setItem(
-        'nursync',
-        'user',
-        formData.username,
-        ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password", "username"],
-        [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password, formData.username],
-        ["all"],
-        [formData.username],
-        [formData.username]
-      );
-      if (newModel) {
-        customAlert('Updated Successfully.');
+      //alert(JSON.stringify(formData));
+      if (updateUsername || updatePassword) {
+        const removeModel = await dbStorage.removeItem(
+          'nursync',
+          'user',
+          readId,
+          null,
+          null
+        );
+        if (removeModel) {
+          const newModel = await dbStorage.setItem(
+            'nursync',
+            'user',
+            formData.username,
+            ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password", "username"],
+            [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password, formData.username],
+            ["#all"],
+            [formData.username],
+            [formData.username]
+          );
+          //alert(JSON.stringify(newModel));
+          if (newModel) {
+            customAlert('Updated Successfully.');
+          }
+        }
+      } else {
+        const newModel = await dbStorage.setItem(
+          'nursync',
+          'user',
+          formData.username,
+          ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password", "username"],
+          [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password, formData.username],
+          ["#all"],
+          [formData.username],
+          [formData.username]
+        );
+        
+        alert(JSON.stringify(newModel));
+        if (newModel) {
+          customAlert('Updated Successfully.');
+        }
       }
-
     } catch (error) {
       customAlert(error instanceof Error ? error.message : String(error));
     }
@@ -204,13 +227,15 @@ export default function NurSyncProfile() {
           {/* FORM FIELDS */}
           {Object.keys(formData).map((key, index) => (
             <div key={index}>
-              <label style={labelStyle}>{key.toUpperCase()}</label>
+              <label style={labelStyle}>{key.toUpperCase()} 
+                <span style={{ fontSize: "1vw", color: "#757575" }}>{key === "username" ? " (cannot be changed)" : ""}</span>
+              </label>
               <input
                 style={inputStyle}
                 type={key === "password" ? "password" : "text"}
                 name={key}
                 value={formData[key as keyof typeof formData]}
-                disabled={!editMode}
+                disabled={!editMode || key === "username"}
                 onChange={handleChange}
               />
             </div>
