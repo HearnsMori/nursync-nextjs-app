@@ -62,6 +62,7 @@ export default function Header({
                 {isLoggedIn ? (
                     <></>
                 ) : (
+                    <>
                     <Link
                         className="bgwhite txtblack button"
                         href="/signup"
@@ -78,6 +79,23 @@ export default function Header({
                             fontSize: '1vw',
                             color: '#222222',
                         }}>Sign-up</Link>
+                    <Link
+                        className="bgwhite txtblack button"
+                        href="/login"
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '1vw',
+                            height: '2.3vw',
+                            width: '7vw',
+                            border: 'none',
+                            margin: '1vw',
+                            fontWeight: 300,
+                            fontSize: '1vw',
+                            color: '#222222',
+                        }}>Log-in</Link>
+                    </>
                 )}
             </div>
             <div

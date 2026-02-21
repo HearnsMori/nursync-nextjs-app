@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
 import LoadingPage from "@/components/LoadingPage";
-import AIDemo from "@/components/AIDemo";
+import AISimulation from "@/components/AISimulation/AISimulation.tsx";
 import Flyout from "@/components/Flyout";
 
 import "../globals.css";
@@ -57,7 +57,7 @@ export default function Home() {
             <Flyout />
           </div>
           <div style={{ flex: 1, display: "flex", flexFlow: "row nowrap", }}>
-            <AIDemo />
+            <AISimulation />
           </div>
         </div>
       </div>

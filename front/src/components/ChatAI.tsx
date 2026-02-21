@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import dbStorage from "@/utils/dbstorage";
 
 // --- TypeScript Interfaces ---
 interface Message {
@@ -148,15 +149,9 @@ const NurSyncChat: React.FC = () => {
     ]);
 
     try {
-      const response = await fetch("https://nursync-backend.onrender.com/api/bot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: userMessage }),
-      });
-
-      const data = await response.json();
-      const aiResponse = data.msg || "Sorry, I couldn’t understand that.";
-
+      const response = await dbStorage.aiTXTGenerator(userMessage, "You are a NurSYNC AI Assistant, designed to help nursing students with their studies. Please provide clear and concise answers to their questions.");
+      const aiResponse = response?.msg;
+      //alert(JSON.stringify(response));
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === typingMessageId

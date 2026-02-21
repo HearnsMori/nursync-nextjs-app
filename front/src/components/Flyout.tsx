@@ -16,7 +16,7 @@ export default function FlyoutNavigation() {
   });
   const navItems = [
     { icon: Home, label: "Learn", key: "home" },
-    { icon: Brain, label: "AI Mode", key: "aimode" },
+    { icon: Brain, label: "AI Mode", key: "simulation" },
     { icon: Bolt, label: "Tools", key: "tools" },
   ];
 
