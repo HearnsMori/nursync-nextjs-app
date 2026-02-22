@@ -7,7 +7,7 @@ export default function Footer({
     // Footer
     <footer
       className="flexC bggreen"
-      style={{ position: 'absolute', zIndex: 999, bottom: 0, justifyContent: 'left', alignItems: 'left', width: '100vw', height: 'auto', padding: '1vw 0', margin: 0, }}
+      style={{ position: 'absolute', zIndex: 999, bottom: 0, justifyContent: 'left', alignItems: 'left', width: '100vw', height: 'auto', padding: '1vw 0', margin: 0 }}
     >
       {/* Logo or Title */}
       <div

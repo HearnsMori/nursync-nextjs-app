@@ -10,6 +10,7 @@ import Flyout from "@/components/Flyout";
 import ChatAI from "@/components/ChatAI";
 
 import "../globals.css";
+import SimulationNav from '@/components/SimulationNav';
 
 export default function Home() {
   const router = useRouter();
@@ -59,9 +60,10 @@ export default function Home() {
           </div>
         </div>
       </div>
-
+      
       <Footer isLoggedIn={true} />
       <ChatAI />
+      
     </div>
   );
 }

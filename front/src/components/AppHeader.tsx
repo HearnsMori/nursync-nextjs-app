@@ -54,7 +54,7 @@ export default function Header({
                 className='bggreen txtblack'
                 style={{
                     height: '4vw',
-                    width: '8vw',
+                    width: '16vw',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -72,7 +72,7 @@ export default function Header({
                             alignItems: 'center',
                             borderRadius: '1vw',
                             height: '2.3vw',
-                            width: '7vw',
+                            width: '12vw',
                             border: 'none',
                             margin: '1vw',
                             fontWeight: 300,
@@ -88,7 +88,7 @@ export default function Header({
                             alignItems: 'center',
                             borderRadius: '1vw',
                             height: '2.3vw',
-                            width: '7vw',
+                            width: '12vw',
                             border: 'none',
                             margin: '1vw',
                             fontWeight: 300,

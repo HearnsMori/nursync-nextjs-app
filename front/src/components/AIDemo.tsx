@@ -49,7 +49,8 @@ export default function GeminiChatPage() {
             const data = await dbStorage.aiTXTGenerator(
                 context +
                 "\nUser: " + input +
-                "\nRevised (If have already existing code):" + outputInside
+                "\nRevised (If have already existing code):" + outputInside,
+                "You are an html with inline css developer, you create web blog with aesthetic design that help with the nursing student to learn"
             );
 
             let aiResponse = data?.msg?.trim() || "";
@@ -106,7 +107,7 @@ export default function GeminiChatPage() {
                     background: "#eee",
                     backdropFilter: "blur(8px)",
                     boxShadow: "0 0 7px rgba(0,0,0,0.3)",
-                    zIndex: 1000,
+                    zIndex: 1,
                 }}
             >
                 <input

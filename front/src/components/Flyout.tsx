@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Home, Brain, Bolt, Menu as MenuIcon } from "lucide-react";
-import Image from "next/image"
+import Image from "next/image";
+import SimulationNav from "@/components/SimulationNav";
 
 export default function FlyoutNavigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function FlyoutNavigation() {
   });
   const navItems = [
     { icon: Home, label: "Learn", key: "home" },
-    { icon: Brain, label: "AI Mode", key: "simulation" },
+    { icon: Brain, label: "AI Mode", key: "aimode" },
     { icon: Bolt, label: "Tools", key: "tools" },
   ];
 
@@ -137,6 +138,7 @@ export default function FlyoutNavigation() {
             }}/>
             {isOpen && <span style={labelStyle}>Profile</span>}
           </motion.div>
+          <SimulationNav />
       </nav>
     </motion.aside>
   );
