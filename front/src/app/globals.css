@@ -45,6 +45,13 @@ body {
   margin: 0;
 }
 
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none;
+}
+
 .screen {
   display: flex;
   flex-direction: column;

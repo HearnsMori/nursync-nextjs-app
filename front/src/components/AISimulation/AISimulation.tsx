@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import dbStorage from "@/utils/dbstorage";
 import Image from "next/image";
+import { Search, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function AISimulation() {
     const [tab, setTab] = useState<"welcome" | "caseLibrary" | "dailyPatient" | "subscribe">("welcome");
@@ -22,7 +23,7 @@ export default function AISimulation() {
                 alignItems: "center",
             }}>
                 {/* Main Simulation Box */}
-                { tab === "caseLibrary" && (
+                {tab === "caseLibrary" && (
                     <div style={{
                         height: "84vh",
                         width: "62vw",
@@ -30,45 +31,392 @@ export default function AISimulation() {
                         borderRadius: "1vw",
                         boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                         display: "flex",
+                        flexFlow: "column nowrap",
                         justifyContent: "center",
                         alignItems: "center",
                         color: "black",
                         fontWeight: 700,
                     }}>
-                        Case Library Coming Soon!
+                        <div style={{
+                            display: "flex",
+                            flexFlow: "row nowrap",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            color: "black",
+                            fontWeight: 700,
+                            width: "100%",
+                            flex: 1,
+                        }}>
+                            <div style={{
+                                background: "green",
+                                display: "flex",
+                                flexFlow: "row nowrap",
+                                width: "42%",
+                                height: "73%",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "0.7vw",
+                                padding: "0.5vw 1vw",
+                                borderRadius: "5vw",
+                            }}>
+                                <button style={{
+                                    fontWeight: 700,
+                                    padding: "0.5vw",
+                                    background: "white",
+                                    fontSize: "1vw",
+                                    color: "black",
+                                    width: "33%",
+                                    height: "95%",
+                                    borderRadius: "3vw",
+                                }}>
+                                    By Unit
+                                </button>
+                                <button style={{
+                                    fontWeight: 700,
+                                    padding: "0.5vw",
+                                    background: "white",
+                                    fontSize: "1vw",
+                                    color: "black",
+                                    width: "33%",
+                                    height: "95%",
+                                    borderRadius: "3vw",
+                                }}>
+                                    By Specialty
+                                </button>
+                                <button style={{
+                                    fontWeight: 700,
+                                    padding: "0.5vw",
+                                    background: "white",
+                                    fontSize: "1vw",
+                                    color: "black",
+                                    width: "33%",
+                                    height: "95%",
+                                    borderRadius: "3vw",
+                                }}>
+                                    All Cases
+                                </button>
+                            </div>
+                            <div style={{
+                                position: "absolute",
+                                marginLeft: "4vw",
+                                zIndex: 2,
+                            }}>
+                                <Search size={26} color="black" strokeWidth={2} />
+                            </div>
+                            <input style={{
+                                display: "block",
+                                border: "3px solid green",
+                                borderRadius: "5vw",
+                                width: "42%",
+                                height: "73%",
+                                background: "transparent",
+                                fontSize: "1vw",
+                                color: "black",
+                                paddingLeft: "3.7vw",
+                                marginLeft: "2vw",
+                            }} />
+                            <div style={{
+                                marginLeft: "1vw",
+                                zIndex: 2,
+                            }}>
+                                <X size={26} color="black" strokeWidth={2} />
+                            </div>
+                        </div>
+                        <div style={{
+                            display: "flex",
+                            flexFlow: "row nowrap",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            color: "black",
+                            fontWeight: 700,
+                            width: "100%",
+                            flex: 6,
+
+                        }}>
+                            <div style={{
+                                flex: 1,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}>
+                                <ChevronLeft size={21} color="black" strokeWidth={2} />
+                            </div>
+                            <div style={{
+                                flex: 11,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}>
+
+                            </div>
+                            <div style={{
+                                flex: 1,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}>
+                                <ChevronRight size={21} color="black" strokeWidth={2} />
+                            </div>
+                        </div>
                     </div>
                 )}
-                { tab === "dailyPatient" && (
-                    <div style={{
-                        height: "84vh",
-                        width: "62vw",
-                        background: "white",
-                        borderRadius: "1vw",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        color: "black",
-                        fontWeight: 700,
-                    }}>
-                        Daily Patient Coming Soon!
+                {tab === "dailyPatient" && (
+                    <div
+                        style={{
+                            width: "600px",
+                            margin: "40px auto",
+                            background: "#efefef",
+                            borderRadius: "18px",
+                            padding: "25px",
+                            fontFamily: "Arial, sans-serif",
+                            boxShadow: "0px 8px 25px rgba(0,0,0,0.2)",
+                            position: "relative"
+                        }}
+                    >
+
+                        {/* Close Button */}
+                        <div onClick={(e) => {
+                            setTab("caseLibrary");
+                        }}style={{
+                            position: "absolute",
+                            right: "20px",
+                            top: "15px",
+                            fontSize: "20px",
+                            cursor: "pointer",
+                            color: "#1c7a3c",
+                            fontWeight: "bold"
+                        }}>
+                            ×
+                        </div>
+
+
+                        {/* Title */}
+                        <div style={{
+                            fontWeight: "bold",
+                            fontSize: "18px",
+                            marginBottom: "15px",
+                            color: "black",
+                        }}>
+                            The Daily Patient
+                        </div>
+
+
+                        {/* Patient Row */}
+                        <div style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "20px",
+                            marginBottom: "20px"
+                        }}>
+
+                            {/* Avatar */}
+                            <div style={{
+                                width: "80px",
+                                height: "80px",
+                                borderRadius: "50%",
+                                background: "#2fa4a9",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "40px",
+                                border: "4px solid #1f1f1f"
+                            }}>
+                                👨
+                            </div>
+
+
+                            {/* Patient Info */}
+                            <div>
+
+                                <div style={{
+                                    fontWeight: "bold",
+                                    marginBottom: "5px"
+                                }}>
+                                    January 18
+                                </div>
+
+                                <div style={{
+                                    fontSize: "14px",
+                                    color: "#333",
+                                    marginBottom: "10px",
+                                    maxWidth: "360px"
+                                }}>
+                                    25-year-old male with acute agitation and hypertension on arrival.
+                                    Direct to resuscitation bay.
+                                </div>
+
+                                <div style={{
+                                    fontWeight: "bold",
+                                    fontSize: "14px"
+                                }}>
+                                    Put your clinical decision making skills to the test!
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        {/* Timer Section */}
+                        <div style={{
+                            background: "#5b9466",
+                            borderRadius: "6px",
+                            padding: "20px",
+                            textAlign: "center",
+                            marginBottom: "15px",
+                            border: "1px solid #3f6f47"
+                        }}>
+
+                            <div style={{
+                                marginBottom: "15px",
+                                fontWeight: "bold"
+                            }}>
+                                Time remaining to treat this patient:
+                            </div>
+
+
+                            <div style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                gap: "10px"
+                            }}>
+
+                                <div style={{
+                                    background: "#28a7c9",
+                                    color: "white",
+                                    padding: "10px 16px",
+                                    borderRadius: "6px",
+                                    fontSize: "26px",
+                                    fontWeight: "bold"
+                                }}>
+                                    22
+                                    <div style={{ fontSize: "12px" }}>hours</div>
+                                </div>
+
+                                <div style={{
+                                    fontSize: "26px",
+                                    fontWeight: "bold",
+                                    color: "white"
+                                }}>
+                                    :
+                                </div>
+
+                                <div style={{
+                                    background: "#28a7c9",
+                                    color: "white",
+                                    padding: "10px 16px",
+                                    borderRadius: "6px",
+                                    fontSize: "26px",
+                                    fontWeight: "bold"
+                                }}>
+                                    47
+                                    <div style={{ fontSize: "12px" }}>mins</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        {/* Play Button */}
+                        <div
+                            style={{
+                                background: "#28a7c9",
+                                color: "white",
+                                textAlign: "center",
+                                padding: "12px",
+                                borderRadius: "6px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                                border: "1px solid #187c95"
+                            }}
+                        >
+                            PLAY
+                        </div>
+
+
                     </div>
                 )}
-                { tab === "subscribe" && (
-                    <div style={{
-                        height: "84vh",
-                        width: "62vw",
-                        background: "white",
-                        borderRadius: "1vw",
-                        boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        color: "black",
-                        fontWeight: 700,
-                    }}>
-                        Subscription Coming Soon!
+                {tab === "subscribe" && (
+                    <div
+                        style={{
+                            width: "420px",
+                            margin: "40px auto",
+                            padding: "40px 30px",
+                            background: "rgba(255,255,255,0.95)",
+                            borderRadius: "20px",
+                            boxShadow: "0px 10px 30px rgba(0,0,0,0.15)",
+                            textAlign: "center",
+                            fontFamily: "Arial, sans-serif"
+                        }}
+                    >
+
+                        <div style={{
+                            fontSize: "26px",
+                            fontWeight: "bold",
+                            marginBottom: "10px",
+                            color: "#222"
+                        }}>
+                            Nursing Simulation Subscription
+                        </div>
+
+                        <div style={{
+                            fontSize: "15px",
+                            color: "#555",
+                            marginBottom: "25px",
+                            lineHeight: "1.6"
+                        }}>
+                            Unlock advanced clinical simulation cases and improve your
+                            nursing decision-making skills through realistic patient scenarios.
+                        </div>
+
+
+                        <div style={{
+                            background: "linear-gradient(135deg,#6a4cff,#a855f7)",
+                            color: "white",
+                            padding: "18px",
+                            borderRadius: "14px",
+                            marginBottom: "20px",
+                            fontWeight: "bold",
+                            fontSize: "18px"
+                        }}>
+                            Subscription Coming Soon
+                        </div>
+
+
+                        <div style={{
+                            fontSize: "14px",
+                            color: "#666",
+                            marginBottom: "25px"
+                        }}>
+                            ✔ 200+ Interactive Patient Cases<br />
+                            ✔ Realistic Nursing Scenarios<br />
+                            ✔ Performance Tracking<br />
+                            ✔ Clinical Decision Training
+                        </div>
+
+
+                        <button
+                            style={{
+                                background: "linear-gradient(135deg,#6a4cff,#a855f7)",
+                                border: "none",
+                                color: "white",
+                                padding: "14px 35px",
+                                fontSize: "16px",
+                                borderRadius: "12px",
+                                cursor: "pointer",
+                                fontWeight: "bold",
+                                boxShadow: "0px 6px 15px rgba(0,0,0,0.2)"
+                            }}
+                        >
+                            Notify Me
+                        </button>
+
                     </div>
+
                 )}
                 {tab === "welcome" && (
                     <div style={{
@@ -278,9 +626,9 @@ export default function AISimulation() {
                                 }} />
                             </motion.div>
                             <button onClick={
-                              (e) => {
-                                setTab("caseLibrary");
-                              }
+                                (e) => {
+                                    setTab("caseLibrary");
+                                }
                             } style={{
                                 border: "none",
                                 background: "#026e2c",
