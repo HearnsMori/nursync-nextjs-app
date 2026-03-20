@@ -150,7 +150,7 @@ const NurSyncChat: React.FC = () => {
 
     try {
       const response = await dbStorage.aiTXTGenerator(userMessage, "You are a NurSYNC AI Assistant, designed to help nursing students with their studies. Please provide clear and concise answers to their questions.");
-      const aiResponse = response?.msg;
+      const aiResponse = response?.message;
       //alert(JSON.stringify(response));
       setMessages((prev) =>
         prev.map((msg) =>

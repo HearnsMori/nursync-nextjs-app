@@ -50,7 +50,7 @@ const LaunchSimulationButton = () => {
                 cursor: 'pointer',
 
                 /* Green Theme Gradient */
-                background: 'linear-gradient(135deg, #2D6A4F 0%, #0f5a1b 100%)',
+                background: 'linear-gradient(135deg, #2D6A4Fdd 0%, #0f5a1bdd 100%)',
                 color: '#FFFFFF',
 
                 /* Typography */

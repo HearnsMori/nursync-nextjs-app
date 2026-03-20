@@ -49,11 +49,10 @@ export default function NurSyncProfile() {
 
   const getUserInfo = async () => {
     const data = await dbStorage.getSelfId();
-    //alert(data);
     const res = await dbStorage.getItem(
       'nursync',
       'user',
-      data,
+      data?.id,
       null,
       null
     );
@@ -177,6 +176,30 @@ export default function NurSyncProfile() {
     fontSize: "1.2vw",
     color: "black",
     marginRight: "1vw",
+    borderColor: "#00000000",
+  };
+
+  const buttonStyleG: React.CSSProperties = {
+    padding: "1vw 2vw",
+    border: "0.12vw solid #bdbdbd",
+    borderRadius: "0.5vw",
+    background: "#ffffff",
+    cursor: "pointer",
+    fontSize: "1.2vw",
+    color: "black",
+    marginRight: "1vw",
+    borderColor: "#1b5e20",
+  };
+
+  const buttonStyleR: React.CSSProperties = {
+    padding: "1vw 2vw",
+    border: "0.12vw solid #bdbdbd",
+    borderRadius: "0.5vw",
+    background: "#ffffff",
+    cursor: "pointer",
+    fontSize: "1.2vw",
+    color: "black",
+    borderColor: "#b71c1c",
   };
 
   const statusColor = (status: string) => {
@@ -250,7 +273,7 @@ export default function NurSyncProfile() {
             ) : (
               <>
                 <button
-                  style={{ ...buttonStyle, borderColor: "#1b5e20" }}
+                  style={buttonStyleG}
                   onClick={() => {
                     setEditMode(false);
                     updateUserInfo();
@@ -259,7 +282,7 @@ export default function NurSyncProfile() {
                   Save
                 </button>
                 <button
-                  style={{ ...buttonStyle, borderColor: "#b71c1c" }}
+                  style={buttonStyleR}
                   onClick={() => {
                     setFormData(originalData);
                     setEditMode(false);

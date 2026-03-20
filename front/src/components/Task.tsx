@@ -3,18 +3,38 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import dbStorage from "@/utils/dbstorage";
+
+// 1. Define the structure of a single task
 interface Task {
   id: number;
   title: string;
   content: string;
   color: string;
   icon: number;
-  deadline: string;
-  completed: boolean;
+  deadline: string; // Use string since you are using .toISOString()
+  completed?: boolean;
+}
+
+// 2. Define the structure of your state object
+interface TaskState {
+  task?: Task[];
 }
 
 export default function TaskPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<TaskState>({
+    task: [
+      {
+        id: 1,
+        title: "Sample Task",
+        content: "This is a sample task. You can edit or delete it.",
+        color: "#4CAF50",
+        icon: 1,
+        deadline: new Date().toISOString(),
+        completed: false,
+      }
+    ]
+  });
   const [filter, setFilter] = useState<"today" | "tomorrow" | "all" | "calendar">("all");
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [showForm, setShowForm] = useState(false);
@@ -28,73 +48,44 @@ export default function TaskPage() {
     deadline: new Date().toISOString().slice(0, 16),
   });
 
-  // Default predefined tasks
-  const predefinedTasks: Task[] = [
-    {
-      id: 1,
-      title: "Morning Exercise",
-      content: "Jog around the neighborhood for 30 minutes.",
-      color: "#81C784",
-      icon: 1,
-      deadline: new Date().toISOString().slice(0, 16),
-      completed: false,
-    },
-    {
-      id: 2,
-      title: "Read Nursing Notes",
-      content: "Review patient data management and nursing informatics.",
-      color: "#64B5F6",
-      icon: 2,
-      deadline: new Date().toISOString().slice(0, 16),
-      completed: false,
-    },
-    {
-      id: 3,
-      title: "Project Coding",
-      content: "Work on Next.js flashcard interface for NurSYNC.",
-      color: "#FFD54F",
-      icon: 3,
-      deadline: new Date(Date.now() + 3600 * 1000).toISOString().slice(0, 16),
-      completed: false,
-    },
-  ];
+  const loadTasks = async () => {
+    const user = await dbStorage.getSelfId();
+    await dbStorage.loadJSONData("nursync", "tasks", user.id, "taskList", null);
+    setTasks(dbStorage.getJSONData() as TaskState);
+    setInitialized(true);
+  };
+
+  const storeTasks = async () => {
+    const user = await dbStorage.getSelfId();
+    await dbStorage.storeJSONData("nursync", "tasks", user.id, "taskList", null, ["#all"], [], []);
+  };
+
+  const reloadTasks = async () => {
+    const freshData = dbStorage.getJSONData<TaskState>();
+    setTasks({
+      ...freshData,
+      task: [...(freshData?.task ?? [])] // Create a new array reference
+    });
+  }
 
   // 🔹 Load from localStorage or default
   useEffect(() => {
-    const saved = localStorage.getItem("tasks");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          setTasks(parsed);
-        } else {
-          setTasks(predefinedTasks);
-        }
-      } catch {
-        setTasks(predefinedTasks);
-      }
-    } else {
-      setTasks(predefinedTasks);
-    }
-    setInitialized(true);
+    loadTasks();
   }, []);
 
-  // 🔹 Save whenever tasks change (after initialized)
-  useEffect(() => {
-    if (initialized) {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    }
-  }, [tasks, initialized]);
 
   // Add new task
-  const postTask = () => {
+  const postTask = async () => {
     if (!newTask.title.trim()) return;
     const task: Task = {
       ...newTask,
       id: Date.now(),
       completed: false,
     };
-    setTasks((prev) => [...prev, task]);
+    dbStorage.pushJSONData(["task"], task);
+
+    await storeTasks();
+    reloadTasks();
     setShowForm(false);
     setNewTask({
       title: "",
@@ -106,19 +97,21 @@ export default function TaskPage() {
   };
 
   // Toggle complete
-  const toggleComplete = (id: number) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
-    );
+  const toggleComplete = async (id: number) => {
+    dbStorage.updateJSONData(["task"], (t) => t.id === id, { completed: !tasks.task?.find((t) => t.id === id)?.completed });
+    await storeTasks();
+    reloadTasks();
   };
 
   // Delete
-  const deleteTask = (id: number) => {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
+  const deleteTask = async (id: number) => {
+    dbStorage.popJSONData(["task"], (t) => t.id === id);
+    await storeTasks();
+    reloadTasks();
   };
 
   // Filtering
-  const filteredTasks = tasks.filter((task) => {
+  const filteredTasks = tasks.task?.filter((task) => {
     if (filter === "all") return true;
     const taskDate = new Date(task.deadline);
     const today = new Date();
@@ -133,13 +126,15 @@ export default function TaskPage() {
     return true;
   });
 
+  const taskList = tasks?.task ?? [];
+
   const progress =
-    tasks.length > 0
-      ? Math.round((tasks.filter((t) => t.completed).length / tasks.length) * 100)
+    taskList?.length > 0
+      ? Math.round((taskList.filter((t) => t.completed).length / taskList.length) * 100)
       : 0;
 
   const getContrastColor = (bgColor: string) => {
-    const c = bgColor.substring(1);
+    const c = (bgColor ?? "#000000").substring(1);
     const rgb = parseInt(c, 16);
     const r = (rgb >> 16) & 0xff;
     const g = (rgb >> 8) & 0xff;
@@ -243,7 +238,7 @@ export default function TaskPage() {
         }}
       >
         <AnimatePresence>
-          {filteredTasks.map((task) => {
+          {filteredTasks?.map((task) => {
             const textColor = getContrastColor(task.color);
             return (
               <motion.div
@@ -391,6 +386,7 @@ export default function TaskPage() {
               type="number"
               placeholder="Icon #"
               min={1}
+              max={1}
               value={newTask.icon}
               onChange={(e) =>
                 setNewTask({ ...newTask, icon: Number(e.target.value) })

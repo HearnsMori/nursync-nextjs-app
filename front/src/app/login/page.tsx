@@ -22,6 +22,10 @@ const PLACEHOLDERS = {
 
 // --- Main App Component ---
 const App: React.FC = () => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const router = useRouter();
   const [usernameError, setUsernameError] = useState<string>('');
   const [passwordError, setPasswordError] = useState<string>('');
@@ -159,7 +163,7 @@ const App: React.FC = () => {
     cardStyle.flexDirection = 'row-reverse';
   }
 
-
+  if (!isClient) return;
   return (
     <div style={mainContainerStyle}>
       <Image height={1500} width={2000} alt="Login Illustration" src="/whitelettering.png"

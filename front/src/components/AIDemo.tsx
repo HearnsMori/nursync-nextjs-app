@@ -47,14 +47,15 @@ export default function GeminiChatPage() {
 
         try {
             const data = await dbStorage.aiTXTGenerator(
-                context +
                 "\nUser: " + input +
                 "\nRevised (If have already existing code):" + outputInside,
-                "You are an html with inline css developer, you create web blog with aesthetic design that help with the nursing student to learn"
+                context
             );
 
-            let aiResponse = data?.msg?.trim() || "";
+            alert(JSON.stringify(data));
 
+            let aiResponse = data?.message?.trim() || "";
+            
             // Strip markdown fences if any
             aiResponse = aiResponse
                 .replace(/^```html?/i, "")
@@ -89,6 +90,8 @@ export default function GeminiChatPage() {
                     display: "flex",
                     width: "100%",
                     paddingBottom: "6vw",
+                    color: "black",
+                    marginLeft: "2vw",
                 }}
             />
 
@@ -131,6 +134,7 @@ export default function GeminiChatPage() {
                         fontSize: "0.95vw",
                         color: "black",
                         opacity: loading ? 0.6 : 1,
+                        marginLeft: "11vw",
                     }}
                 />
 

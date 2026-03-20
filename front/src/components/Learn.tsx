@@ -269,11 +269,11 @@ export default function NurSyncCourses() {
       null
     );
     Object.values(stored).forEach((p: any) => {
-      alert(p?.nursync?.['course'+token]?.url);
+      //alert(p?.nursync?.['course'+token]?.url);
       const course = baseCourses.find((c: any) => c.url === p?.nursync?.['course'+token]?.url);
       if (course) {
         course.progress = p?.nursync?.['course'+token]?.progress;
-        alert(course.progress);
+        //alert(course.progress);
       }
     });
     setCourses(baseCourses);
