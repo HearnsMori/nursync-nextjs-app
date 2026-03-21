@@ -50,14 +50,14 @@ export default function TaskPage() {
 
   const loadTasks = async () => {
     const user = await dbStorage.getSelfId();
-    await dbStorage.loadJSONData("nursync", "tasks", user.id, "taskList", null);
+    await dbStorage.loadJSONData("nursync", "tasks", user, "taskList", null);
     setTasks(dbStorage.getJSONData() as TaskState);
     setInitialized(true);
   };
 
   const storeTasks = async () => {
     const user = await dbStorage.getSelfId();
-    await dbStorage.storeJSONData("nursync", "tasks", user.id, "taskList", null, ["#all"], [], []);
+    await dbStorage.storeJSONData("nursync", "tasks", user, "taskList", null, ["#all"], [], []);
   };
 
   const reloadTasks = async () => {

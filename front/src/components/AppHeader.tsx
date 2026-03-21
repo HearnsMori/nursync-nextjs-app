@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import '../app/globals.css';
-import styles from '../app/page.module.css';
+import { UsersRound, LogOut } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Header({
@@ -63,77 +63,105 @@ export default function Header({
                     <></>
                 ) : (
                     <>
-                    <Link
-                        className="bgwhite txtblack button"
-                        href="/signup"
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: '1vw',
-                            height: '2.3vw',
-                            width: '12vw',
-                            border: 'none',
-                            margin: '1vw',
-                            fontWeight: 300,
-                            fontSize: '1vw',
-                            color: '#222222',
-                        }}>Sign-up</Link>
-                    <Link
-                        className="bgwhite txtblack button"
-                        href="/login"
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            borderRadius: '1vw',
-                            height: '2.3vw',
-                            width: '12vw',
-                            border: 'none',
-                            margin: '1vw',
-                            fontWeight: 300,
-                            fontSize: '1vw',
-                            color: '#222222',
-                        }}>Log-in</Link>
+                        <Link
+                            className="bgwhite txtblack button"
+                            href="/signup"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '1vw',
+                                height: '2.3vw',
+                                width: '12vw',
+                                border: 'none',
+                                margin: '1vw',
+                                fontWeight: 300,
+                                fontSize: '1vw',
+                                color: '#222222',
+                            }}>Sign-up</Link>
+                        <Link
+                            className="bgwhite txtblack button"
+                            href="/login"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '1vw',
+                                height: '2.3vw',
+                                width: '12vw',
+                                border: 'none',
+                                margin: '1vw',
+                                fontWeight: 300,
+                                fontSize: '1vw',
+                                color: '#222222',
+                            }}>Log-in</Link>
                     </>
                 )}
             </div>
-            <div
-                style={{
-                    height: '100%',
-                    width: '4vw',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                <svg width="21px" height="21px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
-            </div>
-            {!isLoggedIn ? (
-                <></>
-            ) : (
-                <button
-                    className="bgwhite txtblack button"
-                    onClick={()=>{
-                        localStorage.removeItem("accessToken");
-                        localStorage.removeItem("refreshToken");
-                        localStorage.removeItem("cacheUserId");
-                        window.location.href = '/';
-                    }}
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexFlow: 'row nowrap',
+            }}>
+                <div
                     style={{
+                        height: '100%',
+                        width: '3vw',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        borderRadius: '1vw',
-                        height: '2.3vw',
-                        width: '7vw',
-                        border: 'none',
-                        margin: '1vw',
-                        fontWeight: 500,
-                        fontSize: '1vw',
-                        color: '#222222',
-                    }}>Log-out</button>
-            )}
+                    }}>
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
+                </div>
+                <Link href="/meet-the-team" style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: '1vw',
+                    height: '2.3vw',
+                    width: '3vw',
+                    border: 'none',
+                    margin: '1vw',
+                    fontWeight: 500,
+                    fontSize: '1vw',
+                    color: '#222222',
+                }}>
+                    <UsersRound color="#ffffff" size={24} />
+                </Link>
+                {!isLoggedIn ? (
+                    <></>
+                ) : (
+                    <>
+                        <button
+                            className="bgwhite txtblack button"
+                            onClick={() => {
+                                localStorage.removeItem("accessToken");
+                                localStorage.removeItem("refreshToken");
+                                localStorage.removeItem("id");
+                                window.location.href = '/';
+                            }}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '1vw',
+                                height: '2.3vw',
+                                width: '7vw',
+                                border: 'none',
+                                margin: '1vw',
+                                fontWeight: 500,
+                                fontSize: '1vw',
+                                color: '#222222',
+                            }}>
+                            <LogOut color="#222222" size={16} style={{ marginRight: '0.5vw' }} />
+                            Log-out
+                        </button>
 
+
+                    </>
+                )}
+            </div>
         </header>
     );
 }

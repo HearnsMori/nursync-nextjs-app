@@ -1,5 +1,10 @@
 // /utils/dbStorage.ts
-
+/*
+Inside Local Storage:
+accessToken - Access Token
+refreshToken - Refresh Token
+id - User ID (if needed for quick access, but can also be decoded from access token)
+*/
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
@@ -7,9 +12,9 @@ export interface LoginResponse {
 
 class DBStorage {
   //For deployment
-  private baseURL = "https://dbstorage.onrender.com";
+  //private baseURL = "https://dbstorage.onrender.com";
   //For testing
-  //private baseURL = "http://localhost:10000";
+  private baseURL = "http://localhost:10000";
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
 
@@ -207,34 +212,34 @@ class DBStorage {
   }
 
   popJSONData(path: string[], findFn: (item: any) => boolean): any | null {
-  const keys = [...path];
-  const lastKey = keys.pop();
-  if (!lastKey) return null;
+    const keys = [...path];
+    const lastKey = keys.pop();
+    if (!lastKey) return null;
 
-  let current = this.JSONData as any;
+    let current = this.JSONData as any;
 
-  // Traverse to find the parent object
-  for (const key of keys) {
-    if (current[key] === undefined || current[key] === null) {
-      return null;
+    // Traverse to find the parent object
+    for (const key of keys) {
+      if (current[key] === undefined || current[key] === null) {
+        return null;
+      }
+      current = current[key];
     }
-    current = current[key];
-  }
 
-  const targetArray = current[lastKey];
+    const targetArray = current[lastKey];
 
-  // If it's an array, find the index of the specific item
-  if (Array.isArray(targetArray)) {
-    const index = targetArray.findIndex(findFn);
-    
-    if (index !== -1) {
-      // splice(index, 1) removes the item and returns an array containing it
-      return targetArray.splice(index, 1)[0];
+    // If it's an array, find the index of the specific item
+    if (Array.isArray(targetArray)) {
+      const index = targetArray.findIndex(findFn);
+
+      if (index !== -1) {
+        // splice(index, 1) removes the item and returns an array containing it
+        return targetArray.splice(index, 1)[0];
+      }
     }
-  }
 
-  return null;
-}
+    return null;
+  }
 
   updateJSONData(path: string[], findFn: (item: any) => boolean, newValue: any): void {
     const keys = [...path];
@@ -260,29 +265,37 @@ class DBStorage {
     }
   }
 
-
-
-
-
   // --------------------------------------------------
   // ============= USER MANAGEMENT ====================
   // Based on uploaded backend functions
   // --------------------------------------------------
+  private user: any = null;
+
   async getSelfId<T = any>() {
+    if (localStorage.getItem("id") !== null) {
+      if(this.user !== null) {
+        return this.user as T;
+      }
+      this.user = localStorage.getItem("id");
+      return this.user as T;
+    }
     const data = await this.authFetch("/user/getSelfId", {
       method: "GET",
     });
-    return data as T;
+    localStorage.setItem("id", data.id);
+    return data.id as T;
   }
 
-  //not yet available
+  //not allowed
+  /*
   async setSelfId(id: string) {
     const data = await this.authFetch("/user/setSelfId", {
       method: "PUT",
       body: JSON.stringify({ id: id }),
     });
+    localStorage.setItem("id", id);
     return data;
-  }
+  }*/
 
   async setSelfPassword(password: string) {
     const data = await this.authFetch("/user/setSelfPassword", {

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Home, Brain, Bolt, Menu as MenuIcon } from "lucide-react";
+import { UsersRound, Home, Brain, Bolt, Menu as MenuIcon } from "lucide-react";
 import Image from "next/image";
 import SimulationNav from "@/components/SimulationNav";
 
@@ -19,6 +19,7 @@ export default function FlyoutNavigation() {
     { icon: Home, label: "Learn", key: "home" },
     { icon: Brain, label: "AI Mode", key: "aimode" },
     { icon: Bolt, label: "Tools", key: "tools" },
+    { icon: UsersRound, label: "Meet the Team", key: "meet-the-team"}
   ];
 
   const sidebarStyle: React.CSSProperties = {

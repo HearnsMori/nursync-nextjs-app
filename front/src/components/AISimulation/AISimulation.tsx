@@ -422,7 +422,7 @@ export default function AISimulation() {
                     <div style={{
                         background: "white",
                         width: "48vw",
-                        height: "73vh",
+                        height: "74vh",
                         borderRadius: "1vw",
                         boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
                         display: "flex",
@@ -636,14 +636,13 @@ export default function AISimulation() {
                                 padding: "0.5vw 1vw",
                                 borderRadius: "0.5vw",
                                 margin: "auto",
-                                marginBottom: "1vw",
+                                
                                 cursor: "pointer",
                                 marginLeft: "50%",
                                 transform: "translateX(-50%)",
                             }}>
                                 Done
                             </button>
-
                         </div>
                     </div>
                 )}

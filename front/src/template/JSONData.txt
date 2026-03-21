@@ -1,13 +1,13 @@
   var user;
   const loadX = async (app, collectionName, collectionKey, key, value) => {
     user = await dbStorage.getSelfId();
-    await dbStorage.loadJSONData(app, collectionName, user.id, key, null);
+    await dbStorage.loadJSONData(app, collectionName, user, key, null);
     setX(dbStorage.getJSONData() as Xtate);
     setInitialized(true);
   };
 
   const storeX = async (app, collectionName, collectionKey, key, value, getAccess, setAccess, removeAccess) => {
-    await dbStorage.storeJSONData(app, collectionName, user.id, key, null, getAccess, setAccess, removeAccess);
+    await dbStorage.storeJSONData(app, collectionName, user, key, null, getAccess, setAccess, removeAccess);
   };
 
   const reloadX = async () => {

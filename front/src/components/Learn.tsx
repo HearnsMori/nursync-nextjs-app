@@ -24,7 +24,7 @@ export default function NurSyncCourses() {
     //level 1
     {
       level: 1,
-      url: "https://nursync.super.site/homepage/learning-hub/anatomy-and-physiology",
+      url: "https://nursync-seek.super.site/learning-hub/anatomy-and-physiology",
       title: "Anatomy and <br/> Physiology",
       aaa: "NM 1",
       sem: "First Semester",
@@ -32,7 +32,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 1,
-      url: "https://nursync.super.site/homepage/learning-hub/biochemistry",
+      url: "https://nursync-seek.super.site/learning-hub/biochemistry",
       title: "Biochemistry",
       aaa: "NM 2",
       sem: "First Semester",
@@ -40,7 +40,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 1,
-      url: "https://nursync.super.site/homepage/learning-hub/theoretical-foundations-in-nursing",
+      url: "https://nursync-seek.super.site/learning-hub/theoretical-foundations-in-nursing",
       title: "Theoretical Foundation <br/> in Nursing",
       aaa: "NP",
       sem: "First Semester",
@@ -48,7 +48,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 1,
-      url: "https://nursync.super.site/homepage/learning-hub/microbiology-and-parasitology",
+      url: "https://nursync-seek.super.site/learning-hub/microbiology-and-parasitology",
       title: "Microbiology and <br/> Parasitology",
       aaa: "NM 3",
       sem: "Second Semester",
@@ -56,7 +56,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 1,
-      url: "https://nursync.super.site/homepage/learning-hub/health-assessment",
+      url: "https://nursync-seek.super.site/learning-hub/health-assessment",
       title: "Health Assesment",
       aaa: "NP 1",
       sem: "Second Semester",
@@ -64,7 +64,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 1,
-      url: "https://nursync.super.site/homepage/learning-hub/fundamentals-of-nursing-practice",
+      url: "https://nursync-seek.super.site/learning-hub/fundamentals-of-nursing-practice",
       title: "Fundamentals of <br/> Nursing Practices",
       aaa: "NP 3",
       sem: "Second Semester",
@@ -73,7 +73,7 @@ export default function NurSyncCourses() {
     //level 2
     {
       level: 2,
-      url: "https://nursync.super.site/homepage/learning-hub/community-health-nursing",
+      url: "https://nursync-seek.super.site/learning-hub/community-health-nursing",
       title: "Community Health <br/> Nursing",
       aaa: "NP 4",
       sem: "First Semester",
@@ -81,7 +81,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 2,
-      url: "https://nursync.super.site/homepage/learning-hub/nutrition-and-diet-therapy",
+      url: "https://nursync-seek.super.site/learning-hub/nutrition-and-diet-therapy",
       title: "Nutrition and <br/> Diet Therapy",
       aaa: "NP 5",
       sem: "First Semester",
@@ -89,7 +89,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 2,
-      url: "https://nursync.super.site/homepage/learning-hub/pharmacology",
+      url: "https://nursync-seek.super.site/learning-hub/pharmacology",
       title: "Pharmacology",
       aaa: "NP 6",
       sem: "First Semester",
@@ -97,7 +97,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 2,
-      url: "https://nursync.super.site/homepage/learning-hub/care-of-mother-child-adolescents-well-clients",
+      url: "https://nursync-seek.super.site/learning-hub/care-of-mother-child-adolescents-well-clients",
       title: "Care of <br/> Mother, Child, <br/> Adolescents (Well Client)",
       aaa: "NP 7",
       sem: "Second Semester",
@@ -105,7 +105,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 2,
-      url: "https://nursync.super.site/homepage/learning-hub/health-care-ethics-bioethics",
+      url: "https://nursync-seek.super.site/learning-hub/health-care-ethics-bioethics",
       title: "Health Care Ethics <br/> (Bioethics)",
       aaa: "NP 8",
       sem: "First Semester",
@@ -113,7 +113,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 2,
-      url: "https://nursync.super.site/homepage/learning-hub/community-health-nursing-2-population-groups-and-community-as-clients",
+      url: "https://nursync-seek.super.site/learning-hub/community-health-nursing-2-population-groups-and-community-as-clients",
       title: "Community Health <br/> Nursing 2 (Population Groups <br/> and Community as Clients)",
       aaa: "",
       sem: "Second Semester",
@@ -121,7 +121,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 2,
-      url: "https://nursync.super.site/homepage/learning-hub/care-of-mother-child-at-risk-or-with-problems",
+      url: "https://nursync-seek.super.site/learning-hub/care-of-mother-child-at-risk-or-with-problems",
       title: "Care of <br/> Mother, Child at <br/> Risk or With Problems",
       aaa: "",
       sem: "Second Semester",
@@ -129,7 +129,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 2,
-      url: "https://nursync.super.site/homepage/learning-hub/nursing-informatics",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-informatics",
       title: "Nursing Informatics",
       aaa: "",
       sem: "Second Semester",
@@ -138,7 +138,7 @@ export default function NurSyncCourses() {
     //level 3
     {
       level: 3,
-      url: "https://nursync.super.site/homepage/learning-hub/care-of-clients-with-problems-in-oxygenation-fluid-and-electrolyte-infectious-inflammatory-and-immunologic-response-cellular-aberration-acute-chronic",
+      url: "https://nursync-seek.super.site/learning-hub/care-of-clients-with-problems-in-oxygenation-fluid-and-electrolyte-infectious-inflammatory-and-immunologic-response-cellular-aberration-acute-chronic",
       title: "Care of Clients with Problems <br/> in Oxygenation, Fluid and Electrolyte, <br/> Infectious, Inflammatory and <br/> Immunologic Response, Cellular Aberration, <br/> Acute and Chronic",
       aaa: "...",
       sem: "First Semester",
@@ -146,7 +146,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 3,
-      url: "https://nursync.super.site/homepage/learning-hub/care-of-older-adult",
+      url: "https://nursync-seek.super.site/learning-hub/care-of-older-adult",
       title: "Care of Older Adult",
       aaa: "...",
       sem: "First Semester",
@@ -154,7 +154,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 3,
-      url: "https://nursync.super.site/homepage/learning-hub/nursing-research-1",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-research-1",
       title: "Nursing Research 1",
       aaa: "...",
       sem: "First Semester",
@@ -162,7 +162,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 3,
-      url: "https://nursync.super.site/homepage/learning-hub/nursing-entrepreneurship",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-entrepreneurship",
       title: "Nursing Entrepreneurship",
       aaa: "...",
       sem: "First Semester",
@@ -170,7 +170,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 3,
-      url: "https://nursync.super.site/homepage/learning-hub/care-of-clients-maladaptive-patterns-of-behavior-acute-and-chronic-psych",
+      url: "https://nursync-seek.super.site/learning-hub/care-of-clients-maladaptive-patterns-of-behavior-acute-and-chronic-psych",
       title: "Care of Clients <br/> with Maladaptive Patterns of Behavior <br/> Acute and Chronic Psych",
       aaa: "...",
       sem: "Second Semester",
@@ -178,7 +178,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 3,
-      url: "https://nursync.super.site/homepage/learning-hub/care-of-clients-with-problems-in-nutrition-gastrointestinal-metabolism-and-endocrine-perception-and-coordination-acute-chronic",
+      url: "https://nursync-seek.super.site/learning-hub/care-of-clients-with-problems-in-nutrition-gastrointestinal-metabolism-and-endocrine-perception-and-coordination-acute-chronic",
       title: "Care of Clients <br/> with Problems in Nutrition, <br/> Gastrointestinal, Metabolism and <br/> Endocrine, Perception and Coordination <br/> Acute and Chronic",
       aaa: "...",
       sem: "Second Semester",
@@ -186,7 +186,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 3,
-      url: "https://nursync.super.site/homepage/learning-hub/nursing-research-2",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-research-2",
       title: "Nursing Research 2",
       aaa: "...",
       sem: "Second Semester",
@@ -195,7 +195,7 @@ export default function NurSyncCourses() {
     //level 4
     {
       level: 4,
-      url: "https://nursync.super.site/homepage/learning-hub/nursing-competency-appraisal-1",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-competency-appraisal-1",
       title: "Nursing Competency Appraisal 1",
       aaa: "...",
       sem: "First Semester",
@@ -203,7 +203,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 4,
-      url: "https://nursync.super.site/homepage/learning-hub/decent-work-employment-and-transcultural-nursing-and-spirituality",
+      url: "https://nursync-seek.super.site/learning-hub/decent-work-employment-and-transcultural-nursing-and-spirituality",
       title: "Decent Work, Employment and Transcultural Nursing and Spirituality",
       aaa: "...",
       sem: "First Semester",
@@ -211,7 +211,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 4,
-      url: "https://nursync.super.site/homepage/learning-hub/nursing-leadership-and-management",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-leadership-and-management",
       title: "Nursing Leadership and Management",
       aaa: "...",
       sem: "First Semester",
@@ -219,7 +219,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 4,
-      url: "https://nursync.super.site/homepage/learning-hub/nursing-care-of-clients-with-life-threatening-conditions-acutely-illmulti-organ-problems-high-acuity-and-emergency-situation-acute-nd-chronic",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-care-of-clients-with-life-threatening-conditions-acutely-illmulti-organ-problems-high-acuity-and-emergency-situation-acute-nd-chronic",
       title: "Nursing Care of Clients with Life-Threatening Conditions, Acutely Ill/Multi-Organ Problems, High Acuity and Emergency Situation, Acute and Chronic",
       aaa: "...",
       sem: "First Semester",
@@ -227,7 +227,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 4,
-      url: "https://nursync.super.site/homepage/learning-hub/nursing-competency-appraisal-2",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-competency-appraisal-2",
       title: "Nursing Competency Appraisal 2",
       aaa: "...",
       sem: "Second Semester",
@@ -235,7 +235,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 4,
-      url: "https://nursync.super.site/homepage/learning-hub/intensive-nursing-practicum-hospital-and-community-settings",
+      url: "https://nursync-seek.super.site/learning-hub/intensive-nursing-practicum-hospital-and-community-settings",
       title: "Intensive Nursing Practicum Hospital and Community Settings",
       aaa: "...",
       sem: "Second Semester",
@@ -243,7 +243,7 @@ export default function NurSyncCourses() {
     },
     {
       level: 4,
-      url: "https://nursync.super.site/homepage/learning-hub/disaster-nursing",
+      url: "https://nursync-seek.super.site/learning-hub/disaster-nursing",
       title: "Disaster Nursing",
       aaa: "...",
       sem: "Second Semester",
@@ -287,7 +287,7 @@ export default function NurSyncCourses() {
   // --- Timer Logic ---
   useEffect(() => {
     saveEverySec();
-  }, [isCourseOpen, courseUrl]);
+  }, [isCourseOpen]);
 
   const saveEverySec = async () => {
     let interval: any;
@@ -333,7 +333,9 @@ export default function NurSyncCourses() {
   };
 
   const handleCourseClick = (url: string) => {
+    //alert(url);
     setCourseUrl(url);
+    //alert(courseUrl);
     setIsCourseOpen(true);
   };
 
@@ -400,7 +402,7 @@ export default function NurSyncCourses() {
         >
           {filtered.map((course, i) => (
             <motion.a
-              onClick={() => handleCourseClick(course.url)}
+              onClick={() => {handleCourseClick(course.url);}}
               key={i}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
@@ -472,7 +474,7 @@ export default function NurSyncCourses() {
         </div>
       </div>
 
-      {isCourseOpen && (
+      {isCourseOpen && courseUrl && (
         <div
           style={{
             position: "fixed",
@@ -509,7 +511,8 @@ export default function NurSyncCourses() {
             </svg>
           </div>
           <iframe
-            src={courseUrl}
+            key={courseUrl}
+            src={"https://nursync-seek.super.site/learning-hub/anatomy-and-physiology"}
             style={{
               height: "100%",
               width: "100%",

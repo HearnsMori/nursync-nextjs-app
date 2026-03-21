@@ -55,7 +55,7 @@ const LaunchSimulationButton = () => {
 
                 /* Typography */
                 fontFamily: 'system-ui, -apple-system, sans-serif',
-                fontSize: '16px',
+                fontSize: '11px',
                 fontWeight: '600',
                 letterSpacing: '0.3px',
                 boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
@@ -71,10 +71,10 @@ const LaunchSimulationButton = () => {
                     justifyContent: 'center',
                     background: 'rgba(255, 255, 255, 0.15)',
                     borderRadius: '50%',
-                    padding: '6px'
+                    padding: '3px'
                 }}
             >
-                <Stethoscope size={20} strokeWidth={2.5} />
+                <Stethoscope size={15} strokeWidth={2.5} />
             </motion.div>
 
             <span>{txt}</span>
