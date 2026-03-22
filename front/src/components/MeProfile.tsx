@@ -77,7 +77,7 @@ export default function NurSyncProfile() {
       const readId = await dbStorage.getSelfId();
       var updateUsername;
       if (readId !== formData.username) {
-        updateUsername = await dbStorage.setSelfId(formData.username);
+        //updateUsername = await dbStorage.setSelfId(formData.username);
       }
       const updatePassword = await dbStorage.setSelfPassword(formData.password);
       //alert(JSON.stringify(formData));
