@@ -15,8 +15,15 @@ import ChatAI from "@/components/ChatAI";
 import { User, UsersRound } from "lucide-react";
 import "../globals.css";
 
+export default function MainHome() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+        </Suspense>
+    )
+}
 
-export default function Home() {
+function Home() {
     const router = useRouter();
     const [authorized, setAuthorized] = useState<boolean | null>(null);
     const searchParams = useSearchParams();
