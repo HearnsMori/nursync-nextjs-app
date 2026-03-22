@@ -57,120 +57,120 @@ export default function Home() {
     // authorized === true -> show page
     return (
         <div className='screenWithFlyout'>
-            <Header isLoggedIn={true} />
-            <div style={{
-                marginTop: '4vw',
-            }}>
+            <Suspense fallback={<div>Loading...</div>}>
+
+                <Header isLoggedIn={true} />
                 <div style={{
-                    display: "flex",
-                    flexFlow: "row nowrap",
+                    marginTop: '4vw',
                 }}>
                     <div style={{
-                        width: '73px', // or use '15.625rem'
-                        minWidth: '73px', // Add minWidth to prevent shrinking
+                        display: "flex",
+                        flexFlow: "row nowrap",
                     }}>
-                        <Flyout />
-                    </div>
-                    <div style={{ flex: 1, width: '100%', minHeight: '100vh' }}>
-                        {/*Main Content Here*/}
+                        <div style={{
+                            width: '73px', // or use '15.625rem'
+                            minWidth: '73px', // Add minWidth to prevent shrinking
+                        }}>
+                            <Flyout />
+                        </div>
+                        <div style={{ flex: 1, width: '100%', minHeight: '100vh' }}>
+                            {/*Main Content Here*/}
 
-                        {idAsInteger === -1 && (
-                            <section style={{
-                                padding: '30px 10px',
-                                backgroundColor: '#fff',
-                                fontFamily: 'sans-serif',
-                                textAlign: 'center',
-                            }}>
-                                <div style={{ marginBottom: '20px' }}>
-                                    <p style={{ color: '#2e7d32', fontSize: '14px', fontWeight: 'bold', margin: 0 }}>WHO MADE IT?</p>
-                                    <h1 style={{
-                                        color: '#2e7d32',
-                                        fontSize: '48px',
-                                        fontWeight: 'normal',
-                                        margin: '10px 0',
-                                        textTransform: 'uppercase'
-                                    }}>
-                                        Meet the Team
-                                    </h1>
-                                </div>
-
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    gap: '20px',
-                                    flexWrap: 'wrap',
-                                    maxWidth: '1200px',
-                                    margin: '0 auto'
+                            {idAsInteger === -1 && (
+                                <section style={{
+                                    padding: '30px 10px',
+                                    backgroundColor: '#fff',
+                                    fontFamily: 'sans-serif',
+                                    textAlign: 'center',
                                 }}>
-                                    {[
-                                        { name: 'SOLIVIO, Kaye', role: 'Lead Visual Designer, Associate UI Specialist & Researcher' },
-                                        { name: 'TAMAYO, Mary Chelsea', role: 'Co-Founder, Director of Relations & Researcher' },
-                                        { name: 'VARGAS, Sandara Mae', role: 'Founder, Head of Product Systems & Lead Researcher' },
-                                        { name: 'MORI, Hearns', role: 'Platform UX Engineer & Lead Developer' },
-                                    ].map((member, index) => (
-                                        <motion.div
-                                            key={index}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: index * 0.1 }}
-                                            onClick={(e) => { changeId(index) }}
-                                            style={{
-                                                width: '173px',
-                                                position: 'relative',
-                                                overflow: 'hidden',
-                                                borderRadius: '4px',
-                                                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                                            }}
-                                        >
-                                            {/* Image Container */}
-                                            <div style={{
-                                                width: '100%',
-                                                height: '280px',
-                                                backgroundColor: '#1e3a8a', // Blue background as requested
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center'
-                                            }}>
-                                                <User size={64} color="rgba(255,255,255,0.3)" />
-                                            </div>
+                                    <div style={{ marginBottom: '20px' }}>
+                                        <p style={{ color: '#2e7d32', fontSize: '14px', fontWeight: 'bold', margin: 0 }}>WHO MADE IT?</p>
+                                        <h1 style={{
+                                            color: '#2e7d32',
+                                            fontSize: '48px',
+                                            fontWeight: 'normal',
+                                            margin: '10px 0',
+                                            textTransform: 'uppercase'
+                                        }}>
+                                            Meet the Team
+                                        </h1>
+                                    </div>
 
-                                            {/* Overlay Text Content */}
-                                            <div style={{
-                                                position: 'absolute',
-                                                bottom: 0,
-                                                left: 0,
-                                                right: 0,
-                                                padding: '15px',
-                                                background: 'linear-gradient(transparent, rgba(21, 67, 34, 0.95))',
-                                                color: 'white',
-                                                textAlign: 'center'
-                                            }}>
-                                                <h3 style={{ margin: '0 0 5px 0', fontSize: '16px', fontWeight: 'bold' }}>
-                                                    {member.name}
-                                                </h3>
-                                                <p style={{ margin: 0, fontSize: '11px', lineHeight: '1.4', opacity: 0.9 }}>
-                                                    {member.role}
-                                                </p>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </div>
-                            </section>
-                        )}
-                        {
-                            idAsInteger !== -1 && (
-                                <Suspense fallback={<div>Loading team...</div>}>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        gap: '20px',
+                                        flexWrap: 'wrap',
+                                        maxWidth: '1200px',
+                                        margin: '0 auto'
+                                    }}>
+                                        {[
+                                            { name: 'SOLIVIO, Kaye', role: 'Lead Visual Designer, Associate UI Specialist & Researcher' },
+                                            { name: 'TAMAYO, Mary Chelsea', role: 'Co-Founder, Director of Relations & Researcher' },
+                                            { name: 'VARGAS, Sandara Mae', role: 'Founder, Head of Product Systems & Lead Researcher' },
+                                            { name: 'MORI, Hearns', role: 'Platform UX Engineer & Lead Developer' },
+                                        ].map((member, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: index * 0.1 }}
+                                                onClick={(e) => { changeId(index) }}
+                                                style={{
+                                                    width: '173px',
+                                                    position: 'relative',
+                                                    overflow: 'hidden',
+                                                    borderRadius: '4px',
+                                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                                                }}
+                                            >
+                                                {/* Image Container */}
+                                                <div style={{
+                                                    width: '100%',
+                                                    height: '280px',
+                                                    backgroundColor: '#1e3a8a', // Blue background as requested
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center'
+                                                }}>
+                                                    <User size={64} color="rgba(255,255,255,0.3)" />
+                                                </div>
+
+                                                {/* Overlay Text Content */}
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    bottom: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    padding: '15px',
+                                                    background: 'linear-gradient(transparent, rgba(21, 67, 34, 0.95))',
+                                                    color: 'white',
+                                                    textAlign: 'center'
+                                                }}>
+                                                    <h3 style={{ margin: '0 0 5px 0', fontSize: '16px', fontWeight: 'bold' }}>
+                                                        {member.name}
+                                                    </h3>
+                                                    <p style={{ margin: 0, fontSize: '11px', lineHeight: '1.4', opacity: 0.9 }}>
+                                                        {member.role}
+                                                    </p>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </section>
+                            )}
+                            {
+                                idAsInteger !== -1 && (
                                     <MeetTheTeam />
-                                </Suspense>
-                            )
-                        }
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <Footer isLoggedIn={true} />
-            <ChatAI />
-
+                <Footer isLoggedIn={true} />
+                <ChatAI />
+            </Suspense>
         </div>
     );
 }
