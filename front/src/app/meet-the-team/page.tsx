@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from 'react';
 //components
 import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
@@ -112,7 +113,7 @@ export default function Home() {
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: index * 0.1 }}
-                                            onClick={(e) => {changeId(index)}}
+                                            onClick={(e) => { changeId(index) }}
                                             style={{
                                                 width: '173px',
                                                 position: 'relative',
@@ -158,7 +159,9 @@ export default function Home() {
                         )}
                         {
                             idAsInteger !== -1 && (
-                                <MeetTheTeam />
+                                <Suspense fallback={<div>Loading team...</div>}>
+                                    <MeetTheTeam />
+                                </Suspense>
                             )
                         }
                     </div>
