@@ -56,7 +56,7 @@ export default function Home() {
           }}>
             <Flyout />
           </div>
-          <div style={{ flex: 1, display: "flex", flexFlow: "row nowrap", }}>
+          <div style={{ flex: 1, display: "flex", flexFlow: "row nowrap", margin: 0 }}>
             <AISimulation />
           </div>
         </div>

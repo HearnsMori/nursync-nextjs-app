@@ -1,10 +1,3 @@
-// /utils/dbStorage.ts
-/*
-Inside Local Storage:
-accessToken - Access Token
-refreshToken - Refresh Token
-id - User ID (if needed for quick access, but can also be decoded from access token)
-*/
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;

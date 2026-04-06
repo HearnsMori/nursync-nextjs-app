@@ -1,6 +1,7 @@
 "use client";
 
-import dbStorage from "@/utils/dbstorage";
+
+import coreApi from "@/utils/coreApi";
 import React, { useState, useCallback, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -84,8 +85,8 @@ const App: React.FC = () => {
     if (isValid) {
 
       try {
-        const signin = await dbStorage.signin(formData.username, formData.password);
-        if (signin) {
+        const login = await coreApi.login(formData.username, formData.password);
+        if (login) {
           customAlert("Login Successfully.");
           router.push('/home')
         }

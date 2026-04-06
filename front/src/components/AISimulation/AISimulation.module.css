@@ -1,0 +1,19 @@
+.tabButton {
+  font-weight: 700;
+  padding: 0.5vw;
+  font-size: 1vw;
+  color: black;
+  width: 33%;
+  height: 95%;
+  border-radius: 3vw;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.active {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: scale(1.05);
+}

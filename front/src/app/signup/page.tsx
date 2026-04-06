@@ -1,6 +1,6 @@
 'use client';
 
-import dbStorage from '@/utils/dbstorage';
+import coreApi from '@/utils/coreApi'
 
 import React, { useState, useRef, useEffect, useCallback, ChangeEvent } from 'react';
 import Head from 'next/head';
@@ -136,35 +136,12 @@ const Signup = () => {
     if (!validateForm()) { return; }
     const newErrors: Record<keyof FormData, string | null> = { ...errors };
     const { firstname, lastname, middlename, university, studentid, emailaddress, username, password } = formData;
-    localStorage.setItem("firstname", firstname);
-    localStorage.setItem("lastname", lastname);
-    localStorage.setItem("middlename", middlename);
-    localStorage.setItem("university", university);
-    localStorage.setItem("studentid", studentid);
-    localStorage.setItem("username", username);
-    localStorage.setItem("password", password);
-    localStorage.setItem("emailaddress", emailaddress);
+    
     try {
-      const signup = await dbStorage.signup(username, password);
-      if (signup) {
-        const login = await dbStorage.signin(username, password);
-        if (login) {
-          const createModel = await dbStorage.setItem(
-            "nursync",
-            "user",
-            username,
-            ["username", "emailaddress", "password", "firstname", "lastname", "middlename", "university", "studentid", "emailaddress"],
-            [username, emailaddress, password, firstname, lastname, middlename, university, studentid, emailaddress],
-            ["#all"],
-            [username],
-            [username],
-          );
-          //alert(username);
-          if (createModel) {
-            customAlert(signup.message);
-            router.push("/home");
-          }
-        }
+      const signup = await coreApi.signup(username, password, {emailaddress}, {firstname, lastname, middlename, university, studentid});
+      alert(signup.message);
+      if (signup.success) {
+        router.push("/login");
       }
     } catch (error) {
       customAlert(error instanceof Error ? error.message : String(error));

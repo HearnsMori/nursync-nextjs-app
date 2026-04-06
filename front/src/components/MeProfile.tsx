@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import CustomAlert from "@/components/CustomAlert";
 
 //utils
-import dbStorage from "@/utils/dbstorage"
+import coreApi from '@/utils/coreApi'
 
 export default function NurSyncProfile() {
   const [alertMessage, setAlertMessage] = useState<string>("");
@@ -48,80 +48,41 @@ export default function NurSyncProfile() {
 
 
   const getUserInfo = async () => {
-    const data = await dbStorage.getSelfId();
-    const res = await dbStorage.getItem(
-      'nursync',
-      'user',
-      data?.id,
-      null,
-      null
-    );
-    
-    if (res) {
-      //alert(JSON.stringify(res));
+    const selfInfo = await coreApi.getUser('#self');
+
+    if (selfInfo) {
       setFormData({
-        firstname: res?.nursync?.user?.firstname ?? "",
-        lastname: res?.nursync?.user?.lastname ?? "",
-        middlename: res?.nursync?.user?.middlename ?? "",
-        university: res?.nursync?.user?.university ?? "",
-        studentid: res?.nursync?.user?.studentid ?? "",
-        emailaddress: res?.nursync?.user?.emailaddress ?? "",
-        username: res?.nursync?.user?.username ?? "",
-        password: res?.nursync?.user?.password ?? "",
+        firstname: selfInfo.user?.userData?.firstname ?? "",
+        lastname: selfInfo.user?.userData?.lastname ?? "",
+        middlename: selfInfo.user?.userData?.middlename ?? "",
+        university: selfInfo.user?.userData?.university ?? "",
+        studentid: selfInfo.user?.userData?.studentid ?? "",
+        emailaddress: selfInfo.user?.userLink?.emailaddress ?? "",
+        username: selfInfo.user?.userId ?? "",
+        password: "",
       });
     }
   };
 
   const updateUserInfo = async () => {
     try {
-      const readId = await dbStorage.getSelfId();
-      var updateUsername;
-      if (readId !== formData.username) {
-        //updateUsername = await dbStorage.setSelfId(formData.username);
-      }
-      const updatePassword = await dbStorage.setSelfPassword(formData.password);
-      //alert(JSON.stringify(formData));
-      if (updateUsername || updatePassword) {
-        const removeModel = await dbStorage.removeItem(
-          'nursync',
-          'user',
-          readId,
-          null,
-          null
-        );
-        if (removeModel) {
-          const newModel = await dbStorage.setItem(
-            'nursync',
-            'user',
-            formData.username,
-            ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password", "username"],
-            [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password, formData.username],
-            ["#all"],
-            [formData.username],
-            [formData.username]
-          );
-          //alert(JSON.stringify(newModel));
-          if (newModel) {
-            customAlert('Updated Successfully.');
-          }
+      const updateUser = await coreApi.updateUser('#self', {
+        userId: formData.username,
+        userData: {
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          middlename: formData.middlename,
+          studentid: formData.studentid,
+          university: formData.university,
+        },
+        userLink: {
+          emailaddress: formData.emailaddress,
         }
-      } else {
-        const newModel = await dbStorage.setItem(
-          'nursync',
-          'user',
-          formData.username,
-          ["firstname", "lastname", "middlename", "university", "studentid", "emailaddress", "password", "username"],
-          [formData.firstname, formData.lastname, formData.middlename, formData.university, formData.studentid, formData.emailaddress, formData.password, formData.username],
-          ["#all"],
-          [formData.username],
-          [formData.username]
-        );
-        
-        alert(JSON.stringify(newModel));
-        if (newModel) {
-          customAlert('Updated Successfully.');
-        }
+      })
+      if (updateUser) {
+        customAlert(updateUser.message);
       }
+
     } catch (error) {
       customAlert(error instanceof Error ? error.message : String(error));
     }
@@ -250,15 +211,15 @@ export default function NurSyncProfile() {
           {/* FORM FIELDS */}
           {Object.keys(formData).map((key, index) => (
             <div key={index}>
-              <label style={labelStyle}>{key.toUpperCase()} 
-                <span style={{ fontSize: "1vw", color: "#757575" }}>{key === "username" ? " (cannot be changed)" : ""}</span>
+              <label style={labelStyle}>{key.toUpperCase()}
+                <span style={{ fontSize: "1vw", color: "#757575" }}>{key === "password" ? " (cannot be changed)" : ""}</span>
               </label>
               <input
                 style={inputStyle}
                 type={key === "password" ? "password" : "text"}
                 name={key}
                 value={formData[key as keyof typeof formData]}
-                disabled={!editMode || key === "username"}
+                disabled={!editMode || key === "password"}
                 onChange={handleChange}
               />
             </div>

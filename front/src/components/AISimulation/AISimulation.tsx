@@ -1,12 +1,14 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import dbStorage from "@/utils/dbstorage";
+import coreApi from "@/utils/coreApi";
+import styles from "./AISimulation.module.css";
 import Image from "next/image";
-import { Search, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, X, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 
 export default function AISimulation() {
-    const [tab, setTab] = useState<"welcome" | "caseLibrary" | "dailyPatient" | "subscribe">("welcome");
+    const [tab, setTab] = useState<"welcome" | "caseLibrary" | "dailyPatient" | "charting" | "subscribe">("welcome");
+    const [caseLibTab, setCaseLibTab] = useState<"byUnit" | "bySpecialty" | "allCases">("byUnit");
     return (
         <div style={{
             display: "flex",
@@ -59,40 +61,24 @@ export default function AISimulation() {
                                 padding: "0.5vw 1vw",
                                 borderRadius: "5vw",
                             }}>
-                                <button style={{
-                                    fontWeight: 700,
-                                    padding: "0.5vw",
-                                    background: "white",
-                                    fontSize: "1vw",
-                                    color: "black",
-                                    width: "33%",
-                                    height: "95%",
-                                    borderRadius: "3vw",
-                                }}>
+                                <button
+                                    className={`${styles.tabButton} ${caseLibTab === "byUnit" ? styles.active : ""}`}
+                                    onClick={() => setCaseLibTab("byUnit")}
+                                >
                                     By Unit
                                 </button>
-                                <button style={{
-                                    fontWeight: 700,
-                                    padding: "0.5vw",
-                                    background: "white",
-                                    fontSize: "1vw",
-                                    color: "black",
-                                    width: "33%",
-                                    height: "95%",
-                                    borderRadius: "3vw",
-                                }}>
+
+                                <button
+                                    className={`${styles.tabButton} ${caseLibTab === "bySpecialty" ? styles.active : ""}`}
+                                    onClick={() => setCaseLibTab("bySpecialty")}
+                                >
                                     By Specialty
                                 </button>
-                                <button style={{
-                                    fontWeight: 700,
-                                    padding: "0.5vw",
-                                    background: "white",
-                                    fontSize: "1vw",
-                                    color: "black",
-                                    width: "33%",
-                                    height: "95%",
-                                    borderRadius: "3vw",
-                                }}>
+
+                                <button
+                                    className={`${styles.tabButton} ${caseLibTab === "allCases" ? styles.active : ""}`}
+                                    onClick={() => setCaseLibTab("allCases")}
+                                >
                                     All Cases
                                 </button>
                             </div>
@@ -133,30 +119,296 @@ export default function AISimulation() {
                             flex: 6,
 
                         }}>
-                            <div style={{
-                                flex: 1,
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
-                                <ChevronLeft size={21} color="black" strokeWidth={2} />
-                            </div>
-                            <div style={{
-                                flex: 11,
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
+                            {/* Case Librarary Sub Tab*/}
+                            {caseLibTab === "byUnit" && (
+                                <>
+                                    <div style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
+                                        <ChevronLeft size={21} color="black" strokeWidth={2} />
+                                    </div>
+                                    <div style={{
+                                        flex: 11,
+                                        display: "flex",
+                                        flexFlow: "row nowrap",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
+                                        <div style={{
+                                            display: "flex",
+                                            flexFlow: "column nowrap",
+                                            gap: "3vw",
+                                            flex: 1,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Emergency Department (ED/ER)
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Intensive Care Unit (ICU)
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Operating Room (OR)
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Post-Anesthesia Care Unit (PACU)
+                                            </button>
+                                        </div>
+                                        <div style={{
+                                            display: "flex",
+                                            flexFlow: "column nowrap",
+                                            gap: "3vw",
+                                            flex: 1,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Delivery Room (DR)
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Medical-Surgical Ward (Med-Surg)
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Outpatient / Ambulatory Clinic
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
+                                        <ChevronRight size={21} color="black" strokeWidth={2} />
+                                    </div>
+                                </>
+                            )}
+                            {caseLibTab === "bySpecialty" && (
+                                <>
+                                    <div style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
+                                        <ChevronLeft size={21} color="black" strokeWidth={2} />
+                                    </div>
+                                    <div style={{
+                                        flex: 11,
+                                        display: "flex",
+                                        flexFlow: "row nowrap",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
+                                        <div style={{
+                                            display: "flex",
+                                            flexFlow: "column nowrap",
+                                            gap: "3vw",
+                                            flex: 1,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Perioperative Nursing
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Critical Care Nursing
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Pediatric Nursing
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Geriatric Nursing
+                                            </button>
+                                        </div>
+                                        <div style={{
+                                            display: "flex",
+                                            flexFlow: "column nowrap",
+                                            gap: "3vw",
+                                            flex: 1,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Obstetric & Gynecological (OB-GYN) Nursing
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Psychiatric-Mental Health Nursing
+                                            </button>
+                                            <button style={{
+                                                background: "white",
+                                                color: "green",
+                                                border: "3px solid green",
+                                                fontWeight: 700,
+                                                padding: "1.5vw 0",
+                                                width: "90%",
+                                                fontSize: "1.1vw",
+                                                borderRadius: "1.5vw",
+                                            }}>
+                                                Community Health Nursing
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
+                                        <ChevronRight size={21} color="black" strokeWidth={2} />
+                                    </div>
+                                </>
+                            )}
+                            {caseLibTab === "allCases" && (
+                                <>
+                                    <div style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
+                                        <ChevronLeft size={21} color="black" strokeWidth={2} />
+                                    </div>
+                                    <div style={{
+                                        flex: 11,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
 
-                            </div>
-                            <div style={{
-                                flex: 1,
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                            }}>
-                                <ChevronRight size={21} color="black" strokeWidth={2} />
-                            </div>
+                                    </div>
+                                    <div style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}>
+                                        <ChevronRight size={21} color="black" strokeWidth={2} />
+                                    </div>
+                                </>
+                            )}
+
                         </div>
                     </div>
                 )}
@@ -177,7 +429,7 @@ export default function AISimulation() {
                         {/* Close Button */}
                         <div onClick={(e) => {
                             setTab("caseLibrary");
-                        }}style={{
+                        }} style={{
                             position: "absolute",
                             right: "20px",
                             top: "15px",
@@ -636,7 +888,7 @@ export default function AISimulation() {
                                 padding: "0.5vw 1vw",
                                 borderRadius: "0.5vw",
                                 margin: "auto",
-                                
+
                                 cursor: "pointer",
                                 marginLeft: "50%",
                                 transform: "translateX(-50%)",
@@ -658,6 +910,17 @@ export default function AISimulation() {
                 flexFlow: "column nowrap",
                 gap: "2vw",
             }}>
+                <div style={{
+                    fontWeight: 700,
+                    fontSize: "2.5vw",
+                    color: "white",
+                    textShadow: "3px 3px 5px #000000bb",
+                    marginTop: "2vw",
+                }}>
+                    Nursing
+                    <span style={{ marginLeft: "0.3vw" }}><GraduationCap size={33} color="white" strokeWidth={3} /></span>
+                    <br /> Simulation
+                </div>
                 <motion.button
                     onClick={(e) => {
                         setTab("caseLibrary");
@@ -680,7 +943,7 @@ export default function AISimulation() {
                         padding: "1vw",
                         cursor: "pointer",
                     }}>
-                    <b style={{ fontSize: "2vw" }}>Case Library</b><br />
+                    <b style={{ fontSize: "1.7vw" }}>Case Library</b><br />
                     Browse the library for free
                 </motion.button>
                 <motion.button
@@ -705,8 +968,33 @@ export default function AISimulation() {
                         padding: "1vw",
                         cursor: "pointer",
                     }}>
-                    <b style={{ fontSize: "2vw" }}>Daily Patient</b><br />
+                    <b style={{ fontSize: "1.7vw" }}>Daily Patient</b><br />
                     Play the daily featured cases
+                </motion.button>
+                <motion.button
+                    onClick={(e) => {
+                        setTab("charting");
+                    }}
+                    whileTap={{ scale: 1.2 }}
+                    animate={{
+                        // Pulsing both the brightness and the scale for a "breathing" effect
+                        scale: [0.5, 1],
+                    }}
+                    transition={{
+                        duration: 0.4,
+                        ease: "easeInOut",
+                    }}
+                    style={{
+                        width: "73%",
+                        background: (tab === "charting") ? "#5037FF" : "#149848",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "2vw",
+                        padding: "1vw",
+                        cursor: "pointer",
+                    }}>
+                    <b style={{ fontSize: "1.7vw" }}>Charting</b><br />
+                    Exercise your charting skill
                 </motion.button>
                 <motion.button
                     onClick={(e) => {
@@ -722,16 +1010,16 @@ export default function AISimulation() {
                         ease: "easeInOut",
                     }}
                     style={{
+                        color: "black",
+                        marginTop: "3vw",
                         width: "73%",
-                        background: (tab === "subscribe") ? "#5037FF" : "#026e2c",
-                        color: "white",
+                        background: (tab === "subscribe") ? "#5037FF" : "white",
                         border: "none",
                         borderRadius: "2vw",
                         padding: "1vw",
                         cursor: "pointer",
                     }}>
-                    <b style={{ fontSize: "2vw" }}>Subscribe</b><br />
-                    Subscribe to all 200+ cases
+                    <b style={{ fontSize: "1.5vw", color: "green", textShadow: "3px 3px 5px #000000bb" }}>Tokens: <span style={{ color: "black" }}>10</span> </b>
                 </motion.button>
                 <span onClick={(e) => {
                     setTab("welcome");
@@ -739,8 +1027,9 @@ export default function AISimulation() {
                     color: "white",
                     textDecoration: "underline",
                     cursor: "pointer",
+                    marginBottom: "2vw",
                 }}>
-                    What's new?
+                    Not Enough Tokens? Avail here!
                 </span>
             </div>
 
