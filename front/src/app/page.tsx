@@ -178,6 +178,7 @@ export default function Home() {
               justifyContent: 'left',
               width: '95vw',
               height: '8vw',
+              marginBottom: '1vw',
             }}>
             <div
               className="flexR"

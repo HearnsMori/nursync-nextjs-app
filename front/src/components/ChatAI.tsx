@@ -1,337 +1,263 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import dbStorage from "@/utils/dbstorage";
+import { Send, MessageCircle, X, Bot, User } from "lucide-react";
+import coreApi from "@/utils/coreApi";
 
-// --- TypeScript Interfaces ---
+// ---------------- TYPES ----------------
 interface Message {
   sender: "AI" | "User";
   text: string;
   id: number;
-  isTyping?: boolean;
 }
 
-interface TypingAnimationProps {
-  text: string;
-}
+// ---------------- TRUE TYPING EFFECT ----------------
+const TypingText: React.FC<{ text: string }> = ({ text }) => {
+  const [displayed, setDisplayed] = useState("");
 
-interface MessageBubbleProps {
-  message: Message;
-  isTyping: boolean;
-}
+  useEffect(() => {
+    let i = 0;
+    setDisplayed("");
 
-// --- Typing Animation ---
-const TypingAnimation: React.FC<TypingAnimationProps> = ({ text }) => {
-  const characters = text.split("");
-  return (
-    <div style={{ display: "inline-block" }}>
-      {characters.map((char, index) => (
-        <motion.span
-          key={index}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.01,
-            delay: index * 0.02,
-            type: "spring",
-            stiffness: 500,
-            damping: 40,
-          }}
-          style={{ display: "inline-block" }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
-    </div>
-  );
+    const interval = setInterval(() => {
+      setDisplayed(text.slice(0, i + 1));
+      i++;
+      if (i >= text.length) clearInterval(interval);
+    }, 15); // speed
+
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <span>{displayed}</span>;
 };
 
-// --- Loading Dots ---
-const LoadingDots: React.FC = () => (
-  <div style={{ display: "flex", alignItems: "center", height: "1.25rem" }}>
-    {[0, 1, 2].map((i) => (
-      <motion.span
-        key={i}
-        animate={{ y: ["0%", "-50%", "0%"] }}
-        transition={{
-          duration: 0.8,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: i * 0.2,
-        }}
-        style={{
-          display: "block",
-          width: "0.5rem",
-          height: "0.5rem",
-          margin: "0 0.2rem",
-          backgroundColor: "#fff",
-          borderRadius: "50%",
-        }}
-      />
-    ))}
-  </div>
-);
-
-// --- Message Bubble ---
-const MessageBubble: React.FC<MessageBubbleProps> = ({ message, isTyping }) => {
-  const isBot = message.sender === "AI";
-  const bubbleStyle: React.CSSProperties = {
-    maxWidth: "84%",
-    padding: "0.75rem 1rem",
-    borderRadius: "1.25rem",
-    marginBottom: "0.6rem",
-    wordBreak: "break-word",
-    overflowWrap: "break-word",
-    whiteSpace: "pre-wrap",
-    fontSize: "0.9rem",
-    lineHeight: "1.4",
-    alignSelf: isBot ? "flex-start" : "flex-end",
-    backgroundColor: isBot ? "#026e2c" : "#e0e0e0",
-    color: isBot ? "#ffffff" : "#333333",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-  };
+// ---------------- MESSAGE ----------------
+const MessageBubble = ({ msg }: { msg: Message }) => {
+  const isBot = msg.sender === "AI";
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      style={bubbleStyle}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      style={{
+        display: "flex",
+        alignItems: "flex-end",
+        gap: "8px",
+        justifyContent: isBot ? "flex-start" : "flex-end",
+      }}
     >
-      {isBot && isTyping ? (
-        <LoadingDots />
-      ) : isBot && message.text ? (
-        <TypingAnimation text={message.text} />
-      ) : (
-        message.text
-      )}
+      {isBot && <Bot size={18} color="#22c55e" />}
+
+      <div
+        style={{
+          maxWidth: "75%",
+          padding: "10px 14px",
+          borderRadius: "16px",
+          background: isBot
+            ? "linear-gradient(135deg, #16a34a, #22c55e)"
+            : "#e5e7eb",
+          color: isBot ? "#fff" : "#111",
+          fontSize: "0.9rem",
+        }}
+      >
+        {isBot ? <TypingText text={msg.text} /> : msg.text}
+      </div>
+
+      {!isBot && <User size={18} />}
     </motion.div>
   );
 };
 
-// --- Main Component ---
-const NurSyncChat: React.FC = () => {
+// ---------------- MAIN ----------------
+export default function NurSyncChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "AI",
-      text: "Welcome! I'm your NurSYNC assistant. How can I help you today?",
+      text: "Hi! I'm your NurSYNC assistant 👩‍⚕️ Ask me anything.",
       id: Date.now(),
     },
   ]);
   const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const handleToggle = () => setIsOpen((prev) => !prev);
+  const [isTyping, setIsTyping] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isOpen) messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping, isOpen]);
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
 
-  // --- Handle Sending Message ---
-  const handleSend = async (e: React.FormEvent) => {
+  // ---------------- SEND ----------------
+  const handleSend = async (e: any) => {
     e.preventDefault();
     if (!input.trim() || isTyping) return;
 
-    const userMessage: string = input.trim();
+    const userText = input;
+    setInput("");
+
     setMessages((prev) => [
       ...prev,
-      { sender: "User", text: userMessage, id: Date.now() },
+      { sender: "User", text: userText, id: Date.now() },
     ]);
-    setInput("");
+
     setIsTyping(true);
 
-    const typingMessageId = Date.now() + 1;
-    setMessages((prev) => [
-      ...prev,
-      { sender: "AI", text: "", isTyping: true, id: typingMessageId },
-    ]);
-
     try {
-      const response = await dbStorage.aiTXTGenerator(userMessage, "You are a NurSYNC AI Assistant, designed to help nursing students with their studies. Please provide clear and concise answers to their questions.");
-      const aiResponse = response?.message;
-      //alert(JSON.stringify(response));
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === typingMessageId
-            ? { ...msg, text: aiResponse, isTyping: false }
-            : msg
-        )
+      const res = await coreApi.generateText(
+        userText,
+        "You are a helpful nursing assistant AI."
       );
-    } catch (err) {
-      console.error("Error fetching bot response:", err);
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === typingMessageId
-            ? { ...msg, text: "⚠️ Error: Could not connect to server.", isTyping: false }
-            : msg
-        )
-      );
-    } finally {
-      setIsTyping(false);
+
+      const reply = res?.message || "No response";
+
+      setMessages((prev) => [
+        ...prev,
+        { sender: "AI", text: reply, id: Date.now() + 1 },
+      ]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "AI",
+          text: "⚠️ Error connecting to server.",
+          id: Date.now() + 1,
+        },
+      ]);
     }
-  };
 
-  // --- Inline Styles ---
-  const widgetWrapperStyle: React.CSSProperties = {
-    position: "fixed",
-    bottom: "20px",
-    right: "20px",
-    zIndex: 1000,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-end",
-  };
-
-  const toggleButtonStyle: React.CSSProperties = {
-    width: isOpen ? "60px" : "auto",
-    minWidth: "60px",
-    padding: isOpen ? "0" : "0 20px",
-    height: "60px",
-    borderRadius: "30px",
-    backgroundColor: "#026e2c",
-    color: "#ffffff",
-    border: "none",
-    cursor: "pointer",
-    boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    transition: "background-color 0.2s, width 0.3s, padding 0.3s",
-    marginBottom: isOpen ? "15px" : "0",
-  };
-
-  const chatContainerStyle: React.CSSProperties = {
-    display: "flex",
-    flexDirection: "column",
-    height: "auto",
-    maxHeight: "500px",
-    width: "100%",
-    maxWidth: "380px",
-    borderRadius: "12px",
-    overflow: "hidden",
-    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.25)",
-    backgroundColor: "#ffffff",
-  };
-
-  const messagesBoxStyle: React.CSSProperties = {
-    flexGrow: 1,
-    padding: "1.5rem",
-    overflowY: "auto",
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: "#f9f9f9",
-    scrollBehavior: "smooth",
-    textAlign: "left",
-    wordWrap: "break-word",
-    whiteSpace: "pre-wrap",
-    overflowWrap: "break-word",
-    width: "100%",
-  };
-
-  const formStyle: React.CSSProperties = {
-    display: "flex",
-    padding: "1rem 1.5rem",
-    borderTop: "1px solid #e0e0e0",
-    backgroundColor: "#ffffff",
-  };
-
-  const inputStyle: React.CSSProperties = {
-    flexGrow: 1,
-    padding: "0.75rem 1rem",
-    borderRadius: "25px",
-    border: "1px solid #cccccc",
-    marginRight: "1rem",
-    fontSize: "1rem",
-    color: "black",
-    backgroundColor: "#f5f5f5",
-  };
-
-  const buttonStyle: React.CSSProperties = {
-    padding: "0.75rem 1.5rem",
-    borderRadius: "25px",
-    backgroundColor: isTyping ? "#a9a9a9" : "#026e2c",
-    color: "#ffffff",
-    border: "none",
-    cursor: isTyping ? "not-allowed" : "pointer",
-    fontWeight: 600,
+    setIsTyping(false);
   };
 
   return (
-    <>
-      <div style={widgetWrapperStyle}>
-        <motion.button
-          onClick={handleToggle}
-          style={toggleButtonStyle}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          {!isOpen && (
-            <span style={{ fontSize: "1rem", fontWeight: 600 }}>Chat AI</span>
-          )}
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            fill="none"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+    <div
+      style={{
+        position: "fixed",
+        bottom: "20px",
+        right: "20px",
+        zIndex: 999,
+      }}
+    >
+      {/* TOGGLE BUTTON */}
+      <motion.button
+        onClick={() => setIsOpen(!isOpen)}
+        whileTap={{ scale: 0.9 }}
+        style={{
+          background: "#16a34a",
+          color: "#fff",
+          borderRadius: "50%",
+          width: 60,
+          height: 60,
+          border: "none",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
+          cursor: "pointer",
+        }}
+      >
+        {isOpen ? <X /> : <MessageCircle />}
+      </motion.button>
+
+      {/* CHAT */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.9 }}
+            style={{
+              width: 360,
+              height: 520,
+              marginTop: 10,
+              borderRadius: 20,
+              overflow: "hidden",
+              background: "rgba(255,255,255,0.9)",
+              backdropFilter: "blur(12px)",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
+            }}
           >
-            {isOpen ? (
-              <path d="M18 6L6 18M6 6l12 12" />
-            ) : (
-              <path d="M21 11.5a8.38 8.38 0 0 1-5.17 7.23H12l-2.42 2.72c-.17.18-.42.27-.68.27-.26 0-.51-.09-.68-.27L6.17 19.73H3.5a1.5 1.5 0 0 1-1.5-1.5v-11.5a1.5 1.5 0 0 1 1.5-1.5h17a1.5 1.5 0 0 1 1.5 1.5v8z" />
-            )}
-          </svg>
-        </motion.button>
-
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: 30 }}
-              transition={{ duration: 0.2 }}
-              style={chatContainerStyle}
+            {/* HEADER */}
+            <div
+              style={{
+                padding: "12px",
+                background: "linear-gradient(135deg,#16a34a,#22c55e)",
+                color: "#fff",
+                fontWeight: 600,
+              }}
             >
-              <div style={messagesBoxStyle}>
-                {messages.map((msg) => (
-                  <MessageBubble
-                    key={msg.id}
-                    message={msg}
-                    isTyping={msg.isTyping || false}
-                  />
-                ))}
-                <div ref={messagesEndRef} />
-              </div>
+              NurSYNC AI
+            </div>
 
-              <form onSubmit={handleSend} style={formStyle}>
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask me anything..."
-                  disabled={isTyping}
-                  style={inputStyle}
-                />
-                <button
-                  type="submit"
-                  disabled={isTyping || !input.trim()}
-                  style={buttonStyle}
+            {/* MESSAGES */}
+            <div
+              style={{
+                flex: 1,
+                padding: 12,
+                overflowY: "auto",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              {messages.map((m) => (
+                <MessageBubble key={m.id} msg={m} />
+              ))}
+
+              {isTyping && (
+                <motion.div
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 1 }}
+                  style={{ fontSize: 12, color: "#666" }}
                 >
-                  Send
-                </button>
-              </form>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </>
-  );
-};
+                  AI is typing...
+                </motion.div>
+              )}
 
-export default NurSyncChat;
+              <div ref={bottomRef} />
+            </div>
+
+            {/* INPUT */}
+            <form
+              onSubmit={handleSend}
+              style={{
+                display: "flex",
+                padding: 10,
+                gap: 8,
+                borderTop: "1px solid #eee",
+              }}
+            >
+              <input
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask something..."
+                style={{
+                  flex: 1,
+                  borderRadius: 20,
+                  border: "1px solid #aaa",
+                  background: "#eee",
+                  color: "black",
+                  padding: "10px 14px",
+                  outline: "none",
+                }}
+              />
+
+              <button
+                type="submit"
+                disabled={isTyping}
+                style={{
+                  background: "#16a34a",
+                  border: "none",
+                  color: "#fff",
+                  borderRadius: "50%",
+                  width: 40,
+                  height: 40,
+                  cursor: "pointer",
+                }}
+              >
+                <Send size={18} />
+              </button>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

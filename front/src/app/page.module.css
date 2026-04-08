@@ -29,7 +29,8 @@
   background: white;
   border: 5px solid #026e2c;
   border-radius: 1rem;
-  height: 26vw;
+  height: auto;
+  min-height: 26vw;
   padding-top: 1rem;
   margin: 1vw;
 }

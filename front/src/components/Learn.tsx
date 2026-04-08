@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 //utils
+import coreApi from "@/utils/coreApi";
 import dbStorage from "@/utils/dbstorage";
 
 interface Course {
@@ -250,33 +251,33 @@ export default function NurSyncCourses() {
       progress: 0,
     },
   ];
-  var userId : string;
+  var userId: string;
   // --- Initialization ---
   useEffect(() => {
-    
     loadCourseProgress();
   }, []);
-
+  useEffect(() => {
+    if (!isCourseOpen && courseUrl) {
+      onBack();
+    }
+  }, [isCourseOpen]);
   const loadCourseProgress = async () => {
-    // Load stored progress
-    const user = await dbStorage.getSelfId();
-    if(!user) return
-    const stored = await dbStorage.getItem(
-      'nursync',
-      'course',
-      user,
-      ['url', 'progress'],
-      null
-    );
-    Object.values(stored).forEach((p: any) => {
-      //alert(p?.nursync?.['course'+token]?.url);
-      const course = baseCourses.find((c: any) => c.url === p?.nursync?.['course'+token]?.url);
-      if (course) {
-        course.progress = p?.nursync?.['course'+token]?.progress;
-        //alert(course.progress);
-      }
+    const getUser = await coreApi.getUser("#self");
+    const user = getUser?.user?.userId;
+    if (!user) return;
+
+    const stored = await coreApi.getStorageItems(user, "UrlProgress/null");
+
+    const loaded = baseCourses.map((course) => {
+      const urlKey = course.url.split("/").pop() ?? course.url;
+      const savedProgress = stored?.UrlProgress?.[urlKey];
+      return {
+        ...course,
+        progress: typeof savedProgress === "number" ? savedProgress : 0,
+      };
     });
-    setCourses(baseCourses);
+
+    setCourses(loaded);
   };
 
   const filtered =
@@ -284,52 +285,36 @@ export default function NurSyncCourses() {
       ? courses
       : courses.filter((c) => c.level === selectedLevel);
 
-  // --- Timer Logic ---
-  useEffect(() => {
-    saveEverySec();
-  }, [isCourseOpen]);
 
-  const saveEverySec = async () => {
-    let interval: any;
 
-    if (isCourseOpen && courseUrl) {
-      const startTime = Date.now();
-      const targetCourseIndex = courses.findIndex((c) => c.url === courseUrl);
+  const onBack = async () => {
+    const startTime = Date.now();
+    const targetCourseIndex = courses.findIndex((c) => c.url === courseUrl);
 
-      interval = setInterval(() => {
-        setCourses((prev) => {
-          const updated = [...prev];
-          const course = updated[targetCourseIndex];
-          if (!course) return prev;
+    setCourses((prev) => {
+      const updated = [...prev];
+      const course = updated[targetCourseIndex];
+      if (!course) return prev;
 
-          // progress over 1 hour
-          const elapsedMs = Date.now() - startTime;
-          const progress = Math.min((elapsedMs / 3600000) * 100, 100);
-          course.progress = progress;
+      // progress over 1 hour
+      const elapsedMs = Date.now() - startTime;
+      const progress = Math.min((elapsedMs / 3600000) * 100, 100);
+      course.progress = progress;
 
-          saveProgress(course.url, course.progress);
+      saveProgress(course.url, course.progress);
 
-          return [...updated];
-        });
-      }, 10000);
-    }
-
-    return () => clearInterval(interval);
+      return [...updated];
+    });
   };
 
   const saveProgress = async (url: string, progress: number) => {
-    const user = await dbStorage.getSelfId();
-    if(!user) return
-    const res = await dbStorage.setItem(
-      'nursync',
-      'course',
-      user,
-      ['url', 'progress'],
-      [url, progress],
-      ["all"],
-      [user],
-      [user]
-    );
+    const getUser = await coreApi.getUser("#self");
+    const user = getUser?.user?.userId;
+    alert(url + progress);
+    if (!user) return;
+
+    const urlKey = url.split("/").pop() ?? url;
+    await coreApi.putStorageItems(user, `UrlProgress/${urlKey}`, Math.round(progress).toString());
   };
 
   const handleCourseClick = (url: string) => {
@@ -402,7 +387,7 @@ export default function NurSyncCourses() {
         >
           {filtered.map((course, i) => (
             <motion.a
-              onClick={() => {handleCourseClick(course.url);}}
+              onClick={() => { handleCourseClick(course.url); }}
               key={i}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
@@ -512,7 +497,7 @@ export default function NurSyncCourses() {
           </div>
           <iframe
             key={courseUrl}
-            src={"https://nursync-seek.super.site/learning-hub/anatomy-and-physiology"}
+            src={courseUrl}
             style={{
               height: "100%",
               width: "100%",

@@ -91,10 +91,10 @@ function Home() {
                                     textAlign: 'center',
                                 }}>
                                     <div style={{ marginBottom: '20px' }}>
-                                        <p style={{ color: '#2e7d32', fontSize: '14px', fontWeight: 'bold', margin: 0 }}>WHO MADE IT?</p>
+                                        <p style={{ color: '#2e7d32', fontSize: '21px', fontWeight: 'bold', margin: 0 }}>WHO MADE IT?</p>
                                         <h1 style={{
                                             color: '#2e7d32',
-                                            fontSize: '48px',
+                                            fontSize: '64px',
                                             fontWeight: 'normal',
                                             margin: '10px 0',
                                             textTransform: 'uppercase'
@@ -121,26 +121,30 @@ function Home() {
                                                 key={index}
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: index * 0.1 }}
+                                                whileHover={{ scale: 1.06 }}
+                                                transition={{ delay: index * 0.1, scale: { duration: 0.2 } }}
                                                 onClick={(e) => { changeId(index) }}
                                                 style={{
-                                                    width: '173px',
+                                                    width: '210px',
                                                     position: 'relative',
                                                     overflow: 'hidden',
                                                     borderRadius: '4px',
-                                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                                    cursor: 'pointer',        // ← add this so it's obvious it's clickable
                                                 }}
                                             >
                                                 {/* Image Container */}
                                                 <div style={{
                                                     width: '100%',
-                                                    height: '280px',
-                                                    backgroundColor: '#1e3a8a', // Blue background as requested
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center'
+                                                    height: '295px',
+                                                    position: 'relative',
                                                 }}>
-                                                    <User size={64} color="rgba(255,255,255,0.3)" />
+                                                    <Image
+                                                        src={`/p${index + 1}.png`}
+                                                        alt={member.name}
+                                                        fill
+                                                        style={{ objectFit: 'cover' }}
+                                                    />
                                                 </div>
 
                                                 {/* Overlay Text Content */}
@@ -164,6 +168,7 @@ function Home() {
                                             </motion.div>
                                         ))}
                                     </div>
+                                    
                                 </section>
                             )}
                             {
@@ -261,16 +266,18 @@ function MeetTheTeam() {
                         style={{
                             width: '137px',
                             height: '200px',
-                            backgroundColor: '#3b82f6',
                             borderRadius: '8px',
                             flexShrink: 0,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white'
+                            position: 'relative',
+                            overflow: 'hidden',
                         }}
                     >
-                        Photo {currentId + 1}
+                        <Image
+                            src={`/p${currentId + 1}t.png`}
+                            alt={currentMember.name}
+                            fill
+                            style={{ objectFit: 'cover' }}
+                        />
                     </motion.div>
 
                     {/* Text Content */}
@@ -331,10 +338,18 @@ function MeetTheTeam() {
                             width: '80px',
                             height: '80px',
                             borderRadius: '50%',
-                            backgroundColor: '#3b82f6',
                             margin: '0 auto 12px',
-                            border: currentId === index ? '3px solid #166534' : 'none'
-                        }} />
+                            position: 'relative',
+                            overflow: 'hidden',
+                            border: currentId === index ? '3px solid #166534' : 'none',
+                        }}>
+                            <Image
+                                src={`/p${index + 1}t.png`}
+                                alt={member.name}
+                                fill
+                                style={{ objectFit: 'cover' }}
+                            />
+                        </div>
                         <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#166534' }}>{member.name}</div>
                         <div style={{ fontSize: '10px', color: '#666', marginTop: '4px' }}>{member.role.split(',')[0]}</div>
                     </div>

@@ -11,7 +11,8 @@ export default function FlyoutNavigation() {
   const [active, setActive] = useState(() => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
-      return path.split('/').pop() || 'none';
+      const firstPathSegment = path.split('/')[1] || 'none';
+      return firstPathSegment;
     }
     return 'none';
   });
@@ -19,7 +20,7 @@ export default function FlyoutNavigation() {
     { icon: Home, label: "Learn", key: "home" },
     { icon: Brain, label: "AI Mode", key: "aimode" },
     { icon: Bolt, label: "Tools", key: "tools" },
-    { icon: UsersRound, label: "Meet the Team", key: "meet-the-team"}
+    { icon: UsersRound, label: "Meet the Team", key: "meet-the-team" }
   ];
 
   const sidebarStyle: React.CSSProperties = {
@@ -119,27 +120,27 @@ export default function FlyoutNavigation() {
             {isOpen && <span style={labelStyle}>{label}</span>}
           </motion.div>
         ))}
-          <motion.div
-            key={"profile"}
-            suppressHydrationWarning={true} // Add this line
-            style={navItemStyle(active === "me")}
-            whileHover={{
-              backgroundColor: "rgba(127, 231, 167, 0.15)",
-              scale: 1.03,
-            }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => { setActive("me"); window.location.href = `../me` }}
-          >
-            <Image alt="profile picture" height={300} width={300} src="/default.jpeg"
+        <motion.div
+          key={"profile"}
+          suppressHydrationWarning={true} // Add this line
+          style={navItemStyle(active === "me")}
+          whileHover={{
+            backgroundColor: "rgba(127, 231, 167, 0.15)",
+            scale: 1.03,
+          }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => { setActive("me"); window.location.href = `../me` }}
+        >
+          <Image alt="profile picture" height={300} width={300} src="/default.jpeg"
             style={{
               height: '3vw',
               width: '3vw',
               borderRadius: '50%',
               border: '1px green'
-            }}/>
-            {isOpen && <span style={labelStyle}>Profile</span>}
-          </motion.div>
-          <SimulationNav />
+            }} />
+          {isOpen && <span style={labelStyle}>Profile</span>}
+        </motion.div>
+        <SimulationNav />
       </nav>
     </motion.aside>
   );

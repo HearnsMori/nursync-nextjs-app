@@ -114,25 +114,26 @@ export default function Header({
                     }}>
                     <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
                 </div>
-                <Link href="/meet-the-team" style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    borderRadius: '1vw',
-                    height: '2.3vw',
-                    width: '3vw',
-                    border: 'none',
-                    margin: '1vw',
-                    fontWeight: 500,
-                    fontSize: '1vw',
-                    color: '#222222',
-                }}>
-                    <UsersRound color="#ffffff" size={24} />
-                </Link>
+
                 {!isLoggedIn ? (
                     <></>
                 ) : (
                     <>
+                        <Link href="/meet-the-team" style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '1vw',
+                            height: '2.3vw',
+                            width: '3vw',
+                            border: 'none',
+                            margin: '1vw',
+                            fontWeight: 500,
+                            fontSize: '1vw',
+                            color: '#222222',
+                        }}>
+                            <UsersRound color="#ffffff" size={24} />
+                        </Link>
                         <button
                             className="bgwhite txtblack button"
                             onClick={() => {

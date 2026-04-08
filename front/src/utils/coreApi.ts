@@ -1,6 +1,10 @@
 class ApiClient {
-    //private URL_DOMAIN = 'https://localhost:10000';
-    private URL_DOMAIN = 'http://localhost:10000';
+    private platform = "digital";
+    private organization = "project-37";
+    private company = "nursync";
+    private app = "nursync";
+    private URL_DOMAIN = 'https://core-api-lajo.onrender.com';
+    //private URL_DOMAIN = 'http://localhost:10000';
     private API_BASE_URL: string;
     private ACCESS_TOKEN_KEY = 'accessToken';
     private REFRESH_TOKEN_KEY = 'refreshToken';
@@ -38,6 +42,7 @@ class ApiClient {
     }
 
     private async authFetch(url: string, options?: RequestInit) {
+        console.log('Fetching:', `${this.API_BASE_URL}${url}`); 
         let token = this.getAccessToken();
 
         const doFetch = async (accessToken: string) =>
@@ -107,6 +112,7 @@ class ApiClient {
 
         const data = await res.json();
         const { accessToken } = data.data;
+        alert(data.data);
         this.saveTokens(accessToken);
         return accessToken;
     }
@@ -169,36 +175,38 @@ class ApiClient {
     }
 
     // ===== Storage Endpoints =====
-    getStorageItems(path: string) {
-        return this.authFetch(`/storages/${path}`);
+
+    async getStorageItems(id: string, path: string) {
+        const res = await this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`);
+        return res?.[this.platform]?.[this.organization]?.[this.company]?.[this.app];
     }
 
-    postStorageItem(path: string, value: any) {
-        return this.authFetch(`/storages/${path}`, {
+    postStorageItems(id: string, path: string, value: any) {
+        return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ value }),
         });
     }
 
-    patchStorageItem(path: string, value: any) {
-        return this.authFetch(`/storages/${path}`, {
+    patchStorageItems(id: string, path: string, value: any) {
+        return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ value }),
         });
     }
 
-    putStorageItem(path: string, value: any) {
-        return this.authFetch(`/storages/${path}`, {
+    putStorageItems(id: string, path: string, value: any) {
+        return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ value }),
         });
     }
 
-    deleteStorageItem(path: string) {
-        return this.authFetch(`/storages/${path}`, { method: 'DELETE' });
+    deleteStorageItems(id: string, path: string) {
+        return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, { method: 'DELETE' });
     }
 
     // ===== Processes Endpoints =====

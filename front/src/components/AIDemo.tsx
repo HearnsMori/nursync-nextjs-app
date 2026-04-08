@@ -1,5 +1,6 @@
 "use client";
 import dbStorage from "@/utils/dbstorage";
+import coreApi from "@/utils/coreApi";
 import React, { useEffect, useState } from "react";
 
 export default function GeminiChatPage() {
@@ -46,13 +47,12 @@ export default function GeminiChatPage() {
         const outputInside = document.getElementById("output")?.innerHTML || "";
 
         try {
-            const data = await dbStorage.aiTXTGenerator(
-                "\nUser: " + input +
-                "\nRevised (If have already existing code):" + outputInside,
+            const data = await coreApi.generateText(
+                "\nUser: " + input,
                 context
             );
 
-            alert(JSON.stringify(data));
+            //alert(JSON.stringify(data));
 
             let aiResponse = data?.message?.trim() || "";
             

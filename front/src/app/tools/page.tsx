@@ -8,7 +8,7 @@ import styles from "./page.module.css";
 import Header from "@/components/AppHeader";
 import Footer from "@/components/AppFooter";
 import LoadingPage from "@/components/LoadingPage";
-import FlashCard from "@/components/FlashCard";
+import FlashCard from "@/components/FlashCardB";
 import Task from "@/components/Task";
 import ChatAI from "@/components/ChatAI";
 import Flyout from "@/components/Flyout";
@@ -60,16 +60,15 @@ export default function Home() {
           }}>
             <Flyout />
           </div>
-          <div style={{ flex: 1, display: "flex", flexFlow: "row nowrap", }}>
-
-            <div style={{ flex: 3 }}>
-
-              <FlashCard />
-            </div>
-            <div style={{ flex: 1 }}>
-              <Task />
-            </div>
-
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            flex: 1,
+            flexFlow: "row nowrap",
+          }}>
+            <FlashCard />
           </div>
         </div>
       </div>
