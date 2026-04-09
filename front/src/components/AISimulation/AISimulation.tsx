@@ -2,11 +2,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import coreApi from "@/utils/coreApi";
+import PatientList from "./components/PatientList";
 import styles from "./AISimulation.module.css";
 import Image from "next/image";
+import {useRouter} from "next/navigation";
 import { Search, X, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 
 export default function AISimulation() {
+    const router = useRouter();
     const [tab, setTab] = useState<"welcome" | "caseLibrary" | "dailyPatient" | "charting" | "subscribe">("welcome");
     const [caseLibTab, setCaseLibTab] = useState<"byUnit" | "bySpecialty" | "allCases">("byUnit");
     return (
@@ -396,7 +399,7 @@ export default function AISimulation() {
                                         justifyContent: "center",
                                         alignItems: "center",
                                     }}>
-
+                                        <PatientList />
                                     </div>
                                     <div style={{
                                         flex: 1,
@@ -412,186 +415,7 @@ export default function AISimulation() {
                         </div>
                     </div>
                 )}
-                {tab === "dailyPatient" && (
-                    <div
-                        style={{
-                            width: "600px",
-                            margin: "40px auto",
-                            background: "#efefef",
-                            borderRadius: "18px",
-                            padding: "25px",
-                            fontFamily: "Arial, sans-serif",
-                            boxShadow: "0px 8px 25px rgba(0,0,0,0.2)",
-                            position: "relative"
-                        }}
-                    >
-
-                        {/* Close Button */}
-                        <div onClick={(e) => {
-                            setTab("caseLibrary");
-                        }} style={{
-                            position: "absolute",
-                            right: "20px",
-                            top: "15px",
-                            fontSize: "20px",
-                            cursor: "pointer",
-                            color: "#1c7a3c",
-                            fontWeight: "bold"
-                        }}>
-                            ×
-                        </div>
-
-
-                        {/* Title */}
-                        <div style={{
-                            fontWeight: "bold",
-                            fontSize: "18px",
-                            marginBottom: "15px",
-                            color: "black",
-                        }}>
-                            The Daily Patient
-                        </div>
-
-
-                        {/* Patient Row */}
-                        <div style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "20px",
-                            marginBottom: "20px"
-                        }}>
-
-                            {/* Avatar */}
-                            <div style={{
-                                width: "80px",
-                                height: "80px",
-                                borderRadius: "50%",
-                                background: "#2fa4a9",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: "40px",
-                                border: "4px solid #1f1f1f"
-                            }}>
-                                👨
-                            </div>
-
-
-                            {/* Patient Info */}
-                            <div>
-
-                                <div style={{
-                                    fontWeight: "bold",
-                                    marginBottom: "5px"
-                                }}>
-                                    January 18
-                                </div>
-
-                                <div style={{
-                                    fontSize: "14px",
-                                    color: "#333",
-                                    marginBottom: "10px",
-                                    maxWidth: "360px"
-                                }}>
-                                    25-year-old male with acute agitation and hypertension on arrival.
-                                    Direct to resuscitation bay.
-                                </div>
-
-                                <div style={{
-                                    fontWeight: "bold",
-                                    fontSize: "14px"
-                                }}>
-                                    Put your clinical decision making skills to the test!
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        {/* Timer Section */}
-                        <div style={{
-                            background: "#5b9466",
-                            borderRadius: "6px",
-                            padding: "20px",
-                            textAlign: "center",
-                            marginBottom: "15px",
-                            border: "1px solid #3f6f47"
-                        }}>
-
-                            <div style={{
-                                marginBottom: "15px",
-                                fontWeight: "bold"
-                            }}>
-                                Time remaining to treat this patient:
-                            </div>
-
-
-                            <div style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                gap: "10px"
-                            }}>
-
-                                <div style={{
-                                    background: "#28a7c9",
-                                    color: "white",
-                                    padding: "10px 16px",
-                                    borderRadius: "6px",
-                                    fontSize: "26px",
-                                    fontWeight: "bold"
-                                }}>
-                                    22
-                                    <div style={{ fontSize: "12px" }}>hours</div>
-                                </div>
-
-                                <div style={{
-                                    fontSize: "26px",
-                                    fontWeight: "bold",
-                                    color: "white"
-                                }}>
-                                    :
-                                </div>
-
-                                <div style={{
-                                    background: "#28a7c9",
-                                    color: "white",
-                                    padding: "10px 16px",
-                                    borderRadius: "6px",
-                                    fontSize: "26px",
-                                    fontWeight: "bold"
-                                }}>
-                                    47
-                                    <div style={{ fontSize: "12px" }}>mins</div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        {/* Play Button */}
-                        <div
-                            style={{
-                                background: "#28a7c9",
-                                color: "white",
-                                textAlign: "center",
-                                padding: "12px",
-                                borderRadius: "6px",
-                                fontWeight: "bold",
-                                cursor: "pointer",
-                                border: "1px solid #187c95"
-                            }}
-                        >
-                            PLAY
-                        </div>
-
-
-                    </div>
-                )}
+                
                 {tab === "subscribe" && (
                     <div
                         style={{
@@ -948,7 +772,7 @@ export default function AISimulation() {
                 </motion.button>
                 <motion.button
                     onClick={(e) => {
-                        setTab("dailyPatient");
+                        router.push("./simulation/patient");
                     }}
                     whileTap={{ scale: 1.2 }}
                     animate={{
