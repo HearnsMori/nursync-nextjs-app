@@ -139,7 +139,7 @@ const Signup = () => {
     
     try {
       const signup = await coreApi.signup(username, password, {emailaddress}, {firstname, lastname, middlename, university, studentid});
-      alert(signup.message);
+      customAlert(signup.message);
       if (signup.success) {
         router.push("/login");
       }

@@ -26,6 +26,8 @@ export interface Patient {
   active: boolean;
   cc: string;
   description: string;
+  unit: 'Emergency Department (ED/ER)' | 'Delivery Room (DR)' | 'Intensive Care Unit (ICU)' | 'Medical-Surgical Ward (Med-Surg)' | 'Operating Room (OR)' | 'Outpatient / Ambulatory Clinic' | 'Post-Anesthesia Care Unit (PACU)';
+  specialty: 'Perioperative Nursing' | 'Obstetric & Gynecological (OB-GYN) Nursing' | 'Critical Care Nursing' | 'Psychiatric-Mental Health Nursing' | 'Pediatric Nursing' | 'Community Health Nursing' | 'Geriatric Nursing';
 }
 
 export const patients: Patient[] = [
@@ -44,6 +46,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'overdose',
     description: '67-year-old male found unresponsive at home, bradycardic and hypotensive, suspected drug overdose.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Critical Care Nursing',
   },
   {
     id: "maria-c-santos",
@@ -60,6 +64,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'joint pain and swelling',
     description: '54-year-old female with 3-week history of bilateral knee swelling and prolonged morning stiffness.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "jose-r-dela-cruz",
@@ -76,6 +82,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'severe difficulty breathing',
     description: '72-year-old male with acute respiratory distress, SpO2 78%, audible wheezing, and purulent sputum.',
+    unit: 'Intensive Care Unit (ICU)',
+    specialty: 'Critical Care Nursing',
   },
   {
     id: "rosa-m-garcia",
@@ -92,6 +100,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'severe headache with visual aura',
     description: '38-year-old female with 9/10 headache preceded by visual scotoma and left arm tingling.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "antonio-b-lim",
@@ -108,6 +118,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'supratherapeutic INR',
     description: '61-year-old male with INR of 4.8 and heavy alcohol use, presenting for anticoagulation review.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "elena-t-ocampo",
@@ -124,6 +136,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'acute manic episode',
     description: '29-year-old female nurse with 4 days of no sleep, pressured speech, and disorganized behavior at work.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Psychiatric-Mental Health Nursing',
   },
   {
     id: "manuel-s-reyes",
@@ -140,6 +154,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'GI bleeding',
     description: '45-year-old male with coffee-ground vomiting and melena for 2 days, hemoglobin critically low at 7.2 g/dL.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Critical Care Nursing',
   },
   {
     id: "lucinda-a-flores",
@@ -156,6 +172,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'acute confusion',
     description: '83-year-old female with sudden worsening confusion, agitation, and low-grade fever over 24 hours.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "carlos-e-mendoza",
@@ -172,6 +190,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'hypoglycemia',
     description: '19-year-old male found confused and trembling, fingerstick glucose 38 mg/dL after skipping meals.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Pediatric Nursing',
   },
   {
     id: "patricia-n-villanueva",
@@ -188,6 +208,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'leg edema and proteinuria',
     description: '47-year-old female with worsening bilateral leg edema, 3+ proteinuria, and rising creatinine over 3 months.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "ricardo-f-bautista",
@@ -204,6 +226,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'exertional chest tightness',
     description: '58-year-old male with post-CABG history presenting with exertional chest tightness and new ST depression on EKG.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Critical Care Nursing',
   },
   {
     id: "angelina-r-santos",
@@ -220,6 +244,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'passive suicidal ideation',
     description: '32-year-old female with 4 months of low mood, anhedonia, and passive suicidal ideation disclosed during OB-GYN visit.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Psychiatric-Mental Health Nursing',
   },
   {
     id: "benjamin-o-tan",
@@ -236,6 +262,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'recurrent falls and freezing gait',
     description: "77-year-old male with Parkinson's experiencing frequent falls, gait freezing, and evening visual hallucinations.",
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "corazon-b-aquino",
@@ -252,6 +280,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'left arm swelling post-lumpectomy',
     description: '55-year-old female post-breast cancer surgery with persistent left arm lymphedema and quality-of-life concerns.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "felix-d-soriano",
@@ -268,6 +298,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'PTSD and alcohol use',
     description: '43-year-old male officer with recurrent trauma nightmares, hypervigilance, and nightly heavy drinking.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Psychiatric-Mental Health Nursing',
   },
   {
     id: "isabela-m-reyes",
@@ -284,6 +316,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'severe weight loss and food restriction',
     description: '16-year-old female with BMI 13.7, 14 kg weight loss over 8 months, bradycardia, and amenorrhea.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Pediatric Nursing',
   },
   {
     id: "gregorio-a-navarro",
@@ -300,6 +334,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'rising PSA and urinary hesitancy',
     description: '69-year-old male on prostate cancer surveillance with PSA rise from 6.2 to 11.8 ng/mL and new urinary symptoms.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "susan-f-bernal",
@@ -316,6 +352,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'hypertension in pregnancy',
     description: '35-year-old pregnant female at 28 weeks with BP 158/102 mmHg, facial edema, and blurred vision.',
+    unit: 'Delivery Room (DR)',
+    specialty: 'Obstetric & Gynecological (OB-GYN) Nursing',
   },
   {
     id: "rogelio-c-diaz",
@@ -332,6 +370,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'breakthrough seizure',
     description: '51-year-old male with witnessed tonic-clonic seizure after missing several doses of antiepileptic medication.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "helen-v-pascual",
@@ -348,6 +388,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'worsening diabetes and foot pain',
     description: '62-year-old female with HbA1c 9.4%, burning bilateral foot pain, and worsening glaucoma on follow-up.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "norbert-j-camacho",
@@ -364,6 +406,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'recurrent oral candidiasis',
     description: '40-year-old HIV-positive male on ART with monthly recurrence of oral thrush and depressive episodes.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "maricel-t-navarro",
@@ -380,6 +424,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'skin plaques and joint pain',
     description: '27-year-old female with worsening psoriatic plaques over 18% BSA and new asymmetric small joint pain.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "victor-l-chan",
@@ -396,6 +442,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'aspiration pneumonia',
     description: '80-year-old male post-stroke with fever, SpO2 88%, and silent aspiration confirmed on swallowing evaluation.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "tessie-o-gomez",
@@ -412,6 +460,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'lip and finger tingling post-thyroidectomy',
     description: '49-year-old female post-thyroidectomy with perioral tingling, finger paresthesia, and low corrected calcium.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Perioperative Nursing',
   },
   {
     id: "damian-r-sebastian",
@@ -428,6 +478,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'bloody diarrhea and abdominal pain',
     description: '24-year-old male with 8–10 bloody stools per day and crampy abdominal pain after stopping biologic therapy.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "loretta-c-espiritu",
@@ -444,6 +496,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'acute decompensated heart failure',
     description: '71-year-old female with 4 kg weight gain, orthopnea, and BNP 1820 pg/mL after running out of diuretics.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "jerome-m-padua",
@@ -460,6 +514,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'acute psychotic episode',
     description: '33-year-old male barricaded at home for 3 days, responding to internal stimuli and expressing paranoid delusions.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Psychiatric-Mental Health Nursing',
   },
   {
     id: "aida-g-montoya",
@@ -476,6 +532,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'declining kidney function and bone pain',
     description: '57-year-old female with rapidly declining eGFR, severe pruritus, bone pain, and refractory anemia.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "renato-g-delos-reyes",
@@ -492,6 +550,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'non-healing foot wound',
     description: '48-year-old male with 6-week non-healing right toe wound, rest pain, and ABI of 0.52 indicating critical ischemia.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "mildred-a-jimenez",
@@ -508,6 +568,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'foot numbness and high blood sugar on chemotherapy',
     description: '66-year-old female on myeloma treatment with worsening foot neuropathy, glucose 320 mg/dL, and hypercalcemia.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "alex-p-santos",
@@ -524,6 +586,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'persistent post-concussion headaches',
     description: '22-year-old male 6 weeks post-motorcycle accident with daily headaches, dizziness, and cognitive difficulty.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "cynthia-h-ramos",
@@ -540,6 +604,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'persistently elevated TSH despite medication',
     description: '44-year-old female with TSH 7.8 mIU/L on levothyroxine, active celiac disease, and 18 months of infertility.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Obstetric & Gynecological (OB-GYN) Nursing',
   },
   {
     id: "roberto-s-luna",
@@ -556,6 +622,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'eye pain and photophobia',
     description: '36-year-old male with acute left eye redness, pain, and photophobia — fourth uveitis flare in 3 years.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "francisca-l-abad",
@@ -572,6 +640,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'hip fracture after fall',
     description: '74-year-old malnourished female post-hemiarthroplasty for femoral neck fracture sustained from a ground-level fall.',
+    unit: 'Post-Anesthesia Care Unit (PACU)',
+    specialty: 'Perioperative Nursing',
   },
   {
     id: "jun-b-delgado",
@@ -588,6 +658,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'abdominal distension and rising AFP',
     description: '52-year-old male with hepatocellular carcinoma showing AFP rise to 980 ng/mL, new nodule, and worsening ascites.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "rosario-v-mendez",
@@ -604,6 +676,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'leg weakness and vision blurring',
     description: '30-year-old pregnant female with MS relapse presenting with right leg weakness and left eye visual blurring.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Obstetric & Gynecological (OB-GYN) Nursing',
   },
   {
     id: "ernesto-b-santos",
@@ -620,6 +694,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'progressive vision loss and uncontrolled diabetes',
     description: '63-year-old male with HbA1c 10.8%, worsening diabetic retinopathy, and eGFR of 22 on routine follow-up.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "anita-r-castillo",
@@ -636,6 +712,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'widespread chronic pain and fatigue',
     description: '41-year-old female with 6-year history of diffuse musculoskeletal pain, brain fog, and non-restorative sleep.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "danilo-m-aguilar",
@@ -652,6 +730,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'productive cough with hemoptysis and weight loss',
     description: '55-year-old malnourished male with 3-month cough, hemoptysis, night sweats, and AFB smear-positive tuberculosis.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "grace-s-velarde",
@@ -668,6 +748,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'worsening shortness of breath and digital ulcers',
     description: '37-year-old female with systemic sclerosis showing declining walk distance, new pericardial effusion, and finger ulcers.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Critical Care Nursing',
   },
   {
     id: "herminio-c-buenaventura",
@@ -684,6 +766,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'chest pain radiating to the jaw',
     description: '59-year-old male with 6-hour crushing chest pain radiating to the jaw, positive troponin, and ST depression on EKG.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Critical Care Nursing',
   },
   {
     id: "lourdes-b-arceo",
@@ -700,6 +784,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'sudden weight gain and worsening breathlessness',
     description: '68-year-old female with 5 kg weight gain in one week, paroxysmal nocturnal dyspnea, and BNP of 2800 pg/mL.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "samuel-t-reyes",
@@ -716,6 +802,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'positive drug screen for methamphetamine',
     description: '28-year-old soldier with 8-month methamphetamine use, depressed mood, and insomnia following overseas deployment.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Psychiatric-Mental Health Nursing',
   },
   {
     id: "perla-n-santos",
@@ -732,6 +820,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'wandering and behavioral changes in dementia',
     description: '76-year-old female with declining MMSE, wandering episodes, and aggressive behavior during personal care.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "leo-a-rivera",
@@ -748,6 +838,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'seizure at workplace',
     description: '21-year-old male with tonic-clonic seizure at work due to missed dose and severe sleep deprivation.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "violeta-c-pascual",
@@ -764,6 +856,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'rectal bleeding and diarrhea during chemoradiation',
     description: '53-year-old female on cervical cancer chemoradiation with 6–8 bloody stools daily, pelvic pain 8/10, and anemia.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Obstetric & Gynecological (OB-GYN) Nursing',
   },
   {
     id: "oscar-d-vergara",
@@ -780,6 +874,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'exertional dyspnea and palpitations',
     description: '44-year-old male steroid user with exertional dyspnea, dilated cardiomyopathy EF 32%, and frequent PVCs.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "jocelyn-o-cabrera",
@@ -796,6 +892,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'active suicidal ideation with plan',
     description: '34-year-old female OFW found with sleeping pills, disclosing active suicidal intent amid job loss and family separation.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Psychiatric-Mental Health Nursing',
   },
   {
     id: "ernestina-r-lim",
@@ -812,6 +910,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'temporal headache and jaw pain with vision changes',
     description: '70-year-old female with sudden severe temporal headache, jaw claudication, and transient right eye visual blurring.',
+    unit: 'Emergency Department (ED/ER)',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "alvin-d-perez",
@@ -828,6 +928,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'occupational burnout and intrusive trauma symptoms',
     description: '31-year-old EMT with trauma intrusions, emotional numbness, nightly alcohol use, and difficulty functioning at work.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Psychiatric-Mental Health Nursing',
   },
   {
     id: "maribel-a-flores",
@@ -844,6 +946,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'severe hot flashes and night sweats',
     description: '46-year-old perimenopausal female with 12–15 daily hot flashes, drenching night sweats, and dyspareunia for 8 months.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Obstetric & Gynecological (OB-GYN) Nursing',
   },
   {
     id: "rodrigo-e-villanueva",
@@ -860,6 +964,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'gout flare and post-MI follow-up',
     description: '65-year-old post-MI male with third gout flare this year and questions about long-term antiplatelet therapy.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "esperanza-c-santos",
@@ -876,6 +982,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'persistent fatigue and uncontrolled weight',
     description: '39-year-old female with BMI 42, NASH fibrosis stage 2, PCOS, and persistent fatigue despite CPAP therapy.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Obstetric & Gynecological (OB-GYN) Nursing',
   },
   {
     id: "armando-f-santos",
@@ -892,6 +1000,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'work-related wheezing and chest tightness',
     description: '50-year-old male electrician with 2-year work-related wheeze and dyspnea, improving on weekends and holidays.',
+    unit: 'Outpatient / Ambulatory Clinic',
+    specialty: 'Community Health Nursing',
   },
   {
     id: "natividad-b-reyes",
@@ -908,6 +1018,8 @@ export const patients: Patient[] = [
     active: false,
     cc: 'end-of-life dyspnea and agitation',
     description: '85-year-old female on palliative comfort care with dyspnea at rest, end-stage heart failure, and DNAR in place.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Geriatric Nursing',
   },
   {
     id: "dante-l-obusan",
@@ -924,5 +1036,7 @@ export const patients: Patient[] = [
     active: false,
     cc: 'diabetic ketoacidosis',
     description: '14-year-old male admitted in DKA with glucose 648 mg/dL and pH 7.08, newly diagnosed with Type 1 Diabetes.',
+    unit: 'Medical-Surgical Ward (Med-Surg)',
+    specialty: 'Pediatric Nursing',
   },
 ];

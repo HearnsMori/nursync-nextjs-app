@@ -3,8 +3,8 @@ class ApiClient {
     private organization = "project-37";
     private company = "nursync";
     private app = "nursync";
-    private URL_DOMAIN = 'https://core-api-lajo.onrender.com';
-    //private URL_DOMAIN = 'http://localhost:10000';
+    //private URL_DOMAIN = 'https://core-api-lajo.onrender.com';
+    private URL_DOMAIN = 'http://localhost:10000';
     private API_BASE_URL: string;
     private ACCESS_TOKEN_KEY = 'accessToken';
     private REFRESH_TOKEN_KEY = 'refreshToken';

@@ -5,11 +5,14 @@ import coreApi from "@/utils/coreApi";
 import PatientList from "./components/PatientList";
 import styles from "./AISimulation.module.css";
 import Image from "next/image";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Search, X, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
 
 export default function AISimulation() {
     const router = useRouter();
+    const [selectedUnit, setSelectedUnit] = useState<string | null>(null);
+    const [selectedSpecialty, setSelectedSpecialty] = useState<string | null>(null);
+
     const [tab, setTab] = useState<"welcome" | "caseLibrary" | "dailyPatient" | "charting" | "subscribe">("welcome");
     const [caseLibTab, setCaseLibTab] = useState<"byUnit" | "bySpecialty" | "allCases">("byUnit");
     return (
@@ -68,22 +71,43 @@ export default function AISimulation() {
                                     className={`${styles.tabButton} ${caseLibTab === "byUnit" ? styles.active : ""}`}
                                     onClick={() => setCaseLibTab("byUnit")}
                                 >
-                                    By Unit
+                                    Unit
                                 </button>
 
                                 <button
                                     className={`${styles.tabButton} ${caseLibTab === "bySpecialty" ? styles.active : ""}`}
                                     onClick={() => setCaseLibTab("bySpecialty")}
                                 >
-                                    By Specialty
+                                    Specialty
                                 </button>
 
                                 <button
+                                    style={{
+                                        fontSize: '0.7vw',
+                                        width: 'fit-content',
+                                    }}
                                     className={`${styles.tabButton} ${caseLibTab === "allCases" ? styles.active : ""}`}
-                                    onClick={() => setCaseLibTab("allCases")}
+                                    onClick={(e) => {
+                                        setCaseLibTab("allCases");
+                                        setSelectedUnit(null);
+                                        setSelectedSpecialty(null);
+                                    }}
+                                >
+                                    {selectedUnit ? selectedUnit : (selectedSpecialty ? selectedSpecialty : "All Cases")}
+                                </button>
+                                {(selectedUnit || selectedSpecialty) && (
+                                    <button
+                                    className={styles.tabButton}
+                                    onClick={(e) => {
+                                        setCaseLibTab("allCases");
+                                        setSelectedUnit(null);
+                                        setSelectedSpecialty(null);
+                                    }}
                                 >
                                     All Cases
                                 </button>
+                                )}
+                                
                             </div>
                             <div style={{
                                 position: "absolute",
@@ -157,7 +181,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedUnit("Emergency Department (ED/ER)");
+                                                    setSelectedSpecialty(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Emergency Department (ED/ER)
                                             </button>
                                             <button style={{
@@ -169,7 +198,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedUnit("Intensive Care Unit (ICU)");
+                                                    setSelectedSpecialty(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Intensive Care Unit (ICU)
                                             </button>
                                             <button style={{
@@ -181,7 +215,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedUnit("Operating Room (OR)");
+                                                    setSelectedSpecialty(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Operating Room (OR)
                                             </button>
                                             <button style={{
@@ -193,7 +232,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedUnit("Post-Anesthesia Care Unit (PACU)");
+                                                    setSelectedSpecialty(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Post-Anesthesia Care Unit (PACU)
                                             </button>
                                         </div>
@@ -214,7 +258,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedUnit("Delivery Room (DR)");
+                                                    setSelectedSpecialty(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Delivery Room (DR)
                                             </button>
                                             <button style={{
@@ -226,7 +275,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedUnit("Medical-Surgical Ward (Med-Surg)");
+                                                    setSelectedSpecialty(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Medical-Surgical Ward (Med-Surg)
                                             </button>
                                             <button style={{
@@ -238,7 +292,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedUnit("Outpatient / Ambulatory Clinic");
+                                                    setSelectedSpecialty(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Outpatient / Ambulatory Clinic
                                             </button>
                                         </div>
@@ -287,7 +346,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedSpecialty("Perioperative Nursing");
+                                                    setSelectedUnit(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Perioperative Nursing
                                             </button>
                                             <button style={{
@@ -299,7 +363,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedSpecialty("Critical Care Nursing");
+                                                    setSelectedUnit(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Critical Care Nursing
                                             </button>
                                             <button style={{
@@ -311,7 +380,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedSpecialty("Pediatric Nursing");
+                                                    setSelectedUnit(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Pediatric Nursing
                                             </button>
                                             <button style={{
@@ -323,7 +397,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedSpecialty("Geriatric Nursing");
+                                                    setSelectedUnit(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Geriatric Nursing
                                             </button>
                                         </div>
@@ -344,7 +423,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedSpecialty("Obstetric & Gynecological (OB-GYN) Nursing");
+                                                    setSelectedUnit(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Obstetric & Gynecological (OB-GYN) Nursing
                                             </button>
                                             <button style={{
@@ -356,7 +440,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedSpecialty("Psychiatric-Mental Health Nursing");
+                                                    setSelectedUnit(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Psychiatric-Mental Health Nursing
                                             </button>
                                             <button style={{
@@ -368,7 +457,12 @@ export default function AISimulation() {
                                                 width: "90%",
                                                 fontSize: "1.1vw",
                                                 borderRadius: "1.5vw",
-                                            }}>
+                                            }}
+                                                onClick={() => {
+                                                    setSelectedSpecialty("Community Health Nursing");
+                                                    setSelectedUnit(null);
+                                                    setCaseLibTab("allCases");
+                                                }}>
                                                 Community Health Nursing
                                             </button>
                                         </div>
@@ -399,7 +493,10 @@ export default function AISimulation() {
                                         justifyContent: "center",
                                         alignItems: "center",
                                     }}>
-                                        <PatientList />
+                                        <PatientList
+                                            unitFilter={selectedUnit}
+                                            specialtyFilter={selectedSpecialty}
+                                        />
                                     </div>
                                     <div style={{
                                         flex: 1,
@@ -415,7 +512,7 @@ export default function AISimulation() {
                         </div>
                     </div>
                 )}
-                
+
                 {tab === "subscribe" && (
                     <div
                         style={{

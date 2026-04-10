@@ -49,13 +49,14 @@ const SortArrow: React.FC<SortArrowProps> = ({ dir }) => {
   );
 };
 
+
 // ─── Main Component ───────────────────────────────────────────────────────────
-const PatientList: React.FC = () => {
+const PatientList: React.FC<{ unitFilter: string | null; specialtyFilter: string | null }> = ({ unitFilter, specialtyFilter }) => {
   // Initialize with extended properties
-  const [patients, setPatients] = useState<ExtendedPatient[]>(() => 
+  const [patients, setPatients] = useState<ExtendedPatient[]>(() =>
     INITIAL_DATA.map(p => ({ ...p, isFavorite: false, isLocked: false }))
   );
-  
+
   const [sortDir, setSortDir] = useState<SortDir>('none');
   const [catIndex, setCatIndex] = useState<number>(0);
   const [ccIndex, setCcIndex] = useState<number>(0);
@@ -80,11 +81,30 @@ const PatientList: React.FC = () => {
       result = result.filter((p) => p.cc === selectedCC);
     }
 
+    // ✅ NEW: Unit filter
+    if (unitFilter) {
+      result = result.filter((p) => p.unit === unitFilter);
+    }
+
+    // ✅ NEW: Specialty filter
+    if (specialtyFilter) {
+      result = result.filter((p) => p.specialty === specialtyFilter);
+    }
+
     if (sortDir === 'asc') result.sort((a, b) => a.name.localeCompare(b.name));
     if (sortDir === 'desc') result.sort((a, b) => b.name.localeCompare(a.name));
 
     return result;
-  }, [patients, sortDir, catIndex, ccIndex, favOnly, hideLocked]);
+  }, [
+    patients,
+    sortDir,
+    catIndex,
+    ccIndex,
+    favOnly,
+    hideLocked,
+    unitFilter,        // ✅ add dependency
+    specialtyFilter    // ✅ add dependency
+  ]);
 
   const visiblePatients = filteredPatients.slice(pageOffset, pageOffset + PAGE_SIZE);
 
@@ -93,31 +113,31 @@ const PatientList: React.FC = () => {
     setSortDir((prev) => cycleSortDir(prev));
     setPageOffset(0);
   };
-  
+
   const handleCategoryClick = () => {
     setCatIndex((prev) => cycleIndex(CATEGORIES, prev));
     setPageOffset(0);
   };
-  
+
   const handleCCClick = () => {
     setCcIndex((prev) => cycleIndex(CC_OPTIONS, prev));
     setPageOffset(0);
   };
-  
+
   const handleFavToggle = () => {
     setFavOnly((prev) => !prev);
     setPageOffset(0);
   };
-  
+
   const handleHideLocked = () => {
     setHideLocked((prev) => !prev);
     setPageOffset(0);
   };
-  
+
   const handleScrollUp = () => {
     setPageOffset((prev) => Math.max(0, prev - PAGE_SIZE));
   };
-  
+
   const handleScrollDown = () => {
     setPageOffset((prev) =>
       Math.min(prev + PAGE_SIZE, Math.max(0, filteredPatients.length - PAGE_SIZE))
@@ -342,9 +362,9 @@ const PatientList: React.FC = () => {
             visiblePatients.map((patient) => {
               // Convert name to a URL-friendly slug (e.g., "John Doe" -> "john-doe")
               const slug = patient.name.toLowerCase().replace(/\s+/g, '-');
-              
+
               return (
-                <Link 
+                <Link
                   key={patient.id + patient.name}
                   href={patient.isLocked ? '#' : `./simulation/${slug}`}
                   onClick={(e) => {
@@ -375,20 +395,20 @@ const PatientList: React.FC = () => {
 
                     <div style={styles.actionButtons}>
                       {/* Star (Favorite) Action */}
-                      <div 
-                        style={styles.iconButton} 
+                      <div
+                        style={styles.iconButton}
                         onClick={(e) => toggleFavorite(e, patient.id)}
                       >
-                        <Star 
-                          size={20} 
-                          fill={patient.isFavorite ? '#F59E0B' : 'none'} 
-                          stroke={patient.isFavorite ? '#F59E0B' : '#A0AEC0'} 
+                        <Star
+                          size={20}
+                          fill={patient.isFavorite ? '#F59E0B' : 'none'}
+                          stroke={patient.isFavorite ? '#F59E0B' : '#A0AEC0'}
                         />
                       </div>
-                      
+
                       {/* Lock Action */}
-                      <div 
-                        style={styles.iconButton} 
+                      <div
+                        style={styles.iconButton}
                         onClick={(e) => toggleLock(e, patient.id)}
                       >
                         {patient.isLocked ? (
