@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { ChevronDown, Menu, BookOpen, FileText, ClipboardCheck, X, Activity, Stethoscope, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import coreApi from '@/utils/coreApi';
 
 // --- Types ---
 interface TopicData {
@@ -533,14 +534,11 @@ type QuizData = {
 
 // --- Initial Data (From your image) ---
 const INITIAL_QUIZ: QuizData = {
-  question: "1. What is the most common cause of bacterial pneumonia?",
+  question: "Are you ready for AI generated Unlimited Quiz?",
   options: [
-    "A. Escherichia coli",
-    "B. Streptococcus pneumoniae",
-    "C. Staphylococcus aureus",
-    "D. Mycobacterium tuberculosis"
+    "A. Yes",
   ],
-  correctAnswerIndex: 1, // B is correct
+  correctAnswerIndex: 0, // B is correct
 };
 
 function QuizApp() {
@@ -721,18 +719,63 @@ function QuizApp() {
   const handleSubmit = () => {
     if (selectedOption !== null) {
       setIsSubmitted(true);
+
+      setTimeout(async () => {
+        const res = await coreApi.generateText(
+          "Generate one random nursing board exam question.",
+          `You must respond ONLY with a valid JSON object. No explanation, no markdown, no code fences.
+        Use exactly this structure:
+        {
+          "question": "Full question text here?",
+          "options": ["Option A text", "Option B text", "Option C text", "Option D text"],
+          "correctAnswerIndex": 0
+        }
+        Rules:
+        - "options" must always have exactly 4 items
+        - "correctAnswerIndex" is 0-based (0=A, 1=B, 2=C, 3=D)
+        - Output raw JSON only, nothing else`
+        );
+
+        try {
+          // Strip markdown code fences if the AI wraps it anyway
+          const cleaned = res.message
+            .replace(/```json/gi, "")
+            .replace(/```/g, "")
+            .trim();
+
+          const parsed = JSON.parse(cleaned);
+
+          // Validate shape before trusting it
+          const isValid =
+            typeof parsed.question === "string" &&
+            Array.isArray(parsed.options) &&
+            parsed.options.length === 4 &&
+            typeof parsed.correctAnswerIndex === "number" &&
+            parsed.correctAnswerIndex >= 0 &&
+            parsed.correctAnswerIndex <= 3;
+
+          if (!isValid) throw new Error("Invalid shape");
+
+          setQuizData({
+            question: parsed.question,
+            options: parsed.options,
+            correctAnswerIndex: parsed.correctAnswerIndex,
+          });
+        } catch {
+          // Retry automatically if parsing or validation fails
+          handleSubmit();
+          return;
+        }
+
+        setIsSubmitted(false);
+        setSelectedOption(null);
+      }, 1370);
     }
   };
 
-  const loadNewTemplate = (e: React.FormEvent) => {
+  const loadNewTemplate = async (e: React.FormEvent) => {
     e.preventDefault();
-    setQuizData({
-      question: tempQuestion,
-      options: tempOptions,
-      correctAnswerIndex: tempCorrect
-    });
-    setSelectedOption(null);
-    setIsSubmitted(false);
+    await handleSubmit();
   };
 
   const getOptionStyle = (index: number) => {

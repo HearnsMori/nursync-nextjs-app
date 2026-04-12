@@ -218,11 +218,11 @@ class ApiClient {
         });
     }
 
-    generateJson(message: string, context?: string) {
+    generateJson(body: Record<string, any>) {
         return this.authFetch('/processes/generatives/jsons', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message, context }),
+            body: JSON.stringify(body),
         });
     }
 }

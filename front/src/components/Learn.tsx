@@ -22,11 +22,11 @@ export default function NurSyncCourses() {
   const [courseUrl, setCourseUrl] = useState<string>("");
   const [courses, setCourses] = useState<Course[]>([]);
   const baseCourses: Course[] = [
-    //level 1
+    // LEVEL 1 - First Semester
     {
       level: 1,
       url: "https://nursync-seek.super.site/learning-hub/anatomy-and-physiology",
-      title: "Anatomy and <br/> Physiology",
+      title: "Anatomy and Physiology",
       aaa: "NM 1",
       sem: "First Semester",
       progress: 0,
@@ -42,11 +42,13 @@ export default function NurSyncCourses() {
     {
       level: 1,
       url: "https://nursync-seek.super.site/learning-hub/theoretical-foundations-in-nursing",
-      title: "Theoretical Foundation <br/> in Nursing",
+      title: "Theoretical Foundations <br/> in Nursing",
       aaa: "NP",
       sem: "First Semester",
       progress: 0,
     },
+
+    // LEVEL 1 - Second Semester
     {
       level: 1,
       url: "https://nursync-seek.super.site/learning-hub/microbiology-and-parasitology",
@@ -58,24 +60,33 @@ export default function NurSyncCourses() {
     {
       level: 1,
       url: "https://nursync-seek.super.site/learning-hub/health-assessment",
-      title: "Health Assesment",
+      title: "Health Assessment",
       aaa: "NP 1",
       sem: "Second Semester",
       progress: 0,
     },
     {
       level: 1,
+      url: "https://nursync-seek.super.site/learning-hub/health-education",
+      title: "Health Education",
+      aaa: "NP 2",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    {
+      level: 1,
       url: "https://nursync-seek.super.site/learning-hub/fundamentals-of-nursing-practice",
-      title: "Fundamentals of <br/> Nursing Practices",
+      title: "Fundamentals of <br/> Nursing Practice",
       aaa: "NP 3",
       sem: "Second Semester",
       progress: 0,
     },
-    //level 2
+
+    // LEVEL 2 - First Semester
     {
       level: 2,
       url: "https://nursync-seek.super.site/learning-hub/community-health-nursing",
-      title: "Community Health <br/> Nursing",
+      title: "Community Health Nursing",
       aaa: "NP 4",
       sem: "First Semester",
       progress: 0,
@@ -99,9 +110,9 @@ export default function NurSyncCourses() {
     {
       level: 2,
       url: "https://nursync-seek.super.site/learning-hub/care-of-mother-child-adolescents-well-clients",
-      title: "Care of <br/> Mother, Child, <br/> Adolescents (Well Client)",
+      title: "Care of Mother, Child, <br/> Adolescents (Well Clients)",
       aaa: "NP 7",
-      sem: "Second Semester",
+      sem: "First Semester",
       progress: 0,
     },
     {
@@ -112,19 +123,13 @@ export default function NurSyncCourses() {
       sem: "First Semester",
       progress: 0,
     },
-    {
-      level: 2,
-      url: "https://nursync-seek.super.site/learning-hub/community-health-nursing-2-population-groups-and-community-as-clients",
-      title: "Community Health <br/> Nursing 2 (Population Groups <br/> and Community as Clients)",
-      aaa: "",
-      sem: "Second Semester",
-      progress: 0,
-    },
+
+    // LEVEL 2 - Second Semester
     {
       level: 2,
       url: "https://nursync-seek.super.site/learning-hub/care-of-mother-child-at-risk-or-with-problems",
-      title: "Care of <br/> Mother, Child at <br/> Risk or With Problems",
-      aaa: "",
+      title: "Care of Mother, Child <br/> At Risk or With Problems",
+      aaa: "NP 9",
       sem: "Second Semester",
       progress: 0,
     },
@@ -132,16 +137,33 @@ export default function NurSyncCourses() {
       level: 2,
       url: "https://nursync-seek.super.site/learning-hub/nursing-informatics",
       title: "Nursing Informatics",
-      aaa: "",
+      aaa: "NP 10",
       sem: "Second Semester",
       progress: 0,
     },
-    //level 3
+    {
+      level: 2,
+      url: "https://nursync-seek.super.site/learning-hub/community-health-nursing-2-population-groups-and-community-as-clients",
+      title: "Community Health Nursing 2",
+      aaa: "NP 11",
+      sem: "Second Semester",
+      progress: 0,
+    },
+
+    // LEVEL 3 - First Semester
     {
       level: 3,
-      url: "https://nursync-seek.super.site/learning-hub/care-of-clients-with-problems-in-oxygenation-fluid-and-electrolyte-infectious-inflammatory-and-immunologic-response-cellular-aberration-acute-chronic",
-      title: "Care of Clients with Problems <br/> in Oxygenation, Fluid and Electrolyte, <br/> Infectious, Inflammatory and <br/> Immunologic Response, Cellular Aberration, <br/> Acute and Chronic",
-      aaa: "...",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-research-1",
+      title: "Nursing Research 1",
+      aaa: "NP 12",
+      sem: "First Semester",
+      progress: 0,
+    },
+    {
+      level: 3,
+      url: "https://nursync-seek.super.site/learning-hub/care-of-clients-with-problems-in-oxygenation-fluid-and-electrolyte-infectious-inflammatory-and-immunologic-response-cellular-aberration-acute-and-chronic",
+      title: "Care of Clients with <br/> Problems in Oxygenation",
+      aaa: "NP 13",
       sem: "First Semester",
       progress: 0,
     },
@@ -149,15 +171,7 @@ export default function NurSyncCourses() {
       level: 3,
       url: "https://nursync-seek.super.site/learning-hub/care-of-older-adult",
       title: "Care of Older Adult",
-      aaa: "...",
-      sem: "First Semester",
-      progress: 0,
-    },
-    {
-      level: 3,
-      url: "https://nursync-seek.super.site/learning-hub/nursing-research-1",
-      title: "Nursing Research 1",
-      aaa: "...",
+      aaa: "NP 14",
       sem: "First Semester",
       progress: 0,
     },
@@ -165,80 +179,77 @@ export default function NurSyncCourses() {
       level: 3,
       url: "https://nursync-seek.super.site/learning-hub/nursing-entrepreneurship",
       title: "Nursing Entrepreneurship",
-      aaa: "...",
+      aaa: "NTREP",
       sem: "First Semester",
       progress: 0,
     },
+
+    // LEVEL 3 - Second Semester
     {
       level: 3,
-      url: "https://nursync-seek.super.site/learning-hub/care-of-clients-maladaptive-patterns-of-behavior-acute-and-chronic-psych",
-      title: "Care of Clients <br/> with Maladaptive Patterns of Behavior <br/> Acute and Chronic Psych",
-      aaa: "...",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-research-2",
+      title: "Nursing Research 2",
+      aaa: "NP 15",
       sem: "Second Semester",
       progress: 0,
     },
     {
       level: 3,
       url: "https://nursync-seek.super.site/learning-hub/care-of-clients-with-problems-in-nutrition-gastrointestinal-metabolism-and-endocrine-perception-and-coordination-acute-chronic",
-      title: "Care of Clients <br/> with Problems in Nutrition, <br/> Gastrointestinal, Metabolism and <br/> Endocrine, Perception and Coordination <br/> Acute and Chronic",
-      aaa: "...",
+      title: "Care of Clients with <br/> Problems in Nutrition",
+      aaa: "NP 16",
       sem: "Second Semester",
       progress: 0,
     },
     {
       level: 3,
-      url: "https://nursync-seek.super.site/learning-hub/nursing-research-2",
-      title: "Nursing Research 2",
-      aaa: "...",
+      url: "https://nursync-seek.super.site/learning-hub/care-of-clients-with-maladaptive-patterns-of-behavior-acute-and-chronic-psych",
+      title: "Care of Clients with <br/> Maladaptive Patterns (Psych)",
+      aaa: "NP 17",
       sem: "Second Semester",
       progress: 0,
     },
-    //level 4
+
+    // LEVEL 4 - First Semester
     {
       level: 4,
       url: "https://nursync-seek.super.site/learning-hub/nursing-competency-appraisal-1",
-      title: "Nursing Competency Appraisal 1",
-      aaa: "...",
+      title: "Nursing Competency <br/> Appraisal 1",
+      aaa: "NC 1",
       sem: "First Semester",
       progress: 0,
     },
     {
       level: 4,
-      url: "https://nursync-seek.super.site/learning-hub/decent-work-employment-and-transcultural-nursing-and-spirituality",
-      title: "Decent Work, Employment and Transcultural Nursing and Spirituality",
-      aaa: "...",
+      url: "https://nursync-seek.super.site/learning-hub/nursing-care-of-clients-with-life-threatening-conditions-acutely-illmulti-organ-problems-high-acuity-and-emergency-situation-acute-and-chronic",
+      title: "Nursing Care of Clients <br/> with Life Threatening Conditions",
+      aaa: "NP 18",
       sem: "First Semester",
       progress: 0,
     },
     {
       level: 4,
       url: "https://nursync-seek.super.site/learning-hub/nursing-leadership-and-management",
-      title: "Nursing Leadership and Management",
-      aaa: "...",
+      title: "Nursing Leadership <br/> and Management",
+      aaa: "NP 19",
       sem: "First Semester",
       progress: 0,
     },
     {
       level: 4,
-      url: "https://nursync-seek.super.site/learning-hub/nursing-care-of-clients-with-life-threatening-conditions-acutely-illmulti-organ-problems-high-acuity-and-emergency-situation-acute-nd-chronic",
-      title: "Nursing Care of Clients with Life-Threatening Conditions, Acutely Ill/Multi-Organ Problems, High Acuity and Emergency Situation, Acute and Chronic",
-      aaa: "...",
+      url: "https://nursync-seek.super.site/learning-hub/decent-work-employment-and-transcultural-nursing-and-spirituality",
+      title: "Decent Work Employment <br/> and Transcultural Nursing",
+      aaa: "NP 20",
       sem: "First Semester",
       progress: 0,
     },
+
+    // LEVEL 4 - Second Semester
     {
       level: 4,
       url: "https://nursync-seek.super.site/learning-hub/nursing-competency-appraisal-2",
-      title: "Nursing Competency Appraisal 2",
-      aaa: "...",
-      sem: "Second Semester",
-      progress: 0,
-    },
-    {
-      level: 4,
-      url: "https://nursync-seek.super.site/learning-hub/intensive-nursing-practicum-hospital-and-community-settings",
-      title: "Intensive Nursing Practicum Hospital and Community Settings",
-      aaa: "...",
+      title: "Nursing Competency <br/> Appraisal 2",
+      aaa: "NC 2",
       sem: "Second Semester",
       progress: 0,
     },
@@ -246,7 +257,15 @@ export default function NurSyncCourses() {
       level: 4,
       url: "https://nursync-seek.super.site/learning-hub/disaster-nursing",
       title: "Disaster Nursing",
-      aaa: "...",
+      aaa: "NP 21",
+      sem: "Second Semester",
+      progress: 0,
+    },
+    {
+      level: 4,
+      url: "https://nursync-seek.super.site/learning-hub/intensive-nursing-practicum-hospital-and-community-settings",
+      title: "Intensive Nursing <br/> Practicum",
+      aaa: "NP 22",
       sem: "Second Semester",
       progress: 0,
     },
@@ -310,7 +329,7 @@ export default function NurSyncCourses() {
   const saveProgress = async (url: string, progress: number) => {
     const getUser = await coreApi.getUser("#self");
     const user = getUser?.user?.userId;
-    alert(url + progress);
+    //alert(url + progress);
     if (!user) return;
 
     const urlKey = url.split("/").pop() ?? url;
