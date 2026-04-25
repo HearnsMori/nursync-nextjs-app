@@ -1,16 +1,18 @@
 class ApiClient {
-    private platform = "digital";
-    private organization = "project-37";
-    private company = "nursync";
-    private app = "nursync";
-    private URL_DOMAIN = 'https://core-api-lajo.onrender.com';
-    //private URL_DOMAIN = 'http://localhost:10000';
+    private platform: string;
+    private organization: string;
+    private company: string;
+    private app: string;
     private API_BASE_URL: string;
     private ACCESS_TOKEN_KEY = 'accessToken';
     private REFRESH_TOKEN_KEY = 'refreshToken';
 
-    constructor(baseUrl?: string) {
-        this.API_BASE_URL = `${this.URL_DOMAIN}/api/v1`;
+    constructor(version: string, platform: string, organization: string, company: string, app: string, urlDomain: string = "https://core-api-lajo.onrender.com") {
+        this.platform = platform;
+        this.organization = organization;
+        this.company = company;
+        this.app = app;
+        this.API_BASE_URL = `${urlDomain}/api/${version}`;
     }
 
     // ===== Token Helpers =====
@@ -65,7 +67,11 @@ class ApiClient {
         return res.json();
     }
 
-    // ===== Auth Endpoints =====
+    //
+    //
+    // Auth Endpoints
+    //
+    //
     async signup(id: string, password: string, link?: any, data?: any) {
         //alert(JSON.stringify(data));
         return this.nonAuthFetch('/auths/signup', {
@@ -112,70 +118,136 @@ class ApiClient {
 
         const data = await res.json();
         const { accessToken } = data.data;
-        alert(data.data);
         this.saveTokens(accessToken);
         return accessToken;
     }
 
-    // ===== Users Endpoints =====
-    getUsers() {
-        return this.authFetch('/users/users');
+    async mfa(enable: boolean) {
+        return await this.authFetch('/auths/mfa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ enable }),
+        });
     }
 
-    getUser(userId: string) {
-        return this.authFetch(`/users/users/${encodeURIComponent(userId)}`);
+    /*
+    async sessions() {}
+    */
+
+    //
+    //
+    // User Endpoints
+    //
+    //
+    async getUsers() {
+        return await this.authFetch('/users');
     }
 
-    createUser(payload: any) {
-        return this.authFetch('/users/users', {
+    async getUser(userId: string) {
+        return await this.authFetch(`/users/${encodeURIComponent(userId)}`);
+    }
+
+    async createUser(payload: any) {
+        return await this.authFetch('/users', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
         });
     }
 
-    async updateUser(userId: string, payload: any) {
-        const res = await this.authFetch(`/users/users/${encodeURIComponent(userId)}`, {
+    async updateUser(userId: string, userLink: Map<string, string>, userData: Map<string, any>) {
+        const res = await this.authFetch(`/users/${encodeURIComponent(userId)}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
+            body: JSON.stringify({userLink, userData}),
         });
         const { accessToken, refreshToken } = res;
         this.saveTokens(accessToken, refreshToken);
         return res;
     }
 
-    deleteUser(userId: string) {
-        return this.authFetch(`/users/users/${encodeURIComponent(userId)}`, { method: 'DELETE' });
+    async deleteUser(userId: string) {
+        return await this.authFetch(`/users/${encodeURIComponent(userId)}`, { method: 'DELETE' });
     }
 
-    // ===== Roles Endpoints =====
-    getRoles() {
-        return this.authFetch('/roles');
-    }
-
-    getRole(roleId: string) {
-        return this.authFetch(`/roles/${roleId}`);
-    }
-
-    createRole(payload: any) {
-        return this.authFetch('/roles', {
-            method: 'POST',
+    async updatePassword(userId: string, newPassword: string) {
+        return await this.authFetch(`/users/${encodeURIComponent(userId)}/password`, {
+            method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
+            body: JSON.stringify({ newPassword }),
         });
     }
 
-    addMemberToRole(roleId: string, userId: string) {
-        return this.authFetch(`/roles/${roleId}/members/${userId}`, { method: 'POST' });
+    async updateStatus(userId: string, status: string) {
+        return await this.authFetch(`/users/${encodeURIComponent(userId)}/status`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status }),
+        });
     }
 
-    removeMemberFromRole(roleId: string, userId: string) {
-        return this.authFetch(`/roles/${roleId}/members/${userId}`, { method: 'DELETE' });
+    //
+    //
+    // Role Endpoints
+    //
+    //
+    async getRoles() {
+        return await this.authFetch('/roles');
     }
 
-    // ===== Storage Endpoints =====
+    async getRole(roleId: string) {
+        return await this.authFetch(`/roles/${roleId}`);
+    }
 
+    async patchRole(roleId: string, newRoleId: string) {
+        return await this.authFetch(`/roles/${roleId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ roleId: newRoleId }),
+        });
+    }
+
+    async deleteRole(roleId: string) {
+        return await this.authFetch(`/roles/${roleId}`, { method: 'DELETE' });
+    }
+
+    async createRole(roleId: string) {
+        return await this.authFetch('/roles', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({roleId}),
+        });
+    }
+
+    async addMemberToRole(roleId: string, userId: string) {
+        return await this.authFetch(`/roles/${roleId}/members/${userId}`, { method: 'POST' });
+    }
+
+    async removeMemberFromRole(roleId: string, userId: string) {
+        return await this.authFetch(`/roles/${roleId}/members/${userId}`, { method: 'DELETE' });
+    }
+
+    async transferOwner(roleId: string, newOwner: String) {
+        return await this.authFetch(`/roles/${roleId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ newOwner }),
+        });
+    }
+
+    async updatePermission(roleId: string, update: "push" | "pop", allowedToPushUser: string[], allowedToPopUser: string[]) {
+        return await this.authFetch(`/roles/${roleId}/permissions`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ update, allowedToPushUser, allowedToPopUser }),
+        });
+    }
+
+    //
+    //
+    // Storage Endpoints
+    //
+    //
     async getStorageItems(id: string, path: string) {
         const res = await this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`);
         return res?.[this.platform]?.[this.organization]?.[this.company]?.[this.app];
@@ -209,7 +281,11 @@ class ApiClient {
         return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, { method: 'DELETE' });
     }
 
-    // ===== Processes Endpoints =====
+    //
+    //
+    // Process Endpoints
+    //
+    //
     generateText(message: string, context?: string) {
         return this.authFetch('/processes/generatives/texts', {
             method: 'POST',
@@ -218,15 +294,14 @@ class ApiClient {
         });
     }
 
-    generateJson(body: Record<string, any>) {
+    generateJson(payload: Map<string, string>) {
         return this.authFetch('/processes/generatives/jsons', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
+            body: JSON.stringify(payload),
         });
     }
 }
 
-const coreApi = new ApiClient();
+const coreApi = new ApiClient("v1", "platform-", "organization-", "company-", "app-", "https://core-api-lajo.onrender.com");
 export default coreApi;
-
