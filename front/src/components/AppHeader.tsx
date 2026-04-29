@@ -1,0 +1,168 @@
+"use client";
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import '../app/globals.css';
+import { UsersRound, LogOut } from 'lucide-react';
+import Link from 'next/link';
+
+export default function Header({
+    isLoggedIn,
+}: { isLoggedIn: boolean }) {
+    return (
+        <header
+            className='bggreen'
+            style={{
+                width: '100%',
+                height: '4vw',
+                display: 'flex',
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                flexDirection: 'row',
+                flexWrap: 'nowrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 99,
+                padding: '0 3vw',
+            }}>
+            <div
+                style={{
+                    height: '100%',
+                    width: '10vw',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Image
+                    src="/logo.png"
+                    alt="Logo"
+                    height={1000}
+                    width={300}
+                    style={{
+                        height: '3vw',
+                        width: 'auto',
+                    }}
+                />
+            </div>
+            <div
+                style={{
+                    flex: '1',
+                }}>
+
+            </div>
+            <div
+                className='bggreen txtblack'
+                style={{
+                    height: '4vw',
+                    width: '16vw',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                {isLoggedIn ? (
+                    <></>
+                ) : (
+                    <>
+                        <Link
+                            className="bgwhite txtblack button"
+                            href="/signup"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '1vw',
+                                height: '2.3vw',
+                                width: '12vw',
+                                border: 'none',
+                                margin: '1vw',
+                                fontWeight: 300,
+                                fontSize: '1vw',
+                                color: '#222222',
+                            }}>Sign-up</Link>
+                        <Link
+                            className="bgwhite txtblack button"
+                            href="/login"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '1vw',
+                                height: '2.3vw',
+                                width: '12vw',
+                                border: 'none',
+                                margin: '1vw',
+                                fontWeight: 300,
+                                fontSize: '1vw',
+                                color: '#222222',
+                            }}>Log-in</Link>
+                    </>
+                )}
+            </div>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexFlow: 'row nowrap',
+            }}>
+                <div
+                    style={{
+                        height: '100%',
+                        width: '3vw',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.6725 16.6412L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path> </g></svg>
+                </div>
+
+                {!isLoggedIn ? (
+                    <></>
+                ) : (
+                    <>
+                        <Link href="/meet-the-team" style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '1vw',
+                            height: '2.3vw',
+                            width: '3vw',
+                            border: 'none',
+                            margin: '1vw',
+                            fontWeight: 500,
+                            fontSize: '1vw',
+                            color: '#222222',
+                        }}>
+                            <UsersRound color="#ffffff" size={24} />
+                        </Link>
+                        <button
+                            className="bgwhite txtblack button"
+                            onClick={() => {
+                                localStorage.removeItem("accessToken");
+                                localStorage.removeItem("refreshToken");
+                                localStorage.removeItem("id");
+                                window.location.href = '/';
+                            }}
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '1vw',
+                                height: '2.3vw',
+                                width: '7vw',
+                                border: 'none',
+                                margin: '1vw',
+                                fontWeight: 500,
+                                fontSize: '1vw',
+                                color: '#222222',
+                            }}>
+                            <LogOut color="#222222" size={16} style={{ marginRight: '0.5vw' }} />
+                            Log-out
+                        </button>
+
+
+                    </>
+                )}
+            </div>
+        </header>
+    );
+}
