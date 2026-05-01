@@ -139,12 +139,12 @@ const Signup = () => {
     
     try {
       const signup = await coreApi.signup(username, password, {emailaddress}, {firstname, lastname, middlename, university, studentid});
-      customAlert(signup.message);
+      coreApi.alert(signup.message, "#008040");
       if (signup.success) {
         router.push("/login");
       }
     } catch (error) {
-      customAlert(error instanceof Error ? error.message : String(error));
+      coreApi.alert(error instanceof Error ? error.message : String(error), "#AA3737");
     }
   };
 

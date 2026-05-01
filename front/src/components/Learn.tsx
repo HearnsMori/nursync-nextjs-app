@@ -21,6 +21,7 @@ export default function NurSyncCourses() {
   const [isCourseOpen, setIsCourseOpen] = useState<boolean>(false);
   const [courseUrl, setCourseUrl] = useState<string>("");
   const [courses, setCourses] = useState<Course[]>([]);
+  const [startTime, setStartTime] = useState<number>(0);
   const baseCourses: Course[] = [
     // LEVEL 1 - First Semester
     {
@@ -285,14 +286,13 @@ export default function NurSyncCourses() {
     const user = getUser?.user?.userId;
     if (!user) return;
 
-    const stored = await coreApi.getStorageItems(user, "UrlProgress/null");
-
+    const stored = await coreApi.getStorageItems(user, "UrlProgress", "#null");
     const loaded = baseCourses.map((course) => {
       const urlKey = course.url.split("/").pop() ?? course.url;
-      const savedProgress = stored?.UrlProgress?.[urlKey];
+      const savedProgress = stored?.UrlProgress[0]?.[urlKey];
       return {
         ...course,
-        progress: typeof savedProgress === "number" ? savedProgress : 0,
+        progress: savedProgress ? savedProgress : 0,
       };
     });
 
@@ -307,7 +307,6 @@ export default function NurSyncCourses() {
 
 
   const onBack = async () => {
-    const startTime = Date.now();
     const targetCourseIndex = courses.findIndex((c) => c.url === courseUrl);
 
     setCourses((prev) => {
@@ -318,7 +317,8 @@ export default function NurSyncCourses() {
       // progress over 1 hour
       const elapsedMs = Date.now() - startTime;
       const progress = Math.min((elapsedMs / 3600000) * 100, 100);
-      course.progress = progress;
+      course.progress += progress;
+
 
       saveProgress(course.url, course.progress);
 
@@ -329,17 +329,15 @@ export default function NurSyncCourses() {
   const saveProgress = async (url: string, progress: number) => {
     const getUser = await coreApi.getUser("#self");
     const user = getUser?.user?.userId;
-    //alert(url + progress);
     if (!user) return;
 
     const urlKey = url.split("/").pop() ?? url;
-    await coreApi.putStorageItems(user, `UrlProgress/${urlKey}`, Math.round(progress).toString());
+    const updated = await coreApi.putStorageItems(user, "UrlProgress", urlKey, [progress]);
   };
 
   const handleCourseClick = (url: string) => {
-    //alert(url);
     setCourseUrl(url);
-    //alert(courseUrl);
+    setStartTime(Date.now());
     setIsCourseOpen(true);
   };
 

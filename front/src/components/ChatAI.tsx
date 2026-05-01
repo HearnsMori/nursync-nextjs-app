@@ -102,7 +102,7 @@ export default function NurSyncChat() {
     setIsTyping(true);
 
     try {
-      const res = await coreApi.generateText(
+      const res = await coreApi.generateTxt(
         userText,
         "You are a helpful nursing assistant AI."
       );

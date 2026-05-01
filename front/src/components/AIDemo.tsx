@@ -47,7 +47,7 @@ export default function GeminiChatPage() {
         const outputInside = document.getElementById("output")?.innerHTML || "";
 
         try {
-            const data = await coreApi.generateText(
+            const data = await coreApi.generateTxt(
                 "\nUser: " + input,
                 context
             );

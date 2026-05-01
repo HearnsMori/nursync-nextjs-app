@@ -66,25 +66,23 @@ export default function NurSyncProfile() {
 
   const updateUserInfo = async () => {
     try {
-      const updateUser = await coreApi.updateUser('#self', {
-        userId: formData.username,
-        userData: {
+      const updateUser = await coreApi.updateUser('#self', formData.username, {
           firstname: formData.firstname,
           lastname: formData.lastname,
           middlename: formData.middlename,
           studentid: formData.studentid,
           university: formData.university,
         },
-        userLink: {
+        {
           emailaddress: formData.emailaddress,
         }
-      })
+      );
       if (updateUser) {
-        customAlert(updateUser.message);
+        coreApi.alert(updateUser.message, "#008040");
       }
 
     } catch (error) {
-      customAlert(error instanceof Error ? error.message : String(error));
+      coreApi.alert(error instanceof Error ? error.message : String(error), "#AA3737");
     }
   }
 

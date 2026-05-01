@@ -87,11 +87,11 @@ const App: React.FC = () => {
       try {
         const login = await coreApi.login(formData.username, formData.password);
         if (login) {
-          customAlert("Login Successfully.");
+          coreApi.alert(login.message, login.success ? "#008040" : "#AA3737");
           router.push('/home')
         }
       } catch (error) {
-        customAlert(error instanceof Error ? error.message : String(error));
+        coreApi.alert(error instanceof Error ? error.message : String(error), "#AA3737");
       }
 
     }

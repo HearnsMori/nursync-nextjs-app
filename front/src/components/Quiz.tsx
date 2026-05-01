@@ -515,7 +515,7 @@ export default function MedicalApp() {
         <div style={{
           flex: 1,
         }}>
-          <QuizApp />
+          <QuizApp currentTopic={currentTopic.id} />
         </div>
       )}
     </div>
@@ -541,8 +541,7 @@ const INITIAL_QUIZ: QuizData = {
   correctAnswerIndex: 0, // B is correct
 };
 
-function QuizApp() {
-
+function QuizApp({ currentTopic }: { currentTopic: string }) {
   // --- Styles (Strictly Inline) ---
   const styles: Record<string, React.CSSProperties> = {
     page: {
@@ -721,8 +720,8 @@ function QuizApp() {
       setIsSubmitted(true);
 
       setTimeout(async () => {
-        const res = await coreApi.generateText(
-          "Generate one random nursing board exam question.",
+        const res = await coreApi.generateTxt(
+          `Generate ${currentTopic} one random nursing board exam question.`,
           `You must respond ONLY with a valid JSON object. No explanation, no markdown, no code fences.
         Use exactly this structure:
         {
@@ -880,7 +879,7 @@ function QuizApp() {
       </div>
 
       {/* Template Loader Form */}
-      {!isLoading && (
+      {/*!isLoading && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -931,7 +930,7 @@ function QuizApp() {
             </button>
           </form>
         </motion.div>
-      )}
+      )*/}
     </div>
   );
 }

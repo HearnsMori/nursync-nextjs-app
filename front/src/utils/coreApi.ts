@@ -1,16 +1,14 @@
-
-const initialData = {
+const metadata = {
     version: "v1",
-    platform: "platform-",
-    organization: "organization-",
-    company: "company-",
-    app: "app-",
-    urlDomain: "https://core-api-lajo.onrender.com",
-    // urlDomain: "http://localhost:10000",
-};
+    platform: "platform-nursync",
+    organization: "organization-nursync",
+    company: "company-nursync",
+    app: "app-nursync",
+    baseUrl: "https://core-api-lajo.onrender.com",
+    //baseUrl: "http://localhost:10000",
+}
 
 class ApiClient {
-    private id: string | null = null;
     private platform: string;
     private organization: string;
     private company: string;
@@ -18,6 +16,7 @@ class ApiClient {
     private API_BASE_URL: string;
     private ACCESS_TOKEN_KEY = 'accessToken';
     private REFRESH_TOKEN_KEY = 'refreshToken';
+    private apiTierToken: string | null = null;
 
     constructor(version: string, platform: string, organization: string, company: string, app: string, urlDomain: string = "https://core-api-lajo.onrender.com") {
         this.platform = platform;
@@ -35,8 +34,16 @@ class ApiClient {
         pushRecord(key, record);
     }
 
+    public pushRecords(key: string, records: any[]) {
+        pushRecords(key, records);
+    }
+
     public popRecord(key: string, filter: any, edge: SelectionEdge = "first") {
         return popRecord(key, filter, edge);
+    }
+
+    public popRecords(key: string, filter: any) {
+        return popRecords(key, filter);
     }
 
     public findRecord(key: string, filter: any, edge: SelectionEdge = "first") {
@@ -66,7 +73,7 @@ class ApiClient {
     public clearKey(key: string) {
         clearKey(key);
     }
-    
+
     public deleteKey(key: string) {
         deleteKey(key);
     }
@@ -81,7 +88,6 @@ class ApiClient {
 
     public Logout() {
         this.clearTokens();
-        this.id = null;
     }
 
     // ===== Token Helpers =====
@@ -125,7 +131,13 @@ class ApiClient {
     private async nonAuthFetch(url: string, options?: RequestInit) {
         console.log(`Request URL: ${this.API_BASE_URL}${url}`);
         console.log(`Request options:`, options);
-        const res = await fetch(`${this.API_BASE_URL}${url}`, options);
+        const res = await fetch(`${this.API_BASE_URL}${url}`, {
+            ...options,
+            headers: {
+                ...(options?.headers || {}),
+                ...(this.apiTierToken ? { 'X-API-TIER': this.apiTierToken } : {}),
+            },
+        });
         return this.parseResponse(res);
     }
 
@@ -139,6 +151,7 @@ class ApiClient {
                 headers: {
                     ...(options?.headers || {}),
                     Authorization: `Bearer ${accessToken}`,
+                    ...(this.apiTierToken ? { 'X-API-TIER': this.apiTierToken } : {}),
                 },
             });
 
@@ -150,6 +163,10 @@ class ApiClient {
         }
 
         return this.parseResponse(res);
+    }
+
+    private setTierToken(token: string) {
+        this.apiTierToken = token;
     }
 
     //
@@ -175,7 +192,6 @@ class ApiClient {
         if (res.success) {
             const { accessToken, refreshToken } = res.data;
             this.saveTokens(accessToken, refreshToken);
-            this.id = res.data.id;
         }
         return res;
     }
@@ -241,11 +257,11 @@ class ApiClient {
         });
     }
 
-    async updateUser(userId: string, userLink: any | null, userData: any | null) {
+    async updateUser(userId: string, newUserId: string, userLink: any | null, userData: any | null) {
         const res = await this.authFetch(`/users/${encodeURIComponent(userId)}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userLink, userData }),
+            body: JSON.stringify({ userId: newUserId, userLink, userData }),
         });
         const { accessToken, refreshToken } = res;
         this.saveTokens(accessToken, refreshToken);
@@ -334,37 +350,70 @@ class ApiClient {
     // Storage Endpoints
     //
     //
-    async getStorageItems(id: string, path: string) {
-        const res = await this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`);
+    async getStorageItems(id: string, collection: string, key: string) {
+        const res = await this.authFetch(`/storages/${encodeURIComponent(id)}/${this.platform}/${this.organization}/${this.company}/${this.app}/${encodeURIComponent(collection)}/${encodeURIComponent(key)}`);
         return res?.[this.platform]?.[this.organization]?.[this.company]?.[this.app];
     }
 
-    postStorageItems(id: string, path: string, value: any) {
-        return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
+    postStorageItems(id: string, collection: string, key: string, value: any[]) {
+        return this.authFetch(`/storages/${encodeURIComponent(id)}/${this.platform}/${this.organization}/${this.company}/${this.app}/${collection}/${key}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ value }),
         });
     }
 
-    patchStorageItems(id: string, path: string, value: any) {
-        return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
+    patchStorageItems(id: string, collection: string, key: string, value: any[]) {
+        return this.authFetch(`/storages/${encodeURIComponent(id)}/${this.platform}/${this.organization}/${this.company}/${this.app}/${collection}/${key}`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ value }),
         });
     }
 
-    putStorageItems(id: string, path: string, value: any) {
-        return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
+    putStorageItems(id: string, collection: string, key: string, value: any[]) {
+        return this.authFetch(`/storages/${encodeURIComponent(id)}/${this.platform}/${this.organization}/${this.company}/${this.app}/${collection}/${key}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ value }),
         });
     }
 
-    deleteStorageItems(id: string, path: string) {
-        return this.authFetch(`/storages/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, { method: 'DELETE' });
+    deleteStorageItems(id: string, collection: string, key: string) {
+        return this.authFetch(`/storages/${encodeURIComponent(id)}/${this.platform}/${this.organization}/${this.company}/${this.app}/${collection}/${key}`, { method: 'DELETE' });
+    }
+
+    async getFileItems(id: string, path: string) {
+        const res = await this.authFetch(`/storages/files/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`);
+        return res?.[this.platform]?.[this.organization]?.[this.company]?.[this.app];
+    }
+
+    postFileItems(id: string, path: string, file: any) {
+        return this.authFetch(`/storages/files/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file }),
+        });
+    }
+
+    patchFileItems(id: string, path: string, tag: any) {
+        return this.authFetch(`/storages/files/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tag }),
+        });
+    }
+
+    putFileItems(id: string, path: string, file: any) {
+        return this.authFetch(`/storages/files/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file }),
+        });
+    }
+
+    deleteFileItems(id: string, path: string) {
+        return this.authFetch(`/storages/files/${id}/${this.platform}/${this.organization}/${this.company}/${this.app}/${path}`, { method: 'DELETE' });
     }
 
     //
@@ -372,7 +421,7 @@ class ApiClient {
     // Process Endpoints
     //
     //
-    generateText(message: string, context?: string) {
+    generateTxt(message: string, context?: string) {
         return this.authFetch('/processes/generatives/txts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -389,6 +438,8 @@ class ApiClient {
     }
 }
 
+const coreApi = new ApiClient(metadata.version, metadata.platform, metadata.organization, metadata.company, metadata.app, metadata.baseUrl);
+export default coreApi;
 
 
 
@@ -933,13 +984,3 @@ function deleteKey(key: string): void {
 function countRecords(key: string): number {
     return globalData[key]?.length ?? 0;
 }
-
-const coreApi = new ApiClient(
-    initialData.version,
-    initialData.platform,
-    initialData.organization,
-    initialData.company,
-    initialData.app,
-    initialData.urlDomain
-);
-export default coreApi;
